@@ -1,4 +1,4 @@
-# virtually_safe
+# Virtually Safe
 CIS 651 Final Project
 
 By David Phan and Kevin Kha
