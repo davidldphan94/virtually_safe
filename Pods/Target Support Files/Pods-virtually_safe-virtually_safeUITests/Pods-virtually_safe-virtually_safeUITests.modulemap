@@ -1,0 +1,6 @@
+framework module Pods_virtually_safe_virtually_safeUITests {
+  umbrella header "Pods-virtually_safe-virtually_safeUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
