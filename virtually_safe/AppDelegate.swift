@@ -13,7 +13,7 @@ import Firebase
 struct AppDelegate: App {
     var body: some Scene {
         WindowGroup {
-            WebsiteView()
+            ListView()
         }
     }
     
