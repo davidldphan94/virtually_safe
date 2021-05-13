@@ -10,12 +10,22 @@ import SwiftUI
 struct PasswordHistoryView: View {
     @State var history : [String]
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("Password History")
+                .font(.title)
+                .fontWeight(.bold)
+        List{
+            ForEach(history, id: \.self) {
+                password in
+                Text(password)
+                }
+            }
+        }
     }
 }
 
 struct PasswordHistoryView_Previews: PreviewProvider {
     static var previews: some View {
-        PasswordHistoryView(history:["hello"])
+        PasswordHistoryView(history: ["hello"])
     }
 }
