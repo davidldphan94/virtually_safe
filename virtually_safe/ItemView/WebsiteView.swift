@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct WebsiteView: View {
+<<<<<<< HEAD
     //@State var name = "hello"
+=======
+    
+>>>>>>> ef4b5e35f537c3de531f0f00ecff6b0ce5213aee
     var body: some View {
         
         VStack{
@@ -20,7 +24,11 @@ struct WebsiteView: View {
                     .padding(.leading, 20)
                 Spacer()
                 /*
+<<<<<<< HEAD
                 NavigationLink(destination: CreateProfileView(editProf: editProf)){
+=======
+                NavigationLink(destination: WebsiteViewEdit()){
+>>>>>>> ef4b5e35f537c3de531f0f00ecff6b0ce5213aee
                 Text("Edit")
                 }
                 .padding(.trailing, 20)
@@ -34,7 +42,10 @@ struct WebsiteView: View {
                     HStack{Spacer()}
                     
                     Text("Website Name").foregroundColor(.gray).font(.headline)
+<<<<<<< HEAD
                     //TextField("lol", text: $name)
+=======
+>>>>>>> ef4b5e35f537c3de531f0f00ecff6b0ce5213aee
                     Text("name")
                     Divider()
                     Text("URL").foregroundColor(.gray).font(.headline)
@@ -43,8 +54,11 @@ struct WebsiteView: View {
                     Text("Username").foregroundColor(.gray).font(.headline)
                     Text("user")
                     
+<<<<<<< HEAD
                     //Text("lol")
                     
+=======
+>>>>>>> ef4b5e35f537c3de531f0f00ecff6b0ce5213aee
                 }.padding(.leading, 20).padding(.trailing, 20)
                 VStack(alignment: .leading){
                     HStack{Spacer()}
@@ -75,7 +89,11 @@ struct WebsiteView: View {
                     .foregroundColor(.gray)
                     .padding(.leading, 40)
                     .padding(.trailing, 40)
+<<<<<<< HEAD
             }.frame(width: 350, height: 40, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+=======
+            }.frame(width: 350, height: 40, alignment: .center)
+>>>>>>> ef4b5e35f537c3de531f0f00ecff6b0ce5213aee
         }
     }
 }
