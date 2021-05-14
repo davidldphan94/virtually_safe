@@ -9,42 +9,97 @@ import SwiftUI
 
 struct WebsiteView: View {
     @State var favorite = false
+    @State var seepw = false
     @State var name = "name"
     @State var url = "url"
     @State var username = "username"
     @State var password = "password"
     @State var notes = "haha"
     
+    let board = UIPasteboard.general
+    
     var body: some View {
         
         VStack{
             
             ScrollView{
+                Divider().padding(.top, 50)
                 VStack(alignment: .leading){
-                    HStack{Spacer()}
-                    
-                    Text("Website Name").foregroundColor(.gray).font(.headline)
-                    Text(name)
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text("Website Name").foregroundColor(.gray).font(.headline)
+                            Text(name)
+                        }
+                        Spacer()
+                        Button(action: {
+                            if (name != ""){
+                                board.string = name
+                            }}) {
+                            Text("Copy")
+                        }
+                    }
                     Divider()
-                    Text("URL").foregroundColor(.gray).font(.headline)
-                    Text(url)
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text("URL").foregroundColor(.gray).font(.headline)
+                            Text(url)
+                        }
+                        Spacer()
+                        Button(action: {
+                            if (url != ""){
+                                board.string = url
+                            }}) {
+                            Text("Copy")
+                        }
+                    }
                     Divider()
-                    Text("Username").foregroundColor(.gray).font(.headline)
-                    Text(username)
-                    
-                }.padding(.leading, 20).padding(.trailing, 20)
-                VStack(alignment: .leading){
-                    HStack{Spacer()}
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text("Username").foregroundColor(.gray).font(.headline)
+                            Text(username)
+                        }
+                        
+                        Spacer()
+                        Button(action: {
+                            if (username != ""){
+                                board.string = username
+                            }}) {
+                            Text("Copy")
+                        }
+                    }
                     Divider()
-                    Text("Password").foregroundColor(.gray).font(.headline)
-                    Text(password)
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text("Password").foregroundColor(.gray).font(.headline)
+                            if seepw == false {
+                                Text(hide(hid: password))
+                            } else {
+                                Text(password)
+                            }
+                        }
+                        Spacer()
+                        Button(action: { togglePw() }, label: {
+                            if seepw == false{
+                                Image(systemName: "eye").foregroundColor(.blue)
+                                    .frame(width: 35, height: 30, alignment: .center)
+                            } else {
+                                Image(systemName: "eye.fill").foregroundColor(.blue)
+                            }
+                        })
+                        Button(action: {
+                            if (password != ""){
+                                board.string = password
+                            }}) {
+                            Text("Copy")
+                        }
+                    }
                     Divider()
                     Text("Notes").foregroundColor(.gray).font(.headline)
                     Text(notes)
                     
                 }.padding(.leading, 20).padding(.trailing, 20)
+                Divider()
             }
-            
             Spacer()
             NavigationLink(destination: WebsiteViewEdit()){
             Text("Edit")
@@ -94,6 +149,22 @@ struct WebsiteView: View {
         } else {
             favorite = false
         }
+    }
+    
+    func togglePw(){
+        if seepw == false {
+            seepw = true
+        } else {
+            seepw = false
+        }
+    }
+    
+    func hide(hid: String) -> String{
+        var x = ""
+        for _ in hid {
+            x = x+"*"
+        }
+        return x
     }
 }
 

@@ -10,6 +10,7 @@ import SwiftUI
 struct CCView: View {
     @State var favorite = false
     @State var seecode = false
+    @State var seepw = false
     @State var bank = "Chase"
     @State var cardname = "Freedom Flex"
     @State var ccnum = "cc number"
@@ -19,6 +20,8 @@ struct CCView: View {
     @State var username = "username"
     @State var password = "password"
     @State var notes = "haha"
+    
+    let board = UIPasteboard.general
     
     var body: some View {
         
@@ -54,29 +57,88 @@ struct CCView: View {
                 //.background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1))
                 
             ScrollView{
+                Divider().padding(.top, 50)
                 VStack(alignment: .leading){
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text("Bank").foregroundColor(.gray).font(.headline)
+                            Text(bank)
+                        }
+                        Spacer()
+                        Button(action: {
+                            if (bank != ""){
+                                board.string = bank
+                            }}) {
+                            Text("Copy")
+                        }
+                    }
                     Divider()
-                    Text("Bank").foregroundColor(.gray).font(.headline)
-                    Text(bank)
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text("Card Name").foregroundColor(.gray).font(.headline)
+                            Text(cardname)
+                        }
+                        Spacer()
+                        Button(action: {
+                            if (cardname != ""){
+                                board.string = cardname
+                            }}) {
+                            Text("Copy")
+                        }
+                    }
                     Divider()
-                    Text("Card Name").foregroundColor(.gray).font(.headline)
-                    Text(cardname)
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text("Credit Card Number").foregroundColor(.gray).font(.headline)
+                            Text(ccnum)
+                        }
+                        Spacer()
+                        Button(action: {
+                            if ((ccnum) != ""){
+                                board.string = (ccnum)
+                            }}) {
+                            Text("Copy")
+                        }
+                    }
                     Divider()
-                    Text("Credit Card Number").foregroundColor(.gray).font(.headline)
-                    Text(ccnum)
-                    Divider()
-                }.padding(.leading, 20).padding(.trailing, 20).padding(.top, 50)
+                }.padding(.leading, 20).padding(.trailing, 20)
                 VStack(alignment: .leading){
-                    Text("Holder's Name").foregroundColor(.gray).font(.headline)
-                    Text(holdername)
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text("Holder's Name").foregroundColor(.gray).font(.headline)
+                            Text(holdername)
+                        }
+                        Spacer()
+                        Button(action: {
+                            if ((holdername) != ""){
+                                board.string = (holdername)
+                            }}) {
+                            Text("Copy")
+                        }
+                    }
                     Divider()
-                    Text("Valid Thru").foregroundColor(.gray).font(.headline)
-                    Text(valid)
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text("Valid Thru").foregroundColor(.gray).font(.headline)
+                            Text(valid)
+                        }
+                        Spacer()
+                        Button(action: {
+                            if ((valid) != ""){
+                                board.string = (valid)
+                            }}) {
+                            Text("Copy")
+                        }
+                    }
                     Divider()
                     HStack{
                         VStack(alignment: .leading){
                             Text("Security Code").foregroundColor(.gray).font(.headline)
-                            Text(code)
+                            if seecode == false {
+                                Text("***")
+                            } else {
+                                Text(code)
+                            }
                         }
                         Spacer()
                         Button(action: { toggleCode() }, label: {
@@ -87,24 +149,62 @@ struct CCView: View {
                                 Image(systemName: "eye.fill").foregroundColor(.blue)
                             }
                         })
+                        Button(action: {
+                            if ((code) != ""){
+                                board.string = (code)
+                            }}) {
+                            Text("Copy")
+                        }
                     }
-                    
                     Divider()
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text("Login Username").foregroundColor(.gray).font(.headline)
+                            Text(username)
+                        }
+                        Spacer()
+                        Button(action: {
+                            if ((username) != ""){
+                                board.string = (username)
+                            }}) {
+                            Text("Copy")
+                        }
+                    }
+                    Divider()
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text("Login Password").foregroundColor(.gray).font(.headline)
+                            if seepw == false {
+                                Text(hide(hid: password))
+                            } else {
+                                Text(password)
+                            }
+                        }
+                        Spacer()
+                        Button(action: { togglePw() }, label: {
+                            if seepw == false{
+                                Image(systemName: "eye").foregroundColor(.blue)
+                                    .frame(width: 35, height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                            } else {
+                                Image(systemName: "eye.fill").foregroundColor(.blue)
+                            }
+                        })
+                        Button(action: {
+                            if ((password) != ""){
+                                board.string = (password)
+                            }}) {
+                            Text("Copy")
+                        }
+                    }
+                    //Divider()
+                    
                 }.padding(.leading, 20).padding(.trailing, 20)
                 VStack(alignment: .leading){
-                    Text("Login Username").foregroundColor(.gray).font(.headline)
-                    Text(username)
-                    Divider()
-                    Text("Login Password").foregroundColor(.gray).font(.headline)
-                    Text(password)
                     Divider()
                     Text("Notes").foregroundColor(.gray).font(.headline)
-                    
-                }.padding(.leading, 20).padding(.trailing, 20)
-                VStack(alignment: .leading){
                     Text(notes)
-                    Divider()
                 }.padding(.leading, 20).padding(.trailing, 20)
+                Divider()
             }
             
             Spacer()
@@ -165,6 +265,22 @@ struct CCView: View {
         } else {
             seecode = false
         }
+    }
+    
+    func togglePw(){
+        if seepw == false {
+            seepw = true
+        } else {
+            seepw = false
+        }
+    }
+    
+    func hide(hid: String) -> String{
+        var x = ""
+        for _ in hid {
+            x = x+"*"
+        }
+        return x
     }
 }
 
