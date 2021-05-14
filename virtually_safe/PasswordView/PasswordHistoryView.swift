@@ -11,16 +11,21 @@ struct PasswordHistoryView: View {
     @State var history : [String]
     var body: some View {
         VStack {
-            Text("Password History")
-                .font(.title)
-                .fontWeight(.bold)
         List{
             ForEach(history, id: \.self) {
                 password in
                 Text(password)
-                }
+                }.onDelete(perform: deleteRow)
+            }
+        }.navigationBarTitle("History", displayMode: .inline).toolbar{
+            ToolbarItemGroup(placement: .navigationBarTrailing){
+                Button(action: {history = [String]()}, label: {Text("Clear")
+                }).padding(.trailing, 20)
             }
         }
+    }
+    func deleteRow(at offsets: IndexSet) {
+        history.remove(atOffsets: offsets)
     }
 }
 

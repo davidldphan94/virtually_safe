@@ -20,7 +20,7 @@ struct GeneratePasswordView: View {
     let board = UIPasteboard.general
     
     var body: some View {
-        //NavigationView {
+        NavigationView {
             VStack() {
                 //Text("Generate Password").font(.title).bold()
             HStack {
@@ -91,7 +91,7 @@ struct GeneratePasswordView: View {
             }.frame(width: 350, height: 40, alignment: .center)
             }.navigationBarTitle("Generate Password", displayMode: .inline)
             .navigationBarBackButtonHidden(true)
-        //}
+        }
     }
     
     func generatePassword() {
