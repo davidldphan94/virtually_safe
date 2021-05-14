@@ -10,39 +10,54 @@ import SwiftUI
 struct GeneratePasswordView: View {
     @State var passwords = [String]()
     @State var viewPasswords = false
-    @State var password_length : Float = 0
+    @State private var password_length : Float = 0
     @State var pw_display = "Generate Your Password"
     @State var uppercase = false
     @State var lowercase = false
     @State var numbers = false
     @State var special_characters = false
     
+    let board = UIPasteboard.general
+    
     var body: some View {
-        NavigationView {
+        //NavigationView {
             VStack() {
+                //Text("Generate Password").font(.title).bold()
             HStack {
-                Button(action: {generatePassword()}) {
-                    Text("Generate!")
-                }.padding()
                 Button(action: {
-                    if pw_display != "Generate Your Password" {
+                    generatePassword()
+                    if pw_display != "Please select character types" {
                         passwords.append(pw_display)
+                    }
+                    
+                }) {
+                    Text("Generate!")
+                }.padding(.leading, 50)
+                Spacer()
+                Button(action: {
+                    if (pw_display != "Generate Your Password" ||
+                        pw_display != "Please select character types"){
+                        //passwords.append(pw_display)
+                        board.string = pw_display
                     }
                 }) {
                     Text("Save")
-                }.padding()
+                }//.padding()
+                Spacer()
                 NavigationLink(destination:
                         PasswordHistoryView(history: passwords), isActive: $viewPasswords) { EmptyView() }
                 Button(action: {viewPasswords = true}){
                     Text("History")
-                }.padding()
+                }.padding(.trailing, 50)
 
             }.padding()
             HStack {
                 Text(pw_display).italic().padding()
             }.border(Color.black)
             HStack {
-                Slider(value: $password_length, in: 0...20, step: 1)
+                Text("Length ")
+                Slider(value: $password_length, in: 0...32, step: 1)
+                Text("\(Int(password_length))")
             }.padding()
             VStack {
                 Toggle("Uppercase", isOn: $uppercase)
@@ -51,8 +66,32 @@ struct GeneratePasswordView: View {
                 Toggle("Special Characters", isOn: $special_characters)
             }.padding()
             Spacer()
-            }.navigationTitle("Generate Password")
-        }
+            Divider()
+            HStack{
+                NavigationLink(destination: WebsiteView()){
+                    Image(systemName: "key.fill").resizable().frame(width: 20, height: 30)
+                        .foregroundColor(.gray)
+                        .padding(.leading, 40)
+                        .padding(.trailing, 40)
+                }
+                Divider()
+                Button(action: {}, label: {
+                    Image(systemName: "lock.rotation").resizable().frame(width: 30, height: 30)
+                        .foregroundColor(.black)
+                        .padding(.leading, 40)
+                        .padding(.trailing, 40)
+                })
+                    
+                
+                Divider()
+                Image(systemName: "person.crop.circle").resizable().frame(width: 30, height: 30)
+                    .foregroundColor(.gray)
+                    .padding(.leading, 40)
+                    .padding(.trailing, 40)
+            }.frame(width: 350, height: 40, alignment: .center)
+            }.navigationBarTitle("Generate Password", displayMode: .inline)
+            .navigationBarBackButtonHidden(true)
+        //}
     }
     
     func generatePassword() {
