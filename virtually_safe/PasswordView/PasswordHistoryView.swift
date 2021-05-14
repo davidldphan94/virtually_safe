@@ -8,29 +8,57 @@
 import SwiftUI
 
 struct PasswordHistoryView: View {
-    @State var history : [String]
+    @ObservedObject var history : PasswordHistory
+    
+    
+    let board = UIPasteboard.general
+    
     var body: some View {
         VStack {
         List{
-            ForEach(history, id: \.self) {
-                password in
-                Text(password)
+            ForEach((0..<history.passwords.count), id: \.self) {
+                i in
+                 HStack {
+                    VStack {
+                     ZStack {
+                        Text(history.passwords[i])
+                            .font(.headline)
+                     Spacer()
+                     }
+                        Text(history.dates[i]) .font(.body)
+                            .fontWeight(.ultraLight)
+                    }
+                    Spacer()
+                    
+                    Button(action: {
+                        board.string = history.passwords[i]
+                        }) {
+                        Text("Copy")
+                            .foregroundColor(Color.blue)
+                    }
+                 }
                 }.onDelete(perform: deleteRow)
             }
         }.navigationBarTitle("History", displayMode: .inline).toolbar{
             ToolbarItemGroup(placement: .navigationBarTrailing){
-                Button(action: {history = [String]()}, label: {Text("Clear")
+                Button(action: {
+                    history.passwords = [String]()
+                    history.dates = [String]()
+                }, label: {Text("Clear")
                 }).padding(.trailing, 20)
             }
         }
     }
     func deleteRow(at offsets: IndexSet) {
-        history.remove(atOffsets: offsets)
+        history.passwords.remove(atOffsets: offsets)
+        history.dates.remove(atOffsets: offsets)
     }
 }
 
-struct PasswordHistoryView_Previews: PreviewProvider {
-    static var previews: some View {
-        PasswordHistoryView(history: ["hello"])
-    }
-}
+//struct PasswordHistoryView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PasswordHistoryView(
+//            passwords: ["hello", "goodbye"],
+//            dates: ["hello", "goodbye"])
+//    }
+//}

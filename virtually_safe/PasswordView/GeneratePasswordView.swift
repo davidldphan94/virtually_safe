@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GeneratePasswordView: View {
-    @State var passwords = [String]()
+    @ObservedObject var password_history = PasswordHistory()
     @State var viewPasswords = false
     @State private var password_length : Float = 0
     @State var pw_display = "Generate Your Password"
@@ -22,30 +22,35 @@ struct GeneratePasswordView: View {
     var body: some View {
         NavigationView {
             VStack() {
-                //Text("Generate Password").font(.title).bold()
             HStack {
                 Button(action: {
                     generatePassword()
-                    if pw_display != "Please select character types" {
-                        passwords.append(pw_display)
+                    if pw_display != "Please select character types" &&
+                        pw_display != "Invalid password length"{
+                        let currentDateTime = Date()
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.timeStyle = .medium
+                        dateFormatter.dateStyle = .long
+                        let date = dateFormatter.string(from: currentDateTime)
+                        password_history.passwords.insert(pw_display, at: 0)
+                        password_history.dates.insert(date, at: 0)
                     }
-                    
                 }) {
                     Text("Generate!")
                 }.padding(.leading, 50)
                 Spacer()
                 Button(action: {
                     if (pw_display != "Generate Your Password" ||
-                        pw_display != "Please select character types"){
-                        //passwords.append(pw_display)
+                        pw_display != "Please select character types" ||
+                        pw_display != "Invalid password length"){
                         board.string = pw_display
                     }
                 }) {
                     Text("Save")
-                }//.padding()
+                }
                 Spacer()
                 NavigationLink(destination:
-                        PasswordHistoryView(history: passwords), isActive: $viewPasswords) { EmptyView() }
+                                PasswordHistoryView(history: password_history), isActive: $viewPasswords) { EmptyView() }
                 Button(action: {viewPasswords = true}){
                     Text("History")
                 }.padding(.trailing, 50)
@@ -110,6 +115,10 @@ struct GeneratePasswordView: View {
         }
         if (character_select.count == 0) {
             pw_display = "Please select character types"
+            return
+        }
+        if (password_length == 0) {
+            pw_display = "Invalid password length"
             return
         }
         var n : Float = 0
