@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct WebsiteViewEdit: View {
+    @Environment(\.presentationMode) var presentationMode
     @State var name = ""
     @State var url = ""
     @State var username = ""
@@ -16,22 +17,6 @@ struct WebsiteViewEdit: View {
     
     var body: some View {
         VStack{
-            HStack(alignment: .center){
-                Spacer()
-                Text("Password")
-                    .font(.title)
-                    .bold()
-                    .padding(.leading, 20)
-                Spacer()
-                /*
-                NavigationLink(destination: someView()){
-                Text("Edit")
-                }
-                .padding(.trailing, 20)
-                */
-                Text("Save")
-                    .padding(.trailing, 20)
-            }.padding(.bottom, 30)
             
             ScrollView{
                 VStack(alignment: .leading){
@@ -61,22 +46,42 @@ struct WebsiteViewEdit: View {
             Spacer()
             Divider()
             HStack{
-                Image(systemName: "key.fill").resizable().frame(width: 20, height: 30)
-                    .foregroundColor(.black)
-                    .padding(.leading, 40)
-                    .padding(.trailing, 40)
+                NavigationLink(destination: WebsiteView()){
+                    Image(systemName: "key.fill").resizable().frame(width: 20, height: 30)
+                        .foregroundColor(.black)
+                        .padding(.leading, 40)
+                        .padding(.trailing, 40)
+                }
                 Divider()
-                Image(systemName: "lock.rotation").resizable().frame(width: 30, height: 30)
-                    .foregroundColor(.gray)
-                    .padding(.leading, 40)
-                    .padding(.trailing, 40)
+                NavigationLink(destination: GeneratePasswordView()){
+                    Image(systemName: "lock.rotation").resizable().frame(width: 30, height: 30)
+                        .foregroundColor(.gray)
+                        .padding(.leading, 40)
+                        .padding(.trailing, 40)
+                }
                 Divider()
                 Image(systemName: "person.crop.circle").resizable().frame(width: 30, height: 30)
                     .foregroundColor(.gray)
                     .padding(.leading, 40)
                     .padding(.trailing, 40)
             }.frame(width: 350, height: 40, alignment: .center)
+        }.navigationBarTitle("Password", displayMode: .inline)
+        .toolbar{
+            ToolbarItemGroup(placement: .navigationBarTrailing){
+                Button(action: { }, label: {
+                    Text("Save")
+                        .padding(.trailing, 20)
+                }).padding(.trailing, 20)
+            }
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: Button(action: {
+            self.presentationMode.wrappedValue.dismiss()
+        }){
+            HStack{
+                Text("Cancel")
+            }
+        })
     }
 }
 

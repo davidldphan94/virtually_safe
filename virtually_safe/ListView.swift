@@ -15,10 +15,17 @@ struct ListView: View {
                 Text("Website View")
                 }
                 .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                .padding()
                 NavigationLink(destination: CCView()){
                 Text("Credit Card View")
                 }
                 .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                .padding()
+                NavigationLink(destination: GeneratePasswordView()){
+                Text("Generate Password View")
+                }
+                .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                .padding()
                 Spacer()
             }
             .navigationBarBackButtonHidden(true)

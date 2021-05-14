@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CCView: View {
     @State var favorite = false
+    @State var seecode = false
     @State var bank = "Chase"
     @State var cardname = "Freedom Flex"
     @State var ccnum = "cc number"
@@ -72,8 +73,22 @@ struct CCView: View {
                     Text("Valid Thru").foregroundColor(.gray).font(.headline)
                     Text(valid)
                     Divider()
-                    Text("Security Code").foregroundColor(.gray).font(.headline)
-                    Text(code)
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text("Security Code").foregroundColor(.gray).font(.headline)
+                            Text(code)
+                        }
+                        Spacer()
+                        Button(action: { toggleCode() }, label: {
+                            if seecode == false{
+                                Image(systemName: "eye").foregroundColor(.blue)
+                                    .frame(width: 35, height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                            } else {
+                                Image(systemName: "eye.fill").foregroundColor(.blue)
+                            }
+                        })
+                    }
+                    
                     Divider()
                 }.padding(.leading, 20).padding(.trailing, 20)
                 VStack(alignment: .leading){
@@ -102,15 +117,19 @@ struct CCView: View {
             //Spacer()
             Divider()
             HStack{
-                Image(systemName: "key.fill").resizable().frame(width: 20, height: 30)
-                    .foregroundColor(.black)
-                    .padding(.leading, 40)
-                    .padding(.trailing, 40)
+                NavigationLink(destination: WebsiteView()){
+                    Image(systemName: "key.fill").resizable().frame(width: 20, height: 30)
+                        .foregroundColor(.black)
+                        .padding(.leading, 40)
+                        .padding(.trailing, 40)
+                }
                 Divider()
-                Image(systemName: "lock.rotation").resizable().frame(width: 30, height: 30)
-                    .foregroundColor(.gray)
-                    .padding(.leading, 40)
-                    .padding(.trailing, 40)
+                NavigationLink(destination: GeneratePasswordView()){
+                    Image(systemName: "lock.rotation").resizable().frame(width: 30, height: 30)
+                        .foregroundColor(.gray)
+                        .padding(.leading, 40)
+                        .padding(.trailing, 40)
+                }
                 Divider()
                 Image(systemName: "person.crop.circle").resizable().frame(width: 30, height: 30)
                     .foregroundColor(.gray)
@@ -136,6 +155,15 @@ struct CCView: View {
             favorite = true
         } else {
             favorite = false
+        }
+    }
+    
+    func toggleCode(){
+        if seecode == false {
+            print(code.count)
+            seecode = true
+        } else {
+            seecode = false
         }
     }
 }
