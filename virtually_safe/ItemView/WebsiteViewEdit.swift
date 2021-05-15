@@ -73,24 +73,17 @@ struct WebsiteViewEdit: View {
                     .padding(.trailing, 40)
             }.frame(width: 350, height: 40, alignment: .center)
         }.navigationBarTitle("Password", displayMode: .inline)
-        .toolbar{
-            /*
-             HStack {
-                 Button(action: {
-                     submitReview()
-                 }) {Text("Submit Review")}.alert(isPresented: $showAlert, content: {self.alert})
-             }
-             */
+        .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing){
                 Button(action: {
                     submitWebsite()
-                }, label: {
+                }) {
                     Text("Save")
                         .padding(.trailing, 20)
-                }).padding(.trailing, 20)
-                .alert(isPresented: $showAlert, content: {self.alert})
+                }.padding(.trailing, 20)
             }
-        }
+        }.alert(isPresented: $showAlert, content: {
+                    Alert(title: Text(errTitle), message: Text(errmsg))})
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: Button(action: {
             self.presentationMode.wrappedValue.dismiss()
@@ -104,26 +97,24 @@ struct WebsiteViewEdit: View {
     func submitWebsite() {
         if name == "" || url == "" ||
             username == "" || password == "" {
-            showAlert = true
             errTitle = "Submission failed"
             errmsg = "Not enough information provided"
+            
         } else {
-//            let r = Review(movie_title: movie.title, name: name, title: title, review_text: review)
             let w = Website(id: .init(), name: name, url: url, username: username, password: password, notes: notes)
-            let _ = dbRef.collection("Users").document("something").collection("Websites").document().setData(w.dictionary, merge: true)
+//            let user = Auth.auth().currentUser
+            dbRef.collection("Users").document("Temp") //user.uid)
+                 .collection("Items").document("websites")
+                 .setData(w.dictionary, merge: true)
             name = ""
             url = ""
             username = ""
             password = ""
+            notes = ""
             errTitle = "Success"
-            errmsg = "Review submitted"
-            showAlert = true
-            
+            errmsg = "Website login info submitted"
         }
-    }
-    var alert : Alert {
-        Alert(title: Text(errTitle),
-              message: Text(errmsg))
+        showAlert = true
     }
 }
 
