@@ -12,4 +12,3 @@ class PasswordHistory : ObservableObject {
     @Published var passwords = [String]()
     @Published var dates = [String]()
 }
-

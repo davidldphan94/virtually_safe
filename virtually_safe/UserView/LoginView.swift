@@ -54,7 +54,8 @@ struct LoginView: View {
                             .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1))
                             //.cornerRadius(5)
                             //.padding()
-                        ZStack {
+                        HStack {
+                            
                             Button (action: { login() }){
                             Text("Sign in")
                             }.alert(isPresented: $loginAlert,
@@ -62,6 +63,7 @@ struct LoginView: View {
                             .frame(width:100, height: 30, alignment: .center)
                             .background(Color.blue)
                             .foregroundColor(.white)
+                            
                         }
                         //Spacer()
                         
@@ -75,8 +77,6 @@ struct LoginView: View {
                         }
                         .padding(.top, 50)
                         Spacer()
-                        
-                        
                     }
                     .padding()
                 }

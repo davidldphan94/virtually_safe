@@ -84,7 +84,7 @@ struct CreateProfileView: View {
                                 ])
                 } /*
                 .sheet(isPresented: $showImages){
-                    getImage(image: self.$upload_image, showImagePicker: self.$showImages, sourceType: self.sourceType)
+         imageSelect(image: self.$upload_image, showImagePicker: self.$showImages, sourceType: self.sourceType)
                 }
                 .padding(.bottom, 50)
                 */
@@ -211,12 +211,12 @@ struct CreateProfileView: View {
                                 }),
                                 .cancel()
                             ])
-            } /*
+            }
             .sheet(isPresented: $showImages){
-                getImage(image: self.$upload_image, showImagePicker: self.$showImages, sourceType: self.sourceType)
+                imageSelect(img: self.$upload_image, showImgSelect: self.$showImages, sourceType: self.sourceType)
             }
             .padding(.bottom, 50)
-            */
+            
             //uploadNow()
                 
             HStack{
