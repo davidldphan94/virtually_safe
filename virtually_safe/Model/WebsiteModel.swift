@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 import FirebaseFirestore
 
 struct Website: Identifiable, Codable, Hashable {
@@ -37,7 +38,8 @@ class WebsiteViewModel: ObservableObject {
     private var db = Firestore.firestore()
     
     func fetchData(movieTitle : String) {
-        db.collection("users").document("").collection("").document(movieTitle)
+        let user = Auth.auth().currentUser!
+        db.collection("users").document(user.uid).collection("").document(movieTitle)
           .collection("reviews").addSnapshotListener { (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else {
                 print("No documents")

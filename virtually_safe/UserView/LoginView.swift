@@ -30,56 +30,51 @@ struct LoginView: View {
     var body: some View {
         NavigationView{
             Group {
-                
-                if (loginSucc == true) {
-                    ListView()
-                } else {
-                    VStack {
+                VStack {
+                    Text("Virtually Safe")
+                        .font(.title)
+                        .bold()
+                    Spacer()
+                    TextField("Email", text: $email)
+                        .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
+                        .font(.system(size: 20))
+                        .padding(10)
+                        //.background(Color.white)
+                        .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1))
+                        //.cornerRadius(5)
+                        //.padding()
+                    SecureField("Password", text: $password)
+                        .font(.system(size: 20))
+                        .padding(10)
+                        //.background(Color.white)
+                        .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1))
+                        //.cornerRadius(5)
+                        //.padding()
+                    HStack {
+                        NavigationLink(
+                            destination: ListView().navigationBarHidden(true),
+                            isActive: $loginSucc) { EmptyView() }
+                        Button (action: { login() }){
+                        Text("Sign in")
+                        }.alert(isPresented: $loginAlert,
+                                content: { self.alert })
+                        .frame(width:100, height: 30, alignment: .center)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
                         
-                        Text("Virtually Safe")
-                            .font(.title)
-                            .bold()
-                        Spacer()
-                        TextField("Email", text: $email)
-                            .font(.system(size: 20))
-                            .padding(10)
-                            //.background(Color.white)
-                            .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1))
-                            //.cornerRadius(5)
-                            //.padding()
-                        SecureField("Password", text: $password)
-                            .font(.system(size: 20))
-                            .padding(10)
-                            //.background(Color.white)
-                            .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1))
-                            //.cornerRadius(5)
-                            //.padding()
-                        HStack {
-                            
-                            Button (action: { login() }){
-                            Text("Sign in")
-                            }.alert(isPresented: $loginAlert,
-                                    content: { self.alert })
-                            .frame(width:100, height: 30, alignment: .center)
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            
-                        }
-                        //Spacer()
-                        
-                        HStack {
-                            Text("Don't have an account?")
-                            NavigationLink(destination: RegisterView(), label: {
-                                Text("Register")
-                                    .bold()
-                                    .foregroundColor(.blue)
-                            })
-                        }
-                        .padding(.top, 50)
-                        Spacer()
+                    }.padding()
+                    
+                    HStack {
+                        Text("Don't have an account?")
+                        NavigationLink(destination: RegisterView(), label: {
+                            Text("Register")
+                                .bold()
+                                .foregroundColor(.blue)
+                        })
                     }
-                    .padding()
-                }
+                    .padding(.top, 50)
+                    Spacer()
+                }.padding()
             }
         }
         .phoneOnlyStackNavigationView().navigationBarBackButtonHidden(true)
@@ -87,8 +82,6 @@ struct LoginView: View {
     }
     
     func login(){
-        //Auth.auth
-        
         Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
             if error != nil {
                 print(error?.localizedDescription ?? "")

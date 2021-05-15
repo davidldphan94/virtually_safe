@@ -51,6 +51,7 @@ struct RegisterView: View {
                         .bold()
                     Spacer()
                     TextField("Email", text: $email)
+                        .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                         .font(.system(size: 20))
                         .padding(10)
                         .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1))

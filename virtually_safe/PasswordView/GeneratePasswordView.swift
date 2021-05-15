@@ -9,6 +9,7 @@ import SwiftUI
 
 struct GeneratePasswordView: View {
     @ObservedObject var password_history = PasswordHistory()
+    //@ObservedObject var pw_history = PasswordHistoryModel()
     @State var viewPasswords = false
     @State var viewvault = false
     @State var viewsettings = false
@@ -58,6 +59,8 @@ struct GeneratePasswordView: View {
                 }.padding(.trailing, 50)
 
             }.padding()
+            //.onAppear() {
+                //self.pw_history.fetchData()
             HStack {
                 Text(pw_display).italic().padding()
             }.border(Color.black)

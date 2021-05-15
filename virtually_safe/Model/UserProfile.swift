@@ -15,6 +15,7 @@ struct UserProfile: Encodable, Identifiable {
     let email: String
     let first_name: String
     let last_name: String
+    let location: String
     let profile_pic_url: String
     
     var dictionary: [String : Any] {
@@ -28,6 +29,7 @@ struct UserProfile: Encodable, Identifiable {
         case email
         case first_name
         case last_name
+        case location
         case profile_pic_url
     }
     
@@ -52,12 +54,13 @@ class UserProfileViewModel :ObservableObject {
             for i in snap!.documents {
                 if i.documentID == userID {
                     let data = i.data()
-                    let birthday = data["birthday"] as? String ?? ""
-                    let email = data["email"] as? String ?? ""
-                    let first_name = data["first_name"] as? String ?? ""
-                    let last_name = data["last_name"] as? String ?? ""
+                    let birthday = data["birthday"] as? String ?? "N/A"
+                    let email = data["email"] as? String ?? "N/A"
+                    let first_name = data["first_name"] as? String ?? "N/A"
+                    let last_name = data["last_name"] as? String ?? "N/A"
+                    let location = data["location"] as? String ?? "N/A"
                     let profile_pic_url = data["profile_pic_url"] as? String ?? ""
-                    self.profile = UserProfile(id: .init(), birthday: birthday, email: email, first_name: first_name, last_name: last_name, profile_pic_url: profile_pic_url)
+                    self.profile = UserProfile(id: .init(), birthday: birthday, email: email, first_name: first_name, last_name: last_name, location: location, profile_pic_url: profile_pic_url)
                     return
                 }
             }

@@ -42,6 +42,10 @@ struct PasswordHistoryView: View {
             }
         }.navigationBarTitle("History", displayMode: .inline)
             .toolbar{
+                //DO NOT REMOVE! THIS KEEPS THE BACK BUTTON PRESENT AFTER HITTING THE CLEAR BUTTON
+                ToolbarItem(placement: .navigationBarLeading) {
+                    HStack {}
+                }
                 ToolbarItemGroup(placement: .navigationBarTrailing){
                     Button(action: {
                         history.passwords = [String]()
