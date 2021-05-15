@@ -11,6 +11,7 @@ struct CCView: View {
     @State var favorite = false
     @State var seecode = false
     @State var seepw = false
+    @State var viewvault = false
     @State var viewgenpw = false
     @State var viewsettings = false
     @State var bank = "Chase"
@@ -235,7 +236,8 @@ struct CCView: View {
             }
             ToolbarItemGroup(placement: .bottomBar){
                 Spacer()
-                Button(action: {}){
+                NavigationLink(destination: ListView(), isActive: $viewvault){ EmptyView() }
+                Button(action: {viewvault = true}){
                     Image(systemName: "key.fill").resizable().frame(width: 42, height: 50)
                         .foregroundColor(.black)
                 }

@@ -55,19 +55,15 @@ struct WebsiteViewEdit: View {
             }
             
             Spacer()
-            Divider()
         }.navigationBarTitle("Password", displayMode: .inline)
-        .toolbar {
+        .toolbar{
             ToolbarItemGroup(placement: .navigationBarTrailing){
-                Button(action: {
-                    submitWebsite()
-                }) {
+                Button(action: { }, label: {
                     Text("Save")
                         .padding(.trailing, 20)
-                }.padding(.trailing, 20)
+                }).padding(.trailing, 20)
             }
-        }.alert(isPresented: $showAlert, content: {
-                    Alert(title: Text(errTitle), message: Text(errmsg))})
+        }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: Button(action: {
             self.presentationMode.wrappedValue.dismiss()
@@ -81,24 +77,26 @@ struct WebsiteViewEdit: View {
     func submitWebsite() {
         if name == "" || url == "" ||
             username == "" || password == "" {
+            showAlert = true
             errTitle = "Submission failed"
             errmsg = "Not enough information provided"
-            
         } else {
+//            let r = Review(movie_title: movie.title, name: name, title: title, review_text: review)
             let w = Website(id: .init(), name: name, url: url, username: username, password: password, notes: notes)
-//            let user = Auth.auth().currentUser
-            dbRef.collection("Users").document("Temp") //user.uid)
-                 .collection("Items").document("websites")
-                 .setData(w.dictionary, merge: true)
+            let _ = dbRef.collection("Users").document("something").collection("Websites").document().setData(w.dictionary, merge: true)
             name = ""
             url = ""
             username = ""
             password = ""
-            notes = ""
             errTitle = "Success"
-            errmsg = "Website login info submitted"
+            errmsg = "Review submitted"
+            showAlert = true
+            
         }
-        showAlert = true
+    }
+    var alert : Alert {
+        Alert(title: Text(errTitle),
+              message: Text(errmsg))
     }
 }
 
