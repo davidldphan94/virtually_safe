@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseAuth
 
 struct SettingsView: View {
     @State var username = "kkha"
+    @State var loggedOut = false
     @State var viewvault = false
     @State var viewgenpw = false
     
@@ -22,22 +25,29 @@ struct SettingsView: View {
             /*
             NavigationLink(destination: LoginView().navigationBarHidden(true), isActive: $loggedOut) { EmptyView() }
             */
-            Button(action: { }) {
-                Text("Sign Out")
-            }.padding().frame(width: 100, height: 50, alignment: .center).foregroundColor(.red).border(Color.red)
+            HStack{
+                NavigationLink(destination: LoginView().navigationBarHidden(true), isActive: $loggedOut) { EmptyView() }
+                Button(action: {logout()}) {
+                    Text("Sign Out")
+                    .multilineTextAlignment(.center)
+                }.padding().frame(width: 100, height: 50, alignment: .center).foregroundColor(.red).border(Color.red)
+            }
+            Divider().padding(.top, 50)
+            VStack(alignment: .leading){
+                Button(action: {}) {
+                    Text("About Virtually Safe")
+                }
+                Divider()
+                Button(action: {}) {
+                    Text("Account Settings")
+                }
+                Divider()
+                Button(action: {}) {
+                    Text("Security")
+                }
+            }.padding(.leading, 20).padding(.trailing,20)
             
-            Divider().padding(.top, 30)
-            Button(action: {}) {
-                Text("About Virtually Safe")
-            }
-            Divider()
-            Button(action: {}) {
-                Text("Account Settings")
-            }
-            Divider()
-            Button(action: {}) {
-                Text("Security")
-            }
+            
             Divider()
             Spacer()
         }.navigationBarTitle("Settings", displayMode: .inline)
@@ -47,7 +57,7 @@ struct SettingsView: View {
                 Spacer()
                 NavigationLink(destination: ListView(), isActive: $viewvault){ EmptyView() }
                 Button(action: {viewvault = true}){
-                    Image(systemName: "key.fill").resizable().frame(width: 42, height: 50)
+                    Image(systemName: "key.fill")//.resizable().frame(width: 42, height: 50)
                         .foregroundColor(.gray)
                 }
                 Spacer()
@@ -59,11 +69,20 @@ struct SettingsView: View {
                 Spacer()
                 
                 Button(action: {}){
-                    Image(systemName: "gearshape.fill").resizable().frame(width: 50, height: 50)
+                    Image(systemName: "gearshape.fill")//.resizable().frame(width: 50, height: 50)
                         .foregroundColor(.gray)
                 }
                 Spacer()
             }
+        }
+    }
+    
+    func logout() {
+        do {
+            try Auth.auth().signOut()
+            loggedOut = true
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
         }
     }
 }

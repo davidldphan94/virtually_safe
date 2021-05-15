@@ -71,7 +71,7 @@ struct RegisterView: View {
                         .padding(.leading, 20)
                         .padding(.trailing, 20)
                     
-                    ZStack {
+                    HStack {
                         Button (action: { signUp() }){
                         Text("Sign up")
                         }.alert(isPresented: $emptyAlert,
