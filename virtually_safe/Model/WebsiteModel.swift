@@ -8,12 +8,13 @@
 import Foundation
 import FirebaseFirestore
 
-struct Review: Identifiable, Codable, Hashable {
+struct Website: Identifiable, Codable, Hashable {
     var id: String = UUID().uuidString
-    var movie_title: String
-    var name: String
-    var title: String
-    var review_text: String
+    var name : String
+    var url : String
+    var username : String
+    var password : String
+    var notes : String
     
     var dictionary: [String : Any] {
         let data = (try? JSONEncoder().encode(self)) ?? Data()
@@ -22,15 +23,16 @@ struct Review: Identifiable, Codable, Hashable {
     
     enum CodingKeys: String, CodingKey {
         case id
-        case movie_title
         case name
-        case title
-        case review_text
+        case url
+        case username
+        case password
+        case notes
     }
 }
 
-class ReviewsViewModel: ObservableObject {
-    @Published var reviews = [Review]()
+class WebsiteViewModel: ObservableObject {
+    @Published var websites = [Website]()
     
     private var db = Firestore.firestore()
     
@@ -42,13 +44,14 @@ class ReviewsViewModel: ObservableObject {
                 return
             }
 
-            self.reviews = documents.map { queryDocumentSnapshot -> Review in
+            self.websites = documents.map { queryDocumentSnapshot -> Website in
                 let data = queryDocumentSnapshot.data()
                 let name = data["name"] as? String ?? ""
-                let movie_title = data["movie_title"] as? String ?? ""
-                let title = data["title"] as? String ?? ""
-                let review_text = data["review_text"] as? String ?? ""
-                return Review(id: .init(), movie_title: movie_title, name: name, title: title, review_text: review_text)
+                let url = data["url"] as? String ?? ""
+                let username = data["username"] as? String ?? ""
+                let password = data["password"] as? String ?? ""
+                let notes = data["notes"] as? String ?? ""
+                return Website(id: .init(), name: name, url: url, username: username, password: password, notes: notes)
             }
         }
     }
