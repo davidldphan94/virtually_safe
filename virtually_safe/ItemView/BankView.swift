@@ -131,9 +131,11 @@ struct BankView: View {
                             Text("Copy")
                         }
                     }
-                    Divider()
-                    Text("Notes").foregroundColor(.gray).font(.headline)
-                    Text(notes)
+                    if notes != "" {
+                        Divider()
+                        Text("Notes").foregroundColor(.gray).font(.headline)
+                        Text(notes)
+                    }
                 }.padding(.leading, 20).padding(.trailing, 20)
                 Divider()
             }

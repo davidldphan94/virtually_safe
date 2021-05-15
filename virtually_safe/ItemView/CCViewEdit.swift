@@ -9,15 +9,17 @@ import SwiftUI
 
 struct CCViewEdit: View {
     @Environment(\.presentationMode) var presentationMode
-    @State var bank = "Chase"
-    @State var cardname = "Freedom Flex"
-    @State var ccnum = "cc number"
-    @State var holdername = "Kevin Kha"
-    @State var valid = "05/25"
-    @State var code = "001"
-    @State var username = "username"
-    @State var password = "password"
-    @State var notes = "haha"
+    
+    @State var name = ""
+    @State var bank = ""
+    @State var cardname = ""
+    @State var ccnum = ""
+    @State var holdername = ""
+    @State var valid = ""
+    @State var code = ""
+    @State var username = ""
+    @State var password = ""
+    @State var notes = ""
     
     var body: some View {
         VStack{
@@ -25,33 +27,38 @@ struct CCViewEdit: View {
             ScrollView{
                 Divider().padding(.top, 50)
                 VStack(alignment: .leading){
+                    Text("Name").foregroundColor(.gray).font(.headline)
+                    TextField("My card name", text: $bank)
+                    Divider()
                     Text("Bank").foregroundColor(.gray).font(.headline)
-                    TextField(bank, text: $bank)
+                    TextField("Bank name", text: $bank)
                     Divider()
                     Text("Card Name").foregroundColor(.gray).font(.headline)
-                    TextField(cardname, text: $cardname)
+                    TextField("Card name", text: $cardname)
                     Divider()
+                   
+                }.padding(.leading, 20).padding(.trailing, 20)
+                VStack(alignment: .leading){
                     Text("Credit Card Number").foregroundColor(.gray).font(.headline)
-                    TextField(ccnum, text: $ccnum)
+                    TextField("CC #", text: $ccnum)
                     Divider()
                     Text("Holder's Name").foregroundColor(.gray).font(.headline)
-                }.padding(.leading, 20).padding(.trailing, 20)
-                VStack(alignment: .leading){
-                    TextField(holdername, text: $holdername)
+                    TextField("CC holder's name", text: $holdername)
                     Divider()
                     Text("Valid Thru").foregroundColor(.gray).font(.headline)
-                    TextField(valid, text: $valid)
+                    TextField("Valid until Date", text: $valid)
                     Divider()
                     Text("Security Code").foregroundColor(.gray).font(.headline)
-                    TextField(code, text: $code)
-                    Divider()
-                    Text("Username").foregroundColor(.gray).font(.headline)
-                    TextField(username, text: $username)
+                    
                 }.padding(.leading, 20).padding(.trailing, 20)
                 VStack(alignment: .leading){
+                    TextField("Security code on back", text: $code)
+                    Divider()
+                    Text("Username").foregroundColor(.gray).font(.headline)
+                    TextField("username", text: $username)
                     Divider()
                     Text("Password").foregroundColor(.gray).font(.headline)
-                    TextField(password, text: $password)
+                    TextField("password", text: $password)
                     Divider()
                     
                     Text("Notes").foregroundColor(.gray).font(.headline)

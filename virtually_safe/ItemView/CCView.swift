@@ -14,6 +14,7 @@ struct CCView: View {
     @State var viewvault = false
     @State var viewgenpw = false
     @State var viewsettings = false
+    @State var name = "Chase Credit Card"
     @State var bank = "Chase"
     @State var cardname = "Freedom Flex"
     @State var ccnum = "cc number"
@@ -22,7 +23,7 @@ struct CCView: View {
     @State var code = "001"
     @State var username = "username"
     @State var password = "password"
-    @State var notes = "haha"
+    @State var notes = ""
     
     let board = UIPasteboard.general
     
@@ -32,7 +33,9 @@ struct CCView: View {
             VStack {
                 HStack{
                     Text(bank).foregroundColor(.white)
-                    Text(cardname).foregroundColor(.white)
+                    if cardname != "" {
+                        Text(cardname).foregroundColor(.white)
+                    }
                     Spacer()
                 }.padding(.top, 10).padding(.leading, 10)
                 Spacer()
@@ -67,6 +70,20 @@ struct CCView: View {
                 VStack(alignment: .leading){
                     HStack{
                         VStack(alignment: .leading){
+                            Text("Name").foregroundColor(.gray).font(.headline)
+                            Text(name)
+                        }
+                        Spacer()
+                        Button(action: {
+                            if (name != ""){
+                                board.string = name
+                            }}) {
+                            Text("Copy")
+                        }
+                    }
+                    Divider()
+                    HStack{
+                        VStack(alignment: .leading){
                             Text("Bank").foregroundColor(.gray).font(.headline)
                             Text(bank)
                         }
@@ -79,20 +96,22 @@ struct CCView: View {
                         }
                     }
                     Divider()
-                    HStack{
-                        VStack(alignment: .leading){
-                            Text("Card Name").foregroundColor(.gray).font(.headline)
-                            Text(cardname)
+                    if cardname != "" {
+                        HStack{
+                            VStack(alignment: .leading){
+                                Text("Card Name").foregroundColor(.gray).font(.headline)
+                                Text(cardname)
+                            }
+                            Spacer()
+                            Button(action: {
+                                if (cardname != ""){
+                                    board.string = cardname
+                                }}) {
+                                Text("Copy")
+                            }
                         }
-                        Spacer()
-                        Button(action: {
-                            if (cardname != ""){
-                                board.string = cardname
-                            }}) {
-                            Text("Copy")
-                        }
+                        Divider()
                     }
-                    Divider()
                     HStack{
                         VStack(alignment: .leading){
                             Text("Credit Card Number").foregroundColor(.gray).font(.headline)
@@ -162,53 +181,57 @@ struct CCView: View {
                             Text("Copy")
                         }
                     }
-                    Divider()
-                    HStack{
-                        VStack(alignment: .leading){
-                            Text("Login Username").foregroundColor(.gray).font(.headline)
-                            Text(username)
-                        }
-                        Spacer()
-                        Button(action: {
-                            if ((username) != ""){
-                                board.string = (username)
-                            }}) {
-                            Text("Copy")
-                        }
-                    }
-                    Divider()
-                    HStack{
-                        VStack(alignment: .leading){
-                            Text("Login Password").foregroundColor(.gray).font(.headline)
-                            if seepw == false {
-                                Text(hide(hid: password))
-                            } else {
-                                Text(password)
+                    if username != "" {
+                        Divider()
+                        HStack{
+                            VStack(alignment: .leading){
+                                Text("Login Username").foregroundColor(.gray).font(.headline)
+                                Text(username)
+                            }
+                            Spacer()
+                            Button(action: {
+                                if ((username) != ""){
+                                    board.string = (username)
+                                }}) {
+                                Text("Copy")
                             }
                         }
-                        Spacer()
-                        Button(action: { togglePw() }, label: {
-                            if seepw == false{
-                                Image(systemName: "eye").foregroundColor(.blue)
-                                    .frame(width: 35, height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                            } else {
-                                Image(systemName: "eye.fill").foregroundColor(.blue)
+                    }
+                    if password != "" {
+                        Divider()
+                        HStack{
+                            VStack(alignment: .leading){
+                                Text("Login Password").foregroundColor(.gray).font(.headline)
+                                if seepw == false {
+                                    Text(hide(hid: password))
+                                } else {
+                                    Text(password)
+                                }
                             }
-                        })
-                        Button(action: {
-                            if ((password) != ""){
-                                board.string = (password)
-                            }}) {
-                            Text("Copy")
+                            Spacer()
+                            Button(action: { togglePw() }, label: {
+                                if seepw == false{
+                                    Image(systemName: "eye").foregroundColor(.blue)
+                                        .frame(width: 35, height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                } else {
+                                    Image(systemName: "eye.fill").foregroundColor(.blue)
+                                }
+                            })
+                            Button(action: {
+                                if ((password) != ""){
+                                    board.string = (password)
+                                }}) {
+                                Text("Copy")
+                            }
                         }
                     }
-                    //Divider()
-                    
                 }.padding(.leading, 20).padding(.trailing, 20)
                 VStack(alignment: .leading){
-                    Divider()
-                    Text("Notes").foregroundColor(.gray).font(.headline)
-                    Text(notes)
+                    if notes != "" {
+                        Divider()
+                        Text("Notes").foregroundColor(.gray).font(.headline)
+                        Text(notes)
+                    }
                 }.padding(.leading, 20).padding(.trailing, 20)
                 Divider()
             }

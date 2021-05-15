@@ -17,7 +17,7 @@ struct WebsiteView: View {
     @State var url = "url"
     @State var username = "username"
     @State var password = "password"
-    @State var notes = "haha"
+    @State var notes = ""
     
     let board = UIPasteboard.general
     
@@ -95,9 +95,13 @@ struct WebsiteView: View {
                             Text("Copy")
                         }
                     }
-                    Divider()
-                    Text("Notes").foregroundColor(.gray).font(.headline)
-                    Text(notes)
+                    
+                    if notes != "" {
+                        Divider()
+                        Text("Notes").foregroundColor(.gray).font(.headline)
+                        Text(notes)
+                    }
+                    
                     
                 }.padding(.leading, 20).padding(.trailing, 20)
                 Divider()
