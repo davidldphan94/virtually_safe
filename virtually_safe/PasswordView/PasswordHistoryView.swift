@@ -49,26 +49,6 @@ struct PasswordHistoryView: View {
                     }, label: {Text("Clear")
                     }).padding(.trailing, 20)
                 }
-                ToolbarItemGroup(placement: .bottomBar){
-                    Spacer()
-                    NavigationLink(destination: WebsiteView(), isActive: $viewvault){ EmptyView() }
-                    Button(action: {viewvault = true}){
-                        Image(systemName: "key.fill").resizable().frame(width: 42, height: 50)
-                            .foregroundColor(.gray)
-                    }
-                    Spacer()
-                    Button(action: {}){
-                        Image(systemName: "lock.rotation")
-                            .foregroundColor(.black)
-                    }
-                    Spacer()
-                    NavigationLink(destination: SettingsView(), isActive: $viewsettings){ EmptyView() }
-                    Button(action: {viewsettings = true}){
-                        Image(systemName: "gearshape.fill").resizable().frame(width: 50, height: 50)
-                            .foregroundColor(.gray)
-                    }
-                    Spacer()
-                }
         }
     }
     func deleteRow(at offsets: IndexSet) {

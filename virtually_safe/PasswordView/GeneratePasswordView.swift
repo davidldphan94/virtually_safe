@@ -79,7 +79,7 @@ struct GeneratePasswordView: View {
             .toolbar{
                 ToolbarItemGroup(placement: .bottomBar){
                     Spacer()
-                    NavigationLink(destination: WebsiteView(), isActive: $viewvault){ EmptyView() }
+                    NavigationLink(destination: ListView(), isActive: $viewvault){ EmptyView() }
                     Button(action: {viewvault = true}){
                         Image(systemName: "key.fill").resizable().frame(width: 42, height: 50)
                             .foregroundColor(.gray)
