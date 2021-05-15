@@ -10,6 +10,8 @@ import SwiftUI
 struct GeneratePasswordView: View {
     @ObservedObject var password_history = PasswordHistory()
     @State var viewPasswords = false
+    @State var viewvault = false
+    @State var viewsettings = false
     @State private var password_length : Float = 0
     @State var pw_display = "Generate Your Password"
     @State var uppercase = false
@@ -35,7 +37,6 @@ struct GeneratePasswordView: View {
                         password_history.passwords.insert(pw_display, at: 0)
                         password_history.dates.insert(date, at: 0)
                     }
-                    
                 }) {
                     Text("Generate!")
                 }.padding(.leading, 50)
@@ -47,7 +48,7 @@ struct GeneratePasswordView: View {
                         board.string = pw_display
                     }
                 }) {
-                    Text("Save")
+                    Text("Copy")
                 }
                 Spacer()
                 NavigationLink(destination:
@@ -73,30 +74,33 @@ struct GeneratePasswordView: View {
             }.padding()
             Spacer()
             Divider()
-            HStack{
-                NavigationLink(destination: WebsiteView()){
-                    Image(systemName: "key.fill").resizable().frame(width: 20, height: 30)
-                        .foregroundColor(.gray)
-                        .padding(.leading, 40)
-                        .padding(.trailing, 40)
-                }
-                Divider()
-                Button(action: {}, label: {
-                    Image(systemName: "lock.rotation").resizable().frame(width: 30, height: 30)
-                        .foregroundColor(.black)
-                        .padding(.leading, 40)
-                        .padding(.trailing, 40)
-                })
-                    
-                
-                Divider()
-                Image(systemName: "person.crop.circle").resizable().frame(width: 30, height: 30)
-                    .foregroundColor(.gray)
-                    .padding(.leading, 40)
-                    .padding(.trailing, 40)
-            }.frame(width: 350, height: 40, alignment: .center)
             }.navigationBarTitle("Generate Password", displayMode: .inline)
-            .navigationBarBackButtonHidden(false)
+            .navigationBarBackButtonHidden(true)
+            .toolbar{
+                ToolbarItemGroup(placement: .bottomBar){
+                    Spacer()
+                    NavigationLink(destination: WebsiteView(), isActive: $viewvault){ EmptyView() }
+                    Button(action: {viewvault = true}){
+                        Image(systemName: "key.fill").resizable().frame(width: 42, height: 50)
+                            .foregroundColor(.gray)
+                    }
+                    Spacer()
+                    Button(action: {}){
+                        Image(systemName: "lock.rotation")
+                            .foregroundColor(.black)
+                    }
+
+                    Spacer()
+                    
+                    NavigationLink(destination: SettingsView(), isActive: $viewsettings){ EmptyView() }
+                    Button(action: {viewsettings = true}){
+                        Image(systemName: "gearshape.fill").resizable().frame(width: 50, height: 50)
+                            .foregroundColor(.gray)
+                    }
+                    Spacer()
+                }
+            }
+
         //}
     }
     
