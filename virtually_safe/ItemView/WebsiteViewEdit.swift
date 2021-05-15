@@ -11,8 +11,6 @@ import FirebaseFirestore
 
 struct WebsiteViewEdit: View {
     @Environment(\.presentationMode) var presentationMode
-    @State var viewgenpw = false
-    @State var viewsettings = false
     @State var showAlert = false
     @State var errTitle = ""
     @State var errmsg = ""

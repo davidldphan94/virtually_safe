@@ -9,10 +9,6 @@ import SwiftUI
 
 struct CCViewEdit: View {
     @Environment(\.presentationMode) var presentationMode
-    
-    @State var favorite = false
-    @State var viewgenpw = false
-    @State var viewsettings = false
     @State var bank = "Chase"
     @State var cardname = "Freedom Flex"
     @State var ccnum = "cc number"

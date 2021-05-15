@@ -60,8 +60,7 @@ struct CCView: View {
             }.frame(width: 300, height: 175, alignment: .center).border(Color.blue)
                 .background(Color.blue)
                 .cornerRadius(15)
-            .padding(.bottom, 15).padding(.top, 20)
-                //.background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1))
+            .padding(.top, 20)
                 
             ScrollView{
                 Divider().padding(.top, 50)

@@ -24,11 +24,17 @@ struct ListView: View {
                 }
                 .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
                 .padding()
+                NavigationLink(destination: BankView()){
+                Text("Bank View")
+                }
+                .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                .padding()
+                /*
                 NavigationLink(destination: GeneratePasswordView()){
                 Text("Generate Password View")
                 }
                 .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
-                .padding()
+                .padding()*/
                 Spacer()
             }.navigationBarTitle("Vault", displayMode: .inline)
             .navigationBarBackButtonHidden(true)
@@ -36,7 +42,7 @@ struct ListView: View {
                 ToolbarItemGroup(placement: .bottomBar){
                     Spacer()
                     Button(action: {}){
-                        Image(systemName: "key.fill").resizable().frame(width: 42, height: 50)
+                        Image(systemName: "key.fill")//.resizable().frame(width: 42, height: 50)
                             .foregroundColor(.black)
                     }
                     Spacer()
@@ -48,7 +54,7 @@ struct ListView: View {
                     Spacer()
                     NavigationLink(destination: SettingsView(), isActive: $viewsettings){ EmptyView() }
                     Button(action: {viewsettings = true}){
-                        Image(systemName: "gearshape.fill").resizable().frame(width: 50, height: 50)
+                        Image(systemName: "gearshape.fill")//.resizable().frame(width: 50, height: 50)
                             .foregroundColor(.gray)
                     }
                     Spacer()
