@@ -27,6 +27,7 @@ struct CCViewEdit: View {
         VStack{
             
             ScrollView{
+                Divider().padding(.top, 50)
                 VStack(alignment: .leading){
                     Text("Bank").foregroundColor(.gray).font(.headline)
                     TextField(bank, text: $bank)
@@ -38,7 +39,7 @@ struct CCViewEdit: View {
                     TextField(ccnum, text: $ccnum)
                     Divider()
                     Text("Holder's Name").foregroundColor(.gray).font(.headline)
-                }.padding(.leading, 20).padding(.trailing, 20).padding(.top, 20)
+                }.padding(.leading, 20).padding(.trailing, 20)
                 VStack(alignment: .leading){
                     TextField(holdername, text: $holdername)
                     Divider()
@@ -59,12 +60,12 @@ struct CCViewEdit: View {
                     
                     Text("Notes").foregroundColor(.gray).font(.headline)
                     TextField("notes", text: $notes).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
-                    Divider()
+                    
                 }.padding(.leading, 20).padding(.trailing, 20)
+                Divider()
             }
             
             Spacer()
-            Divider()
         }.navigationBarTitle("Credit Card", displayMode: .inline)
         .toolbar{
             ToolbarItemGroup(placement: .navigationBarTrailing){
