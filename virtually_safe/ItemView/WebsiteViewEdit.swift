@@ -11,6 +11,8 @@ import FirebaseFirestore
 
 struct WebsiteViewEdit: View {
     @Environment(\.presentationMode) var presentationMode
+    @State var viewgenpw = false
+    @State var viewsettings = false
     @State var showAlert = false
     @State var errTitle = ""
     @State var errmsg = ""
@@ -26,6 +28,7 @@ struct WebsiteViewEdit: View {
         VStack{
             
             ScrollView{
+                Divider().padding(.top, 50)
                 VStack(alignment: .leading){
                     HStack{Spacer()}
                     Text("Website Name").foregroundColor(.gray).font(.headline)
@@ -48,30 +51,11 @@ struct WebsiteViewEdit: View {
                     TextField("notes", text: $notes).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
                     
                 }.padding(.leading, 20).padding(.trailing, 20)
+                Divider()
             }
             
             Spacer()
             Divider()
-            HStack{
-                NavigationLink(destination: WebsiteView()){
-                    Image(systemName: "key.fill").resizable().frame(width: 20, height: 30)
-                        .foregroundColor(.black)
-                        .padding(.leading, 40)
-                        .padding(.trailing, 40)
-                }
-                Divider()
-                NavigationLink(destination: GeneratePasswordView()){
-                    Image(systemName: "lock.rotation").resizable().frame(width: 30, height: 30)
-                        .foregroundColor(.gray)
-                        .padding(.leading, 40)
-                        .padding(.trailing, 40)
-                }
-                Divider()
-                Image(systemName: "person.crop.circle").resizable().frame(width: 30, height: 30)
-                    .foregroundColor(.gray)
-                    .padding(.leading, 40)
-                    .padding(.trailing, 40)
-            }.frame(width: 350, height: 40, alignment: .center)
         }.navigationBarTitle("Password", displayMode: .inline)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing){
