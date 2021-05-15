@@ -21,7 +21,7 @@ struct CreateProfileView: View {
     @ObservedObject var profileModel = UserProfileViewModel()
     
     @State var upload_image:UIImage?
-    @State var fName = ""
+    @State var first_name = ""
     @State var lName = ""
     @State var state = ""
     @State var editProf = false
@@ -40,6 +40,7 @@ struct CreateProfileView: View {
     
     var body: some View {
         //Image(uiImage: UIImage(named: "person.crop.circle")!)
+        /*
         if editProf == false{
             VStack{
                 if upload_image != nil {
@@ -170,7 +171,7 @@ struct CreateProfileView: View {
             }.onAppear()
             .navigationBarHidden(true)
         }
-        else {
+        else {*/
             if upload_image != nil {
                 Image(uiImage: upload_image!)
                     .resizable()
@@ -224,15 +225,15 @@ struct CreateProfileView: View {
                     //.foregroundColor(.gray)
                 Spacer()
             }
-            /*
-            TextField(profileModel.profile?.fName ?? "First Name", text: $fName)
+            
+            TextField(profileModel.profile?.first_name ?? "First Name", text: $first_name)
                 .font(.system(size: 20))
                 .padding(10)
                 .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1))
                 .padding(.leading, 20)
                 .padding(.trailing, 20)
                 .padding(.bottom, 30)
-            
+            /*
             HStack{
                 Text("Please enter your last name: ")
                     .padding(.leading, 20)
@@ -265,7 +266,7 @@ struct CreateProfileView: View {
             */
             
             VStack{
-                NavigationLink(destination: WebsiteView().navigationBarHidden(true)) {
+                NavigationLink(destination: ListView().navigationBarHidden(true)) {
                     Text("Continue")
                         //.bold()
                         .frame(width:100, height: 30, alignment: .center)
@@ -286,7 +287,7 @@ struct CreateProfileView: View {
             
             
             Spacer()
-        }
+        //}
         
     
     }
@@ -299,7 +300,7 @@ struct CreateProfileView: View {
         let user = Auth.auth().currentUser!
         db.collection("users").document(String(user.uid)).setData([
             "Username": String(user.email ?? ""),
-            "FirstName": fName,
+            "FirstName": first_name,
             "LastName": lName,
             "State": state
         ])
