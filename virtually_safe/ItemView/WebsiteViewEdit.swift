@@ -6,14 +6,21 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseFirestore
 
 struct WebsiteViewEdit: View {
     @Environment(\.presentationMode) var presentationMode
+    @State var showAlert = false
+    @State var errTitle = ""
+    @State var errmsg = ""
     @State var name = ""
     @State var url = ""
     @State var username = ""
     @State var password = ""
     @State var notes = ""
+    
+    let dbRef = Firestore.firestore()
     
     var body: some View {
         VStack{
@@ -67,11 +74,21 @@ struct WebsiteViewEdit: View {
             }.frame(width: 350, height: 40, alignment: .center)
         }.navigationBarTitle("Password", displayMode: .inline)
         .toolbar{
+            /*
+             HStack {
+                 Button(action: {
+                     submitReview()
+                 }) {Text("Submit Review")}.alert(isPresented: $showAlert, content: {self.alert})
+             }
+             */
             ToolbarItemGroup(placement: .navigationBarTrailing){
-                Button(action: { }, label: {
+                Button(action: {
+                    submitWebsite()
+                }, label: {
                     Text("Save")
                         .padding(.trailing, 20)
                 }).padding(.trailing, 20)
+                .alert(isPresented: $showAlert, content: {self.alert})
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -82,6 +99,31 @@ struct WebsiteViewEdit: View {
                 Text("Cancel")
             }
         })
+    }
+    
+    func submitWebsite() {
+        if name == "" || url == "" ||
+            username == "" || password == "" {
+            showAlert = true
+            errTitle = "Submission failed"
+            errmsg = "Not enough information provided"
+        } else {
+//            let r = Review(movie_title: movie.title, name: name, title: title, review_text: review)
+            let w = Website(id: .init(), name: name, url: url, username: username, password: password, notes: notes)
+            let _ = dbRef.collection("Users").document("something").collection("Websites").document().setData(w.dictionary, merge: true)
+            name = ""
+            url = ""
+            username = ""
+            password = ""
+            errTitle = "Success"
+            errmsg = "Review submitted"
+            showAlert = true
+            
+        }
+    }
+    var alert : Alert {
+        Alert(title: Text(errTitle),
+              message: Text(errmsg))
     }
 }
 
