@@ -30,13 +30,13 @@ struct LoginView: View {
     var body: some View {
         NavigationView{
             Group {
-                /*
+                
                 if (loginSucc == true) {
-                    MovieList()
-                } else {*/
+                    ListView()
+                } else {
                     VStack {
                         
-                        Text("Movie Review")
+                        Text("Virtually Safe")
                             .font(.title)
                             .bold()
                         Spacer()
@@ -67,7 +67,7 @@ struct LoginView: View {
                         
                         HStack {
                             Text("Don't have an account?")
-                            NavigationLink(destination: WebsiteView(), label: {
+                            NavigationLink(destination: RegisterView(), label: {
                                 Text("Register")
                                     .bold()
                                     .foregroundColor(.blue)
@@ -79,10 +79,11 @@ struct LoginView: View {
                         
                     }
                     .padding()
-                //}
+                }
             }
         }
         .phoneOnlyStackNavigationView().navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
     }
     
     func login(){
