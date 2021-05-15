@@ -11,6 +11,8 @@ struct CCViewEdit: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State var favorite = false
+    @State var viewgenpw = false
+    @State var viewsettings = false
     @State var bank = "Chase"
     @State var cardname = "Freedom Flex"
     @State var ccnum = "cc number"
@@ -63,26 +65,6 @@ struct CCViewEdit: View {
             
             Spacer()
             Divider()
-            HStack{
-                NavigationLink(destination: WebsiteView()){
-                    Image(systemName: "key.fill").resizable().frame(width: 20, height: 30)
-                        .foregroundColor(.black)
-                        .padding(.leading, 40)
-                        .padding(.trailing, 40)
-                }
-                Divider()
-                NavigationLink(destination: GeneratePasswordView()){
-                    Image(systemName: "lock.rotation").resizable().frame(width: 30, height: 30)
-                        .foregroundColor(.gray)
-                        .padding(.leading, 40)
-                        .padding(.trailing, 40)
-                }
-                Divider()
-                Image(systemName: "person.crop.circle").resizable().frame(width: 30, height: 30)
-                    .foregroundColor(.gray)
-                    .padding(.leading, 40)
-                    .padding(.trailing, 40)
-            }.frame(width: 350, height: 40, alignment: .center)
         }.navigationBarTitle("Credit Card", displayMode: .inline)
         .toolbar{
             ToolbarItemGroup(placement: .navigationBarTrailing){

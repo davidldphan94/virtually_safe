@@ -10,6 +10,8 @@ import SwiftUI
 struct WebsiteView: View {
     @State var favorite = false
     @State var seepw = false
+    @State var viewgenpw = false
+    @State var viewsettings = false
     @State var name = "name"
     @State var url = "url"
     @State var username = "username"
@@ -107,28 +109,7 @@ struct WebsiteView: View {
                 .background(Color.blue)
                 .foregroundColor(.white)
                 .padding(.bottom, 50)
-            //Spacer()
-            Divider()
-            HStack{
-                NavigationLink(destination: WebsiteView()){
-                    Image(systemName: "key.fill").resizable().frame(width: 20, height: 30)
-                        .foregroundColor(.black)
-                        .padding(.leading, 40)
-                        .padding(.trailing, 40)
-                }
-                Divider()
-                NavigationLink(destination: GeneratePasswordView()){
-                    Image(systemName: "lock.rotation").resizable().frame(width: 30, height: 30)
-                        .foregroundColor(.gray)
-                        .padding(.leading, 40)
-                        .padding(.trailing, 40)
-                }
-                Divider()
-                Image(systemName: "person.crop.circle").resizable().frame(width: 30, height: 30)
-                    .foregroundColor(.gray)
-                    .padding(.leading, 40)
-                    .padding(.trailing, 40)
-            }.frame(width: 350, height: 40, alignment: .center)
+            
         }.navigationBarTitle("Password", displayMode: .inline)
         .toolbar{
             ToolbarItemGroup(placement: .navigationBarTrailing){
@@ -139,6 +120,26 @@ struct WebsiteView: View {
                         Image(systemName: "star.fill")
                     }
                 }).padding(.trailing, 20)
+            }
+            ToolbarItemGroup(placement: .bottomBar){
+                Spacer()
+                Button(action: {}){
+                    Image(systemName: "key.fill").resizable().frame(width: 42, height: 50)
+                        .foregroundColor(.black)
+                }
+                Spacer()
+                NavigationLink(destination: GeneratePasswordView(), isActive: $viewgenpw){ EmptyView() }
+                Button(action: {viewgenpw = true}){
+                    Image(systemName: "lock.rotation")
+                        .foregroundColor(.gray)
+                }
+                Spacer()
+                NavigationLink(destination: SettingsView(), isActive: $viewsettings){ EmptyView() }
+                Button(action: {viewsettings = true}){
+                    Image(systemName: "gearshape.fill").resizable().frame(width: 50, height: 50)
+                        .foregroundColor(.gray)
+                }
+                Spacer()
             }
         }
     }
