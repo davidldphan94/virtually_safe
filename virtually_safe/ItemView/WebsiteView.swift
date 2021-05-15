@@ -23,7 +23,6 @@ struct WebsiteView: View {
     var body: some View {
         
         VStack{
-            
             ScrollView{
                 Divider().padding(.top, 50)
                 VStack(alignment: .leading){
