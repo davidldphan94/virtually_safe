@@ -20,7 +20,7 @@ struct GeneratePasswordView: View {
     let board = UIPasteboard.general
     
     var body: some View {
-        NavigationView {
+        //NavigationView {
             VStack() {
             HStack {
                 Button(action: {
@@ -35,6 +35,7 @@ struct GeneratePasswordView: View {
                         password_history.passwords.insert(pw_display, at: 0)
                         password_history.dates.insert(date, at: 0)
                     }
+                    
                 }) {
                     Text("Generate!")
                 }.padding(.leading, 50)
@@ -95,8 +96,8 @@ struct GeneratePasswordView: View {
                     .padding(.trailing, 40)
             }.frame(width: 350, height: 40, alignment: .center)
             }.navigationBarTitle("Generate Password", displayMode: .inline)
-            .navigationBarBackButtonHidden(true)
-        }
+            .navigationBarBackButtonHidden(false)
+        //}
     }
     
     func generatePassword() {

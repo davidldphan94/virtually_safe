@@ -40,12 +40,16 @@ struct PasswordHistoryView: View {
                 }.onDelete(perform: deleteRow)
             }
         }.navigationBarTitle("History", displayMode: .inline).toolbar{
+            ToolbarItem(placement: .navigationBarLeading) {
+                HStack {}
+            }
             ToolbarItemGroup(placement: .navigationBarTrailing){
                 Button(action: {
                     history.passwords = [String]()
                     history.dates = [String]()
                 }, label: {Text("Clear")
                 }).padding(.trailing, 20)
+                
             }
         }
     }
