@@ -17,6 +17,7 @@ struct UserProfile: Encodable, Identifiable {
     let last_name: String
     let location: String
     let profile_pic_url: String
+    let username: String
     
     var dictionary: [String : Any] {
         let data = (try? JSONEncoder().encode(self)) ?? Data()
@@ -31,6 +32,7 @@ struct UserProfile: Encodable, Identifiable {
         case last_name
         case location
         case profile_pic_url
+        case username
     }
     
 }
@@ -60,7 +62,9 @@ class UserProfileViewModel :ObservableObject {
                     let last_name = data["last_name"] as? String ?? "N/A"
                     let location = data["location"] as? String ?? "N/A"
                     let profile_pic_url = data["profile_pic_url"] as? String ?? ""
-                    self.profile = UserProfile(id: .init(), birthday: birthday, email: email, first_name: first_name, last_name: last_name, location: location, profile_pic_url: profile_pic_url)
+                    let username = data["username"] as? String ?? ""
+                    self.profile = UserProfile(id: .init(), birthday: birthday, email: email, first_name: first_name, last_name: last_name, location: location, profile_pic_url: profile_pic_url,
+                        username: username)
                     return
                 }
             }

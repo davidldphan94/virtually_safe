@@ -22,8 +22,9 @@ struct CreateProfileView: View {
     
     @State var upload_image:UIImage?
     @State var first_name = ""
-    @State var lName = ""
-    @State var state = ""
+    @State var last_name = ""
+    @State var location = ""
+    @State var birthday = ""
     @State var editProf = false
     
     let storage = Storage.storage()
@@ -112,7 +113,7 @@ struct CreateProfileView: View {
                     Spacer()
                 }
                 
-                TextField(profileModel.profile?.lName ?? "Last Name", text: $lName)
+                TextField(profileModel.profile?.last_name ?? "Last Name", text: $last_name)
                     .font(.system(size: 20))
                     .padding(10)
                     .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1))
@@ -135,7 +136,7 @@ struct CreateProfileView: View {
                     .padding(.trailing, 20)
                     .padding(.bottom, 30)
                 */
-                if (fName == "" || lName == "" || state == "") {
+                if (fName == "" || last_name == "" || state == "") {
                     //emptyAlert = true
                     Button (action: { empty() }){
                     Text("Continue")
@@ -218,7 +219,7 @@ struct CreateProfileView: View {
             .padding(.bottom, 50)
             
             //uploadNow()
-                
+        Group {
             HStack{
                 Text("Please enter your first name: ")
                     .padding(.leading, 20)
@@ -233,7 +234,7 @@ struct CreateProfileView: View {
                 .padding(.leading, 20)
                 .padding(.trailing, 20)
                 .padding(.bottom, 30)
-            /*
+            
             HStack{
                 Text("Please enter your last name: ")
                     .padding(.leading, 20)
@@ -241,7 +242,7 @@ struct CreateProfileView: View {
                 Spacer()
             }
             
-            TextField(profileModel.profile?.lName ?? "Last Name", text: $lName)
+            TextField(profileModel.profile?.last_name ?? "Last Name", text: $last_name)
                 .font(.system(size: 20))
                 .padding(10)
                 .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1))
@@ -249,21 +250,38 @@ struct CreateProfileView: View {
                 .padding(.trailing, 20)
                 .padding(.bottom, 30)
             
+        
             HStack{
-                Text("Please enter the name of your State: ")
+                Text("Please enter your birthday: ")
                     .padding(.leading, 20)
                     //.foregroundColor(.gray)
                 Spacer()
             }
             
-            TextField(profileModel.profile?.state ?? "State", text: $state)
+        TextField(profileModel.profile?.birthday ?? "Birthday", text: $birthday)
+            .font(.system(size: 20))
+            .padding(10)
+            .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1))
+            .padding(.leading, 20)
+            .padding(.trailing, 20)
+            .padding(.bottom, 30)
+        
+    
+        HStack{
+            Text("Please enter the name of your State: ")
+                .padding(.leading, 20)
+                //.foregroundColor(.gray)
+            Spacer()
+        }
+        
+            TextField(profileModel.profile?.location ?? "State", text: $location)
                 .font(.system(size: 20))
                 .padding(10)
                 .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1))
                 .padding(.leading, 20)
                 .padding(.trailing, 20)
                 .padding(.bottom, 30)
-            */
+            
             
             VStack{
                 NavigationLink(destination: ListView().navigationBarHidden(true)) {
@@ -284,12 +302,8 @@ struct CreateProfileView: View {
                 })
                 Spacer()
             }
-            
-            
             Spacer()
-        //}
-        
-    
+        }
     }
 
     func empty() {
@@ -299,10 +313,12 @@ struct CreateProfileView: View {
         let db = Firestore.firestore()
         let user = Auth.auth().currentUser!
         db.collection("users").document(String(user.uid)).setData([
-            "Username": String(user.email ?? ""),
-            "FirstName": first_name,
-            "LastName": lName,
-            "State": state
+            "birthday": birthday,
+            "username": String(user.email ?? ""),
+            "first_name": first_name,
+            "last_name": last_name,
+            "location": location,
+            "profile_pic_url": "N/A"
         ])
     }
 }
@@ -312,7 +328,7 @@ func uploadImage(image: UIImage){
         let storage = Storage.storage()
         storage.reference().child("profileImage.jpeg").putData(imageData, metadata: nil){
             (_, err) in
-            if let err = err {
+            if err != nil {
                 print("Error occurred")
             } else {
                 print("Upload successful")
