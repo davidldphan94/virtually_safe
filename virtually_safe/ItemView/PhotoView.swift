@@ -14,18 +14,19 @@ struct PhotoView: View {
     
     @State var showActionSheet = false
     @State var showImages = false
-    @State var saved = false
     @State var showAlert = false
     @State var sourceType: UIImagePickerController.SourceType = .camera
     @State var downloadImg: UIImage?
     @State var uploadImg: UIImage?
     @State var filename = ""
+    @State var errTitle = ""
+    @State var errMsg = ""
     
     @State var count = 1
     
     var alert : Alert {
-        Alert(title: Text("Field empty"),
-              message: Text("Please enter a name for the file"))
+        Alert(title: Text(errTitle),
+              message: Text(errMsg))
     }
     
     var body: some View {
@@ -35,7 +36,9 @@ struct PhotoView: View {
                 VStack{
                     Text("Enter a file name").foregroundColor(.gray).font(.headline)
                     Divider()
-                    TextField("File name", text: $filename).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
+                    TextField("File name", text: $filename)
+                    .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
+                    .edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
                     Divider()
                 }.padding(.leading, 20).padding(.trailing, 20)
                 if uploadImg != nil {
@@ -49,6 +52,7 @@ struct PhotoView: View {
                         .padding(.trailing, 10)
                 }
                 Spacer()
+                
             }.padding(.top, 50)
             .onAppear{
                 self.showActionSheet = true
@@ -84,18 +88,31 @@ struct PhotoView: View {
                     }
                 }
             }
+            VStack {
+                Button (action: {showActionSheet=true}){
+                Text("Select Photo")
+                }
+                .frame(width:150, height: 50, alignment: .center)
+                .background(Color.blue)
+                .foregroundColor(.white)
+                Spacer()
+            }.padding()
         }.navigationBarTitle("Add Photo", displayMode: .inline)
         .toolbar{
             ToolbarItemGroup(placement: .navigationBarTrailing){
-                NavigationLink(destination:ListView(),
-                    isActive: $saved) { EmptyView() }
                 Button (action: {
-                    if filename == ""{
-                        showAlert = true
+                    if filename == "" {
+                        errTitle = "Field empty"
+                        errMsg = "Please enter a name for the file"
                     } else {
                         uploadImage(image: self.uploadImg!)
-                        saved = true
+                        errTitle = "Success"
+                        errMsg = "Photo uploaded successfully"
+                        
+                        filename = ""
+                        uploadImg = nil
                     }
+                    showAlert = true
                 }){
                 Text("Save")
                 }
