@@ -31,12 +31,15 @@ struct WebsiteViewEdit: View {
                     HStack{Spacer()}
                     Text("Website Name").foregroundColor(.gray).font(.headline)
                     TextField("name", text: $name)
+                        .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                     Divider()
                     Text("URL").foregroundColor(.gray).font(.headline)
                     TextField("url", text: $url)
+                        .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                     Divider()
                     Text("Username").foregroundColor(.gray).font(.headline)
                     TextField("username", text: $username)
+                        .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                     
                 }.padding(.leading, 20).padding(.trailing, 20)
                 VStack(alignment: .leading){
@@ -44,9 +47,12 @@ struct WebsiteViewEdit: View {
                     Divider()
                     Text("Password").foregroundColor(.gray).font(.headline)
                     TextField("password", text: $password)
+                        .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                     Divider()
                     Text("Notes").foregroundColor(.gray).font(.headline)
-                    TextField("notes", text: $notes).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
+                    TextField("notes", text: $notes)
+                        .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
+                        .edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
                     
                 }.padding(.leading, 20).padding(.trailing, 20)
                 Divider()
@@ -56,7 +62,9 @@ struct WebsiteViewEdit: View {
         }.navigationBarTitle("Password", displayMode: .inline)
         .toolbar{
             ToolbarItemGroup(placement: .navigationBarTrailing){
-                Button(action: { }, label: {
+                Button(action: {
+                    submitWebsite()
+                }, label: {
                     Text("Save")
                         .padding(.trailing, 20)
                 }).padding(.trailing, 20)
@@ -81,11 +89,12 @@ struct WebsiteViewEdit: View {
         } else {
             let w = Website(id: .init(), name: name, url: url, username: username, password: password, notes: notes)
             let user = Auth.auth().currentUser!
-            dbRef.collection("users").document(user.uid).collection("Websites").document(name).setData(w.dictionary, merge: true)
+            dbRef.collection("users").document(user.uid).collection("websites").document(name).setData(w.dictionary, merge: true)
             name = ""
             url = ""
             username = ""
             password = ""
+            notes = ""
             errTitle = "Success"
             errmsg = "Review submitted"
             showAlert = true
