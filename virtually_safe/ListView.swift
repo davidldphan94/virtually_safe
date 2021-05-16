@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ListView: View {
+    @State var viewadditem = false
     @State var viewgenpw = false
     @State var viewsettings = false
     
@@ -42,6 +43,13 @@ struct ListView: View {
             }.navigationBarTitle("Vault", displayMode: .inline)
             .navigationBarBackButtonHidden(true)
             .toolbar{
+                ToolbarItemGroup(placement: .navigationBarTrailing){
+                    NavigationLink(destination: AddItemView(), isActive: $viewadditem){ EmptyView() }
+                    Button(action: {viewadditem = true}){
+                        Image(systemName: "plus")
+                            .foregroundColor(.gray)
+                    }
+                }
                 ToolbarItemGroup(placement: .bottomBar){
                     Spacer()
                     Button(action: {}){
