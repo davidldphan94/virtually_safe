@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseFirestore
 
 struct GeneratePasswordView: View {
-    @ObservedObject var password_history = PasswordHistory()
-    //@ObservedObject var pw_history = PasswordHistoryModel()
+//    @ObservedObject var password_history = PasswordHistory()
+    @ObservedObject var password_history = PasswordHistoryModel()
     @State var viewPasswords = false
     @State var viewvault = false
     @State var viewsettings = false
@@ -35,8 +37,9 @@ struct GeneratePasswordView: View {
                         dateFormatter.timeStyle = .medium
                         dateFormatter.dateStyle = .long
                         let date = dateFormatter.string(from: currentDateTime)
-                        password_history.passwords.insert(pw_display, at: 0)
-                        password_history.dates.insert(date, at: 0)
+                        uploadPasswords(pwd: pw_display, date: date)
+//                        password_history.passwords!.passwords.insert(pw_display, at: 0)
+//                        password_history.passwords!.dates.insert(date, at: 0)
                     }
                 }) {
                     Text("Generate!")
@@ -53,14 +56,18 @@ struct GeneratePasswordView: View {
                 }
                 Spacer()
                 NavigationLink(destination:
-                                PasswordHistoryView(history: password_history), isActive: $viewPasswords) { EmptyView() }
-                Button(action: {viewPasswords = true}){
+                                PasswordHistoryView(history:
+                                password_history
+                                //password_history
+                                ), isActive: $viewPasswords) { EmptyView() }
+                Button(action: {
+                        self.password_history.fetchData()
+                        viewPasswords = true
+                }){
                     Text("History")
                 }.padding(.trailing, 50)
 
             }.padding()
-            //.onAppear() {
-                //self.pw_history.fetchData()
             HStack {
                 Text(pw_display).italic().padding()
             }.border(Color.black)
@@ -105,6 +112,13 @@ struct GeneratePasswordView: View {
             }
 
         //}
+    }
+    func uploadPasswords(pwd : String, date : String) {
+        let db = Firestore.firestore()
+        let user = Auth.auth().currentUser!
+        db.collection("users").document(user.uid)
+            .collection("generate_pwd")
+            .document("pw_history").setData([date: pwd], merge: true)
     }
     
     func generatePassword() {

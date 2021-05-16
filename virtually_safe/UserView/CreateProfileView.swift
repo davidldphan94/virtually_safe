@@ -312,7 +312,7 @@ struct CreateProfileView: View {
     func uploadProfile(){
         let db = Firestore.firestore()
         let user = Auth.auth().currentUser!
-        db.collection("users").document(String(user.uid)).setData([
+        db.collection("users").document(String(user.uid)).collection("settings").document("user_info").setData([
             "birthday": birthday,
             "username": String(user.email ?? ""),
             "first_name": first_name,
@@ -326,7 +326,7 @@ struct CreateProfileView: View {
 func uploadImage(image: UIImage){
     if let imageData = image.jpegData(compressionQuality: 1){
         let storage = Storage.storage()
-        storage.reference().child("profileImage.jpeg").putData(imageData, metadata: nil){
+        storage.reference().child("profileImage.jpeg").putData(imageData, metadata: nil) {
             (_, err) in
             if err != nil {
                 print("Error occurred")

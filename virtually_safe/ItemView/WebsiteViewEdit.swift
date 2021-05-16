@@ -79,9 +79,9 @@ struct WebsiteViewEdit: View {
             errTitle = "Submission failed"
             errmsg = "Not enough information provided"
         } else {
-//            let r = Review(movie_title: movie.title, name: name, title: title, review_text: review)
             let w = Website(id: .init(), name: name, url: url, username: username, password: password, notes: notes)
-            let _ = dbRef.collection("Users").document("something").collection("Websites").document().setData(w.dictionary, merge: true)
+            let user = Auth.auth().currentUser!
+            dbRef.collection("users").document(user.uid).collection("Websites").document(name).setData(w.dictionary, merge: true)
             name = ""
             url = ""
             username = ""

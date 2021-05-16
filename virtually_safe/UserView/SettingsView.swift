@@ -10,7 +10,7 @@ import Firebase
 import FirebaseAuth
 
 struct SettingsView: View {
-    @State var username = "kkha"
+    @State var username = Auth.auth().currentUser!.email!
     @State var loggedOut = false
     @State var viewvault = false
     @State var viewgenpw = false
@@ -18,8 +18,7 @@ struct SettingsView: View {
     var body: some View {
         VStack{//(alignment: .leading){
             HStack{
-                Text("Username: ")
-                Text(username)
+                Text("Username: " + username)
                 //Spacer()
             }.padding()
             /*

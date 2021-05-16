@@ -1,8 +1,8 @@
 //
-//  ReviewModel.swift
+//  WebsiteModel.swift
 //  MovieListApp
 //
-//  Created by David Phan on 4/30/21.
+//  Created by David Phan on 5/14/21.
 //
 
 import Foundation
