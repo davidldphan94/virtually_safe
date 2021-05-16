@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseFirestore
 
 struct CCViewEdit: View {
     @Environment(\.presentationMode) var presentationMode
@@ -21,6 +23,10 @@ struct CCViewEdit: View {
     @State var password = ""
     @State var notes = ""
     
+    @State var showAlert = false;
+    @State var errTitle = ""
+    @State var errmsg = ""
+    
     var body: some View {
         VStack{
             
@@ -28,7 +34,8 @@ struct CCViewEdit: View {
                 Divider().padding(.top, 50)
                 VStack(alignment: .leading){
                     Text("Name").foregroundColor(.gray).font(.headline)
-                    TextField("My card name", text: $bank)
+                    TextField("My card name", text: $name)
+                        .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                     Divider()
                     Text("Bank").foregroundColor(.gray).font(.headline)
                     TextField("Bank name", text: $bank)
@@ -56,9 +63,11 @@ struct CCViewEdit: View {
                     Divider()
                     Text("Username").foregroundColor(.gray).font(.headline)
                     TextField("username", text: $username)
+                        .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                     Divider()
                     Text("Password").foregroundColor(.gray).font(.headline)
                     TextField("password", text: $password)
+                        .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                     Divider()
                     
                     Text("Notes").foregroundColor(.gray).font(.headline)
@@ -72,12 +81,13 @@ struct CCViewEdit: View {
         }.navigationBarTitle("Credit Card", displayMode: .inline)
         .toolbar{
             ToolbarItemGroup(placement: .navigationBarTrailing){
-                Button(action: { }, label: {
+                Button(action: {uploadCC()}, label: {
                     Text("Save")
                         .padding(.trailing, 20)
                 }).padding(.trailing, 20)
             }
         }
+        .alert(isPresented: $showAlert) {self.alert}
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: Button(action: {
             self.presentationMode.wrappedValue.dismiss()
@@ -86,6 +96,39 @@ struct CCViewEdit: View {
                 Text("Cancel")
             }
         })
+    }
+    
+    func uploadCC() {
+        if name == "" || bank == "" ||
+            cardname == "" || ccnum == "" ||
+            holdername == "" || valid == "" ||
+            code == "" {
+            showAlert = true
+            errTitle = "Submission failed"
+            errmsg = "Not enough information provided"
+        } else {
+            let credit_card = CC(id: .init(), name: name, bank: bank, card_name: cardname, card_number: ccnum, holder_name: holdername, valid_thru: valid, security_code: code, username: username, password: password, notes: notes)
+            let user = Auth.auth().currentUser!
+            let dbRef = Firestore.firestore()
+            dbRef.collection("users").document(user.uid).collection("credit_cards").document(name).setData(credit_card.dictionary, merge: true)
+            name = ""
+            bank = ""
+            cardname = ""
+            ccnum = ""
+            holdername = ""
+            valid = ""
+            code = ""
+            username = ""
+            password = ""
+            notes = ""
+            errTitle = "Success"
+            errmsg = "Review submitted"
+            showAlert = true
+        }
+    }
+    var alert : Alert {
+        Alert(title: Text(errTitle),
+              message: Text(errmsg))
     }
 }
 

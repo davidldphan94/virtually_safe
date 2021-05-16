@@ -67,9 +67,11 @@ struct WebsiteViewEdit: View {
                 }, label: {
                     Text("Save")
                         .padding(.trailing, 20)
-                }).padding(.trailing, 20)
+                })
             }
         }
+        .alert(isPresented: $showAlert) {self.alert}
+        .padding(.trailing, 20)
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: Button(action: {
             self.presentationMode.wrappedValue.dismiss()
@@ -83,7 +85,6 @@ struct WebsiteViewEdit: View {
     func submitWebsite() {
         if name == "" || url == "" ||
             username == "" || password == "" {
-            showAlert = true
             errTitle = "Submission failed"
             errmsg = "Not enough information provided"
         } else {
@@ -97,9 +98,8 @@ struct WebsiteViewEdit: View {
             notes = ""
             errTitle = "Success"
             errmsg = "Review submitted"
-            showAlert = true
-            
         }
+        showAlert = true
     }
     var alert : Alert {
         Alert(title: Text(errTitle),

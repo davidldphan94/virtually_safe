@@ -22,7 +22,6 @@ struct WebsiteView: View {
     let board = UIPasteboard.general
     
     var body: some View {
-        
         VStack{
             ScrollView{
                 Divider().padding(.top, 50)

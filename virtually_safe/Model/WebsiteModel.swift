@@ -37,10 +37,10 @@ class WebsiteViewModel: ObservableObject {
     
     private var db = Firestore.firestore()
     
-    func fetchData(movieTitle : String) {
+    func fetchData() {
         let user = Auth.auth().currentUser!
-        db.collection("users").document(user.uid).collection("").document(movieTitle)
-          .collection("reviews").addSnapshotListener { (querySnapshot, error) in
+        db.collection("users").document(user.uid)
+            .collection("websites").addSnapshotListener { (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else {
                 print("No documents")
                 return
