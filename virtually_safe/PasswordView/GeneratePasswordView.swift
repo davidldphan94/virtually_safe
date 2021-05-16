@@ -14,6 +14,7 @@ struct GeneratePasswordView: View {
     @ObservedObject var password_history = PasswordHistoryModel()
     @State var viewPasswords = false
     @State var viewvault = false
+    @State var viewgenpw = false
     @State var viewsettings = false
     @State private var password_length : Float = 0
     @State var pw_display = "Generate Your Password"
@@ -89,24 +90,30 @@ struct GeneratePasswordView: View {
             .toolbar{
                 ToolbarItemGroup(placement: .bottomBar){
                     Spacer()
-                    NavigationLink(destination: ListView(), isActive: $viewvault){ EmptyView() }
-                    Button(action: {viewvault = true}){
-                        Image(systemName: "key.fill").resizable().frame(width: 42, height: 50)
-                            .foregroundColor(.gray)
+                    HStack{
+                        NavigationLink(destination: ListView(), isActive: $viewvault){ EmptyView() }
+                        Button(action: {viewvault = true}){
+                            Image(systemName: "key.fill").resizable().frame(width: 20, height: 30)
+                                .foregroundColor(.gray)
+                        }
                     }
                     Spacer()
-                    Button(action: {}){
-                        Image(systemName: "lock.rotation")
-                            .foregroundColor(.black)
+                    HStack{
+                        NavigationLink(destination: GeneratePasswordView(), isActive: $viewgenpw){ EmptyView() }
+                        Button(action: {}){
+                            Image(systemName: "lock.rotation").resizable().frame(width: 30, height: 30)
+                                .foregroundColor(.black)
+                        }
                     }
-
                     Spacer()
+                    HStack{
+                        NavigationLink(destination: SettingsView(), isActive: $viewsettings){ EmptyView() }
+                        Button(action: {viewsettings = true}){
+                            Image(systemName: "gearshape.fill").resizable().frame(width: 30, height: 30)
+                                .foregroundColor(.gray)
+                        }
+                    }
                     
-                    NavigationLink(destination: SettingsView(), isActive: $viewsettings){ EmptyView() }
-                    Button(action: {viewsettings = true}){
-                        Image(systemName: "gearshape.fill").resizable().frame(width: 50, height: 50)
-                            .foregroundColor(.gray)
-                    }
                     Spacer()
                 }
             }

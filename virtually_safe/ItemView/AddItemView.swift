@@ -17,7 +17,6 @@ struct AddItemView: View {
     @State var viewbank = false
     @State var viewdriver = false
     @State var viewphoto = false
-    @State var count = 1
     
     @State var sourceType: UIImagePickerController.SourceType = .camera
     @State var upload_image:UIImage?
@@ -74,7 +73,7 @@ struct AddItemView: View {
                 Divider()
                 HStack{
                     Image(systemName: "camera.viewfinder")
-                        .foregroundColor(.black).padding(.trailing, 10)
+                        .foregroundColor(.black).padding(.trailing, 12)
                     NavigationLink(destination: PhotoView(), isActive: $viewphoto){ EmptyView() }
                     Button(action: {viewphoto = true}){
                         Text("Add Photo")
@@ -95,22 +94,6 @@ struct AddItemView: View {
             }
         })
         
-    }
-    
-    func uploadImage(image: UIImage){
-        if let imageData = image.jpegData(compressionQuality: 1){
-            storage.reference().child("myImage.jpeg").putData(imageData, metadata: nil) {
-                (_, err) in
-                if err != nil {
-                    print("Error occurred")
-                } else {
-                    print("Upload successful")
-                    count += 1
-                }
-            }
-        } else {
-            print("Couldn't unwrap image to data")
-        }
     }
 }
 

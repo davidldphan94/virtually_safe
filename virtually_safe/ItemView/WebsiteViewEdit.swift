@@ -65,7 +65,7 @@ struct WebsiteViewEdit: View {
         }.navigationBarTitle("Password", displayMode: .inline)
         .toolbar{
             ToolbarItemGroup(placement: .navigationBarTrailing){
-                NavigationLink(destination: WebsiteList().navigationBarHidden(true), isActive: $success) { EmptyView() }
+                NavigationLink(destination: WebsiteList(), isActive: $success) { EmptyView() }
                 Button(action: {
                     submitWebsite()
                 }, label: {

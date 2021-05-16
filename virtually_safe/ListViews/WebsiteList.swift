@@ -29,23 +29,30 @@ struct WebsiteList: View {
         .toolbar{
             ToolbarItemGroup(placement: .bottomBar){
                 Spacer()
-                NavigationLink(destination: ListView(), isActive: $viewvault){ EmptyView() }
-                Button(action: {viewvault = true}){
-                    Image(systemName: "key.fill").resizable().frame(width: 42, height: 50)
-                        .foregroundColor(.black)
+                HStack{
+                    NavigationLink(destination: ListView(), isActive: $viewvault){ EmptyView() }
+                    Button(action: {viewvault = true}){
+                        Image(systemName: "key.fill").resizable().frame(width: 20, height: 30)
+                            .foregroundColor(.black)
+                    }
                 }
                 Spacer()
-                NavigationLink(destination: GeneratePasswordView(), isActive: $viewgenpw){ EmptyView() }
-                Button(action: {viewgenpw = true}){
-                    Image(systemName: "lock.rotation")
-                        .foregroundColor(.gray)
+                HStack{
+                    NavigationLink(destination: GeneratePasswordView(), isActive: $viewgenpw){ EmptyView() }
+                    Button(action: {viewgenpw = true}){
+                        Image(systemName: "lock.rotation").resizable().frame(width: 30, height: 30)
+                            .foregroundColor(.gray)
+                    }
                 }
                 Spacer()
-                NavigationLink(destination: SettingsView(), isActive: $viewsettings){ EmptyView() }
-                Button(action: {viewsettings = true}){
-                    Image(systemName: "gearshape.fill").resizable().frame(width: 50, height: 50)
-                        .foregroundColor(.gray)
+                HStack{
+                    NavigationLink(destination: SettingsView(), isActive: $viewsettings){ EmptyView() }
+                    Button(action: {viewsettings = true}){
+                        Image(systemName: "gearshape.fill").resizable().frame(width: 30, height: 30)
+                            .foregroundColor(.gray)
+                    }
                 }
+                
                 Spacer()
             }
         }

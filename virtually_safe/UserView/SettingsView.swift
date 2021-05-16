@@ -14,6 +14,7 @@ struct SettingsView: View {
     @State var loggedOut = false
     @State var viewvault = false
     @State var viewgenpw = false
+    @State var viewsettings = false
     
     var body: some View {
         VStack{//(alignment: .leading){
@@ -54,23 +55,30 @@ struct SettingsView: View {
         .toolbar{
             ToolbarItemGroup(placement: .bottomBar){
                 Spacer()
-                NavigationLink(destination: ListView(), isActive: $viewvault){ EmptyView() }
-                Button(action: {viewvault = true}){
-                    Image(systemName: "key.fill")//.resizable().frame(width: 42, height: 50)
-                        .foregroundColor(.gray)
+                HStack{
+                    NavigationLink(destination: ListView(), isActive: $viewvault){ EmptyView() }
+                    Button(action: {viewvault = true}){
+                        Image(systemName: "key.fill").resizable().frame(width: 20, height: 30)
+                            .foregroundColor(.gray)
+                    }
                 }
                 Spacer()
-                NavigationLink(destination: GeneratePasswordView(), isActive: $viewgenpw){ EmptyView() }
-                Button(action: {viewgenpw = true}){
-                    Image(systemName: "lock.rotation")
-                        .foregroundColor(.black)
+                HStack{
+                    NavigationLink(destination: GeneratePasswordView(), isActive: $viewgenpw){ EmptyView() }
+                    Button(action: {viewgenpw = true}){
+                        Image(systemName: "lock.rotation").resizable().frame(width: 30, height: 30)
+                            .foregroundColor(.gray)
+                    }
                 }
                 Spacer()
+                HStack{
+                    NavigationLink(destination: SettingsView(), isActive: $viewsettings){ EmptyView() }
+                    Button(action: {}){
+                        Image(systemName: "gearshape.fill").resizable().frame(width: 30, height: 30)
+                            .foregroundColor(.black)
+                    }
+                }
                 
-                Button(action: {}){
-                    Image(systemName: "gearshape.fill")//.resizable().frame(width: 50, height: 50)
-                        .foregroundColor(.gray)
-                }
                 Spacer()
             }
         }
