@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct WebsiteView: View {
+    @Environment(\.presentationMode) var presentationMode
     @State var website : Website
     @State var favorite = false
     @State var seepw = false
@@ -110,7 +111,13 @@ struct WebsiteView: View {
                 .padding(.bottom, 50)
             
         }.navigationBarTitle("Password", displayMode: .inline)
-//        .navigationBarHidden(false)
+        //.navigationBarHidden(true)
+        .navigationBarItems(leading: Button(action: {
+            self.presentationMode.wrappedValue.dismiss()
+        }){
+            HStack{
+            }
+        })
         .toolbar{
             ToolbarItemGroup(placement: .navigationBarTrailing){
                 Button(action: { toggleFav()}, label: {
@@ -121,27 +128,7 @@ struct WebsiteView: View {
                     }
                 }).padding(.trailing, 20)
             }
-            ToolbarItemGroup(placement: .bottomBar){
-                Spacer()
-                NavigationLink(destination: ListView(), isActive: $viewvault){ EmptyView() }
-                Button(action: {viewvault = true}){
-                    Image(systemName: "key.fill").resizable().frame(width: 42, height: 50)
-                        .foregroundColor(.black)
-                }
-                Spacer()
-                NavigationLink(destination: GeneratePasswordView(), isActive: $viewgenpw){ EmptyView() }
-                Button(action: {viewgenpw = true}){
-                    Image(systemName: "lock.rotation")
-                        .foregroundColor(.gray)
-                }
-                Spacer()
-                NavigationLink(destination: SettingsView(), isActive: $viewsettings){ EmptyView() }
-                Button(action: {viewsettings = true}){
-                    Image(systemName: "gearshape.fill").resizable().frame(width: 50, height: 50)
-                        .foregroundColor(.gray)
-                }
-                Spacer()
-            }
+            
         }
     }
     

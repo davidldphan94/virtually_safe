@@ -10,10 +10,14 @@ import Firebase
 import FirebaseFirestore
 
 struct WebsiteList: View {
+    @Environment(\.presentationMode) var presentationMode
     @ObservedObject var model = WebsiteViewModel()
     @State var addWebsite = true
+    @State var viewvault = false
+    @State var viewgenpw = false
+    @State var viewsettings = false
+    
     var body: some View {
-        NavigationView {
             List {
                 ForEach(model.websites, id: \.self) {
                     website in NavigationLink (destination: WebsiteView(website: website)) {
@@ -21,7 +25,42 @@ struct WebsiteList: View {
                 }
                 }.onDelete(perform: deleteRow)
             }.onAppear { model.fetchData()}
-        }.navigationTitle("Saved Websites")
+        .navigationTitle("Passwords")
+        .toolbar{
+            ToolbarItemGroup(placement: .bottomBar){
+                Spacer()
+                NavigationLink(destination: ListView(), isActive: $viewvault){ EmptyView() }
+                Button(action: {viewvault = true}){
+                    Image(systemName: "key.fill").resizable().frame(width: 42, height: 50)
+                        .foregroundColor(.black)
+                }
+                Spacer()
+                NavigationLink(destination: GeneratePasswordView(), isActive: $viewgenpw){ EmptyView() }
+                Button(action: {viewgenpw = true}){
+                    Image(systemName: "lock.rotation")
+                        .foregroundColor(.gray)
+                }
+                Spacer()
+                NavigationLink(destination: SettingsView(), isActive: $viewsettings){ EmptyView() }
+                Button(action: {viewsettings = true}){
+                    Image(systemName: "gearshape.fill").resizable().frame(width: 50, height: 50)
+                        .foregroundColor(.gray)
+                }
+                Spacer()
+            }
+        }
+        //.navigationBarBackButtonHidden(true)
+        //.navigationBarHidden(true)
+            /*
+            .navigationBarItems(leading: Button(action: {
+                self.presentationMode.wrappedValue.dismiss()
+            }){
+                HStack{
+                    Image(systemName: "chevron.backward").font(.system(size: 25))
+                    Text("Back")
+                }
+            })*/
+        
         
         
             
