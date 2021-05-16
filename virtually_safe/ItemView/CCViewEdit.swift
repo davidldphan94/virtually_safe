@@ -23,7 +23,7 @@ struct CCViewEdit: View {
     @State var password = ""
     @State var notes = ""
     
-    @State var showAlert = false;
+    @State var showAlert = false
     @State var errTitle = ""
     @State var errmsg = ""
     

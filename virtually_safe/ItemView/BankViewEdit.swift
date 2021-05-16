@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseFirestore
 
 struct BankViewEdit: View {
     @Environment(\.presentationMode) var presentationMode
@@ -16,6 +18,10 @@ struct BankViewEdit: View {
     @State var accnum = ""
     @State var pin = ""
     @State var notes = ""
+    
+    @State var showAlert = false
+    @State var errTitle = ""
+    @State var errmsg = ""
     
     var body: some View {
         VStack{
@@ -43,7 +49,7 @@ struct BankViewEdit: View {
                     TextField("account #", text: $accnum).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
                     Divider()
                     Text("PIN Number").foregroundColor(.gray).font(.headline)
-                    TextField("PIN #", text: $accnum).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
+                    TextField("PIN #", text: $pin).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
                 }.padding(.leading, 20).padding(.trailing, 20)
                 VStack(alignment: .leading){
                     Divider()
@@ -55,14 +61,15 @@ struct BankViewEdit: View {
             
             Spacer()
         }.navigationBarTitle("Bank Account", displayMode: .inline)
-        .toolbar{
+        .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing){
-                Button(action: { }, label: {
+                Button(action: {uploadBank()}, label: {
                     Text("Save")
                         .padding(.trailing, 20)
                 }).padding(.trailing, 20)
             }
         }
+        .alert(isPresented: $showAlert) {self.alert}
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: Button(action: {
             self.presentationMode.wrappedValue.dismiss()
@@ -71,6 +78,35 @@ struct BankViewEdit: View {
                 Text("Cancel")
             }
         })
+    }
+    
+    func uploadBank() {
+        if name == "" || bankname == "" ||
+            acctype == "" || accnum == "" ||
+            routing == "" || pin == ""  {
+            showAlert = true
+            errTitle = "Submission failed"
+            errmsg = "Not enough information provided"
+        } else {
+            let bank = Bank(id: .init(), name: name, bank_name: bankname, type: acctype, routing_number: routing, account_number: accnum, pin: pin, notes: notes)
+            let user = Auth.auth().currentUser!
+            let dbRef = Firestore.firestore()
+            dbRef.collection("users").document(user.uid).collection("banks").document(name).setData(bank.dictionary, merge: true)
+            name = ""
+            bankname = ""
+            acctype = ""
+            accnum = ""
+            routing = ""
+            pin = ""
+            notes = ""
+            errTitle = "Success"
+            errmsg = "Review submitted"
+            showAlert = true
+        }
+    }
+    var alert : Alert {
+        Alert(title: Text(errTitle),
+              message: Text(errmsg))
     }
 }
 

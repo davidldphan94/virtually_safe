@@ -43,7 +43,7 @@ struct CC: Identifiable, Codable, Hashable {
 }
 
 class CCViewModel: ObservableObject {
-    @Published var websites = [CC]()
+    @Published var credit_cards = [CC]()
     
     private var db = Firestore.firestore()
     
@@ -56,7 +56,7 @@ class CCViewModel: ObservableObject {
                 return
             }
 
-            self.websites = documents.map { queryDocumentSnapshot -> CC in
+            self.credit_cards = documents.map { queryDocumentSnapshot -> CC in
                 let data = queryDocumentSnapshot.data()
                 let name = data["name"] as? String ?? ""
                 let bank = data["bank"] as? String ?? ""
