@@ -16,6 +16,7 @@ struct BankViewEdit: View {
     @State var accnum = ""
     @State var pin = ""
     @State var notes = ""
+    
     var body: some View {
         VStack{
             
@@ -47,7 +48,7 @@ struct BankViewEdit: View {
                 VStack(alignment: .leading){
                     Divider()
                     Text("Notes").foregroundColor(.gray).font(.headline)
-                    TextField("notes", text: $accnum).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
+                    TextField("notes", text: $notes).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
                 }.padding(.leading, 20).padding(.trailing, 20)
                 Divider()
             }

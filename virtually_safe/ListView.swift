@@ -19,22 +19,25 @@ struct ListView: View {
                 }
                 .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
                 .padding()
+                
                 NavigationLink(destination: CCView()){
                 Text("Credit Card View")
                 }
                 .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
                 .padding()
+                
                 NavigationLink(destination: BankView()){
                 Text("Bank View")
                 }
                 .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
                 .padding()
-                /*
-                NavigationLink(destination: GeneratePasswordView()){
-                Text("Generate Password View")
+                
+                NavigationLink(destination: DriverView()){
+                Text("Driver's License View")
                 }
-                .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
-                .padding()*/
+                .foregroundColor(.red)
+                .padding()
+                
                 Spacer()
             }.navigationBarTitle("Vault", displayMode: .inline)
             .navigationBarBackButtonHidden(true)
