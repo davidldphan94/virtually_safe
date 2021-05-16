@@ -16,6 +16,8 @@ struct AddItemView: View {
     @State var viewcc = false
     @State var viewbank = false
     @State var viewdriver = false
+    @State var viewphoto = false
+    @State var count = 1
     
     @State var sourceType: UIImagePickerController.SourceType = .camera
     @State var upload_image:UIImage?
@@ -63,7 +65,7 @@ struct AddItemView: View {
                 HStack{
                     Image(systemName: "car")
                         .foregroundColor(.black).padding(.trailing, 10)
-                    NavigationLink(destination: DriverView(), isActive: $viewdriver){ EmptyView() }
+                    NavigationLink(destination: DriverViewEdit(), isActive: $viewdriver){ EmptyView() }
                     Button(action: {viewdriver = true}){
                         Text("Driver's License")
                     }
@@ -72,29 +74,10 @@ struct AddItemView: View {
                 Divider()
                 HStack{
                     Image(systemName: "camera.viewfinder")
-                        .foregroundColor(.black).padding(.trailing, 5)
-                    
-                    Button(action: {
-                        self.showActionSheet = true
-                        //uploadNow()
-                    }) {
+                        .foregroundColor(.black).padding(.trailing, 10)
+                    NavigationLink(destination: PhotoView(), isActive: $viewphoto){ EmptyView() }
+                    Button(action: {viewphoto = true}){
                         Text("Add Photo")
-                    }.actionSheet(isPresented: $showActionSheet){
-                        ActionSheet(title: Text("Add a photo"), message: nil,
-                                    buttons: [
-                                        .default(Text("Camera"), action: {
-                                            self.showImages = true
-                                            self.sourceType = .camera
-                                        }),
-                                        .default(Text("Photo Library"), action: {
-                                            self.showImages = true
-                                            self.sourceType = .photoLibrary
-                                        }),
-                                        .cancel()
-                                    ])
-                    }
-                    .sheet(isPresented: $showImages){
-                        imageSelect(img: self.$upload_image, showImgSelect: self.$showImages, sourceType: self.sourceType)
                     }
                 }.padding(.leading, 20).padding(.trailing, 20)
                 Divider()
@@ -116,13 +99,13 @@ struct AddItemView: View {
     
     func uploadImage(image: UIImage){
         if let imageData = image.jpegData(compressionQuality: 1){
-            let storage = Storage.storage()
-            storage.reference().child("profileImage.jpeg").putData(imageData, metadata: nil) {
+            storage.reference().child("myImage.jpeg").putData(imageData, metadata: nil) {
                 (_, err) in
                 if err != nil {
                     print("Error occurred")
                 } else {
                     print("Upload successful")
+                    count += 1
                 }
             }
         } else {
