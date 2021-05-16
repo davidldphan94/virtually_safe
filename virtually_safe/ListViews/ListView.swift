@@ -15,8 +15,8 @@ struct ListView: View {
     var body: some View {
         NavigationView{
             VStack {
-                NavigationLink(destination: WebsiteView()){
-                Text("Website View")
+                NavigationLink(destination: WebsiteList()){
+                Text("Website List View")
                 }
                 .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
                 .padding()

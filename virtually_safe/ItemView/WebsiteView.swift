@@ -8,16 +8,12 @@
 import SwiftUI
 
 struct WebsiteView: View {
+    @State var website : Website
     @State var favorite = false
     @State var seepw = false
     @State var viewvault = false
     @State var viewgenpw = false
     @State var viewsettings = false
-    @State var name = "name"
-    @State var url = "url"
-    @State var username = "username"
-    @State var password = "password"
-    @State var notes = ""
     
     let board = UIPasteboard.general
     
@@ -29,12 +25,12 @@ struct WebsiteView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Website Name").foregroundColor(.gray).font(.headline)
-                            Text(name)
+                            Text(website.name)//name)
                         }
                         Spacer()
                         Button(action: {
-                            if (name != ""){
-                                board.string = name
+                            if (website.name != "") {//name != ""){
+                                board.string = website.name//name
                             }}) {
                             Text("Copy")
                         }
@@ -43,12 +39,12 @@ struct WebsiteView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("URL").foregroundColor(.gray).font(.headline)
-                            Text(url)
+                            Text(website.url)//url)
                         }
                         Spacer()
                         Button(action: {
-                            if (url != ""){
-                                board.string = url
+                                if (website.url != "") {//url != ""){
+                                board.string = website.url//url
                             }}) {
                             Text("Copy")
                         }
@@ -57,13 +53,13 @@ struct WebsiteView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Username").foregroundColor(.gray).font(.headline)
-                            Text(username)
+                            Text(website.username)//username)
                         }
                         
                         Spacer()
                         Button(action: {
-                            if (username != ""){
-                                board.string = username
+                            if (website.username != "") {//username != ""){
+                                board.string = website.username//username
                             }}) {
                             Text("Copy")
                         }
@@ -73,9 +69,9 @@ struct WebsiteView: View {
                         VStack(alignment: .leading){
                             Text("Password").foregroundColor(.gray).font(.headline)
                             if seepw == false {
-                                Text(hide(hid: password))
+                                Text(hide(hid: website.password))//password))
                             } else {
-                                Text(password)
+                                Text(website.password)//password)
                             }
                         }
                         Spacer()
@@ -88,17 +84,17 @@ struct WebsiteView: View {
                             }
                         })
                         Button(action: {
-                            if (password != ""){
-                                board.string = password
+                                if (website.password != "") {
+                                board.string = website.password//password
                             }}) {
                             Text("Copy")
                         }
                     }
                     
-                    if notes != "" {
+                    if website.notes != "" {
                         Divider()
                         Text("Notes").foregroundColor(.gray).font(.headline)
-                        Text(notes)
+                        Text(website.notes)
                     }
                     
                     
@@ -106,7 +102,7 @@ struct WebsiteView: View {
                 Divider()
             }
             Spacer()
-            NavigationLink(destination: WebsiteViewEdit()){
+            NavigationLink(destination: WebsiteViewEdit(website : website)){
             Text("Edit")
             }.frame(width: 100, height: 40, alignment: .center)
                 .background(Color.blue)
@@ -114,7 +110,7 @@ struct WebsiteView: View {
                 .padding(.bottom, 50)
             
         }.navigationBarTitle("Password", displayMode: .inline)
-        //.navigationBarBackButtonHidden(true)
+//        .navigationBarHidden(false)
         .toolbar{
             ToolbarItemGroup(placement: .navigationBarTrailing){
                 Button(action: { toggleFav()}, label: {
@@ -174,8 +170,8 @@ struct WebsiteView: View {
     }
 }
 
-struct WebsiteView_Previews: PreviewProvider {
-    static var previews: some View {
-        WebsiteView()
-    }
-}
+//struct WebsiteView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        WebsiteView()
+//    }
+//}

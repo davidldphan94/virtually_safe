@@ -11,6 +11,8 @@ import FirebaseFirestore
 
 struct WebsiteViewEdit: View {
     @Environment(\.presentationMode) var presentationMode
+    @State var website : Website?
+    
     @State var showAlert = false
     @State var errTitle = ""
     @State var errmsg = ""
@@ -19,6 +21,7 @@ struct WebsiteViewEdit: View {
     @State var username = ""
     @State var password = ""
     @State var notes = ""
+    @State var success = false
     
     let dbRef = Firestore.firestore()
     
@@ -30,15 +33,15 @@ struct WebsiteViewEdit: View {
                 VStack(alignment: .leading){
                     HStack{Spacer()}
                     Text("Website Name").foregroundColor(.gray).font(.headline)
-                    TextField("name", text: $name)
+                    TextField(website?.name ?? "name", text: $name)
                         .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                     Divider()
                     Text("URL").foregroundColor(.gray).font(.headline)
-                    TextField("url", text: $url)
+                    TextField(website?.url ?? "url", text: $url)
                         .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                     Divider()
                     Text("Username").foregroundColor(.gray).font(.headline)
-                    TextField("username", text: $username)
+                    TextField(website?.username ?? "username", text: $username)
                         .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                     
                 }.padding(.leading, 20).padding(.trailing, 20)
@@ -46,11 +49,11 @@ struct WebsiteViewEdit: View {
                     HStack{Spacer()}
                     Divider()
                     Text("Password").foregroundColor(.gray).font(.headline)
-                    TextField("password", text: $password)
+                    TextField(website?.password ?? "password", text: $password)
                         .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                     Divider()
                     Text("Notes").foregroundColor(.gray).font(.headline)
-                    TextField("notes", text: $notes)
+                    TextField(website?.notes ?? "notes", text: $notes)
                         .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                         .edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
                     
@@ -62,6 +65,7 @@ struct WebsiteViewEdit: View {
         }.navigationBarTitle("Password", displayMode: .inline)
         .toolbar{
             ToolbarItemGroup(placement: .navigationBarTrailing){
+                NavigationLink(destination: WebsiteList().navigationBarHidden(true), isActive: $success) { EmptyView() }
                 Button(action: {
                     submitWebsite()
                 }, label: {
@@ -83,14 +87,26 @@ struct WebsiteViewEdit: View {
     }
     
     func submitWebsite() {
-        if name == "" || url == "" ||
-            username == "" || password == "" {
+        if (website != nil) {
+            name = name != "" ? name : website?.name ?? ""
+            url = url != "" ? url : website?.url ?? ""
+            username = username != "" ? username : website?.username ?? ""
+            password = password != "" ? password : website?.password ?? ""
+            notes = notes != "" ? notes : website?.notes ?? ""
+        }
+        if (name == "" || url == "" ||
+            username == "" || password == "") {
             errTitle = "Submission failed"
             errmsg = "Not enough information provided"
         } else {
             let w = Website(id: .init(), name: name, url: url, username: username, password: password, notes: notes)
             let user = Auth.auth().currentUser!
-            dbRef.collection("users").document(user.uid).collection("websites").document(name).setData(w.dictionary, merge: true)
+            if (name != website?.name ?? name) {
+                dbRef.collection("users").document(user.uid).collection("websites").document(name).setData(w.dictionary, merge: true)
+                dbRef.collection("users").document(user.uid).collection("websites").document(website!.name).delete()
+            } else {
+                dbRef.collection("users").document(user.uid).collection("websites").document(name).setData(w.dictionary, merge: true)
+            }
             name = ""
             url = ""
             username = ""
@@ -98,6 +114,7 @@ struct WebsiteViewEdit: View {
             notes = ""
             errTitle = "Success"
             errmsg = "Review submitted"
+            success = true
         }
         showAlert = true
     }
