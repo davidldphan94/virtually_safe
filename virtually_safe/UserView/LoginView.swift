@@ -34,6 +34,10 @@ struct LoginView: View {
                     Text("Virtually Safe")
                         .font(.title)
                         .bold()
+                    
+                    Image(uiImage: UIImage(named: "AppIcon") ?? UIImage())
+                        .resizable().scaledToFit()
+                        .frame(width: 75, height: 75, alignment: .center)
                     Spacer()
                     TextField("Email", text: $email)
                         .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
