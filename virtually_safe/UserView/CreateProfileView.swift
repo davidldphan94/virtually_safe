@@ -227,7 +227,7 @@ struct CreateProfileView: View {
                 Spacer()
             }
             
-            TextField(profileModel.profile?.first_name ?? "First Name", text: $first_name)
+            TextField(profileModel.profile["first_name"] ?? "firstname", text: $first_name)
                 .font(.system(size: 20))
                 .padding(10)
                 .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1))
@@ -242,7 +242,7 @@ struct CreateProfileView: View {
                 Spacer()
             }
             
-            TextField(profileModel.profile?.last_name ?? "Last Name", text: $last_name)
+            TextField(profileModel.profile["last_name"] ?? "lastname", text: $last_name)
                 .font(.system(size: 20))
                 .padding(10)
                 .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1))
@@ -258,7 +258,7 @@ struct CreateProfileView: View {
                 Spacer()
             }
             
-        TextField(profileModel.profile?.birthday ?? "Birthday", text: $birthday)
+        TextField(profileModel.profile["birthday"] ?? "birthday", text: $birthday)
             .font(.system(size: 20))
             .padding(10)
             .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1))
@@ -274,7 +274,7 @@ struct CreateProfileView: View {
             Spacer()
         }
         
-            TextField(profileModel.profile?.location ?? "State", text: $location)
+            TextField(profileModel.profile["location"] ?? "location", text: $location)
                 .font(.system(size: 20))
                 .padding(10)
                 .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.blue, lineWidth: 1))
