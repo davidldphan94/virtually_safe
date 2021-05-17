@@ -16,29 +16,44 @@ struct ListView: View {
     var body: some View {
         NavigationView{
             VStack {
-                NavigationLink(destination: WebsiteList()){
-                Text("Website List View")
+                VStack(alignment: .leading){
+                    Divider()
+                    NavigationLink(destination: WebsiteList()){
+                    Text("Passwords")
+                    }
+                    .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                    .padding(.leading, 20).padding(.trailing, 20)
                 }
-                .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
-                .padding()
                 
-                NavigationLink(destination: CCList()){
-                Text("Credit Card View")
+                VStack(alignment: .leading){
+                    Divider()
+                    NavigationLink(destination: CCList()){
+                    Text("Credit Card")
+                    }
+                    .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                    .padding(.leading, 20).padding(.trailing, 20)
                 }
-                .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
-                .padding()
                 
-                NavigationLink(destination: BankList()){
-                Text("Bank View")
-                }
-                .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
-                .padding()
                 
-                NavigationLink(destination: DriverList()){
-                Text("Driver's License View")
+                VStack(alignment: .leading){
+                    Divider()
+                    NavigationLink(destination: BankList()){
+                    Text("Bank")
+                    }
+                    .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                    .padding(.leading, 20).padding(.trailing, 20)
                 }
-                .foregroundColor(.red)
-                .padding()
+                
+                
+                VStack(alignment: .leading){
+                    Divider()
+                    NavigationLink(destination: DriverList()){
+                    Text("Driver's License")
+                    }
+                    .foregroundColor(.blue)
+                    .padding(.leading, 20).padding(.trailing, 20)
+                }
+                Divider()
                 
                 Spacer()
             }.navigationBarTitle("Vault", displayMode: .inline)

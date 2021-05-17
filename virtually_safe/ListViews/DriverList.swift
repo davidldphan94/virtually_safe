@@ -21,7 +21,7 @@ struct DriverList: View {
     @State var searchText = ""
     
     var body: some View {
-        SearchBar(searchText: $searchText, searching: $searching)
+        SearchBar(searchText: $searchText, searching: $searching).padding()
         List {
             ForEach((model.licenses).filter({ "\($0)".contains(searchText) || searchText.isEmpty}), id: \.self) {
                 license in
