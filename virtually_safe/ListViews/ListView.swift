@@ -22,7 +22,7 @@ struct ListView: View {
                 .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
                 .padding()
                 
-                NavigationLink(destination: CCView()){
+                NavigationLink(destination: CCList()){
                 Text("Credit Card View")
                 }
                 .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)

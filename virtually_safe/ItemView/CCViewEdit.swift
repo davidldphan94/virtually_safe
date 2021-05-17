@@ -11,6 +11,7 @@ import FirebaseFirestore
 
 struct CCViewEdit: View {
     @Environment(\.presentationMode) var presentationMode
+    @State var credit_card : CC?
     
     @State var name = ""
     @State var bank = ""
@@ -34,44 +35,44 @@ struct CCViewEdit: View {
                 Divider().padding(.top, 50)
                 VStack(alignment: .leading){
                     Text("Name").foregroundColor(.gray).font(.headline)
-                    TextField("My card name", text: $name)
+                    TextField(credit_card?.name ?? "My card name", text: $name)
                         .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                     Divider()
                     Text("Bank").foregroundColor(.gray).font(.headline)
-                    TextField("Bank name", text: $bank)
+                    TextField(credit_card?.bank ?? "Bank name", text: $bank)
                     Divider()
                     Text("Card Name").foregroundColor(.gray).font(.headline)
-                    TextField("Card name", text: $cardname)
+                    TextField(credit_card?.card_name ?? "Card name", text: $cardname)
                     Divider()
                    
                 }.padding(.leading, 20).padding(.trailing, 20)
                 VStack(alignment: .leading){
                     Text("Credit Card Number").foregroundColor(.gray).font(.headline)
-                    TextField("CC #", text: $ccnum)
+                    TextField(credit_card?.card_number ?? "CC #", text: $ccnum)
                     Divider()
                     Text("Holder's Name").foregroundColor(.gray).font(.headline)
-                    TextField("CC holder's name", text: $holdername)
+                    TextField(credit_card?.holder_name ?? "CC holder's name", text: $holdername)
                     Divider()
                     Text("Valid Thru").foregroundColor(.gray).font(.headline)
-                    TextField("Valid until Date", text: $valid)
+                    TextField(credit_card?.valid_thru ?? "Valid until Date", text: $valid)
                     Divider()
                     Text("Security Code").foregroundColor(.gray).font(.headline)
                     
                 }.padding(.leading, 20).padding(.trailing, 20)
                 VStack(alignment: .leading){
-                    TextField("Security code on back", text: $code)
+                    TextField(credit_card?.security_code ?? "Security code on back", text: $code)
                     Divider()
                     Text("Username").foregroundColor(.gray).font(.headline)
-                    TextField("username", text: $username)
+                    TextField(credit_card?.username ?? "username", text: $username)
                         .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                     Divider()
                     Text("Password").foregroundColor(.gray).font(.headline)
-                    TextField("password", text: $password)
+                    TextField(credit_card?.password ?? "password", text: $password)
                         .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                     Divider()
                     
                     Text("Notes").foregroundColor(.gray).font(.headline)
-                    TextField("notes", text: $notes).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
+                    TextField(credit_card?.notes ?? "notes", text: $notes).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
                     
                 }.padding(.leading, 20).padding(.trailing, 20)
                 Divider()
@@ -81,7 +82,10 @@ struct CCViewEdit: View {
         }.navigationBarTitle("Credit Card", displayMode: .inline)
         .toolbar{
             ToolbarItemGroup(placement: .navigationBarTrailing){
-                Button(action: {uploadCC()}, label: {
+                Button(action: {
+                    uploadCC()
+                    self.presentationMode.wrappedValue.dismiss()
+                }, label: {
                     Text("Save")
                         .padding(.trailing, 20)
                 }).padding(.trailing, 20)
@@ -99,6 +103,18 @@ struct CCViewEdit: View {
     }
     
     func uploadCC() {
+        if (credit_card != nil) {
+            name = name != "" ? name : credit_card?.name ?? ""
+            bank = bank != "" ? bank : credit_card?.bank ?? ""
+            cardname = cardname != "" ? cardname : credit_card?.card_name ?? ""
+            ccnum = ccnum != "" ? ccnum : credit_card?.card_number ?? ""
+            holdername = holdername != "" ? holdername : credit_card?.holder_name ?? ""
+            valid = valid != "" ? valid : credit_card?.valid_thru ?? ""
+            code = code != "" ? code : credit_card?.security_code ?? ""
+            username = username != "" ? username : credit_card?.username ?? ""
+            password = password != "" ? password : credit_card?.password ?? ""
+            notes = notes != "" ? notes : credit_card?.notes ?? ""
+        }
         if name == "" || bank == "" ||
             cardname == "" || ccnum == "" ||
             holdername == "" || valid == "" ||
@@ -107,10 +123,15 @@ struct CCViewEdit: View {
             errTitle = "Submission failed"
             errmsg = "Not enough information provided"
         } else {
-            let credit_card = CC(id: .init(), name: name, bank: bank, card_name: cardname, card_number: ccnum, holder_name: holdername, valid_thru: valid, security_code: code, username: username, password: password, notes: notes)
+            let new_card = CC(id: .init(), name: name, bank: bank, card_name: cardname, card_number: ccnum, holder_name: holdername, valid_thru: valid, security_code: code, username: username, password: password, notes: notes)
             let user = Auth.auth().currentUser!
             let dbRef = Firestore.firestore()
-            dbRef.collection("users").document(user.uid).collection("credit_cards").document(name).setData(credit_card.dictionary, merge: true)
+            if (name != credit_card?.name ?? name) {
+                dbRef.collection("users").document(user.uid).collection("credit_cards").document(name).setData(new_card.dictionary, merge: true)
+                dbRef.collection("users").document(user.uid).collection("credit_cards").document(credit_card!.name).delete()
+            } else {
+                dbRef.collection("users").document(user.uid).collection("credit_cards").document(name).setData(new_card.dictionary, merge: true)
+            }
             name = ""
             bank = ""
             cardname = ""
@@ -122,7 +143,7 @@ struct CCViewEdit: View {
             password = ""
             notes = ""
             errTitle = "Success"
-            errmsg = "Review submitted"
+            errmsg = "Review submitted. The fields will update upon revisit."
             showAlert = true
         }
     }

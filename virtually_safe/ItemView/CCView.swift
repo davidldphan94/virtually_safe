@@ -8,56 +8,48 @@
 import SwiftUI
 
 struct CCView: View {
+    @Environment(\.presentationMode) var presentationMode
+    @State var credit_card : CC
     @State var favorite = false
     @State var seecode = false
     @State var seepw = false
     @State var viewvault = false
     @State var viewgenpw = false
     @State var viewsettings = false
-    @State var name = "Chase Credit Card"
-    @State var bank = "Chase"
-    @State var cardname = "Freedom Flex"
-    @State var ccnum = "cc number"
-    @State var holdername = "Kevin Kha"
-    @State var valid = "05/21"
-    @State var code = "001"
-    @State var username = "username"
-    @State var password = "password"
-    @State var notes = ""
     
     let board = UIPasteboard.general
     
+    
     var body: some View {
-        
         VStack{
             VStack {
                 HStack{
-                    Text(bank).foregroundColor(.white)
-                    if cardname != "" {
-                        Text(cardname).foregroundColor(.white)
+                    Text(credit_card.bank).foregroundColor(.white)
+                    if credit_card.card_name != "" {
+                        Text(credit_card.card_name).foregroundColor(.white)
                     }
                     Spacer()
                 }.padding(.top, 10).padding(.leading, 10)
                 Spacer()
                 HStack{
-                    Text(ccnum).padding(.leading, 10).foregroundColor(.white)
+                    Text(credit_card.card_number).padding(.leading, 10).foregroundColor(.white)
                     Spacer()
                 }
                 Spacer()
                 HStack{
                     Text("Valid Thru: ").foregroundColor(.white)
-                    Text(valid).padding(.trailing, 10).foregroundColor(.white)
+                    Text(credit_card.valid_thru).padding(.trailing, 10).foregroundColor(.white)
                     Text("Code: ").foregroundColor(.white)
                     if seecode == false {
                         Text("***").foregroundColor(.white)
                     } else {
-                        Text(code).foregroundColor(.white)
+                        Text(credit_card.security_code).foregroundColor(.white)
                     }
                     Spacer()
                 }.padding(.leading, 10).padding(.trailing, 10)
                 Spacer()
                 HStack{
-                    Text(holdername).foregroundColor(.white)
+                    Text(credit_card.holder_name).foregroundColor(.white)
                     Spacer()
                 }.padding(.leading, 10).padding(.bottom, 10)
             }.frame(width: 300, height: 175, alignment: .center).border(Color.blue)
@@ -71,12 +63,12 @@ struct CCView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Name").foregroundColor(.gray).font(.headline)
-                            Text(name)
+                            Text(credit_card.name)
                         }
                         Spacer()
                         Button(action: {
-                            if (name != ""){
-                                board.string = name
+                                if (credit_card.name != ""){
+                                    board.string = credit_card.name
                             }}) {
                             Text("Copy")
                         }
@@ -85,27 +77,27 @@ struct CCView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Bank").foregroundColor(.gray).font(.headline)
-                            Text(bank)
+                            Text(credit_card.bank)
                         }
                         Spacer()
                         Button(action: {
-                            if (bank != ""){
-                                board.string = bank
+                                if (credit_card.bank != ""){
+                                    board.string = credit_card.bank
                             }}) {
                             Text("Copy")
                         }
                     }
                     Divider()
-                    if cardname != "" {
+                    if credit_card.card_name != "" {
                         HStack{
                             VStack(alignment: .leading){
                                 Text("Card Name").foregroundColor(.gray).font(.headline)
-                                Text(cardname)
+                                Text(credit_card.card_name)
                             }
                             Spacer()
                             Button(action: {
-                                if (cardname != ""){
-                                    board.string = cardname
+                                    if (credit_card.card_name != ""){
+                                        board.string = credit_card.card_name
                                 }}) {
                                 Text("Copy")
                             }
@@ -115,12 +107,12 @@ struct CCView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Credit Card Number").foregroundColor(.gray).font(.headline)
-                            Text(ccnum)
+                            Text(credit_card.card_number)
                         }
                         Spacer()
                         Button(action: {
-                            if ((ccnum) != ""){
-                                board.string = (ccnum)
+                                if (credit_card.card_number != ""){
+                                    board.string = (credit_card.card_number)
                             }}) {
                             Text("Copy")
                         }
@@ -131,12 +123,12 @@ struct CCView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Holder's Name").foregroundColor(.gray).font(.headline)
-                            Text(holdername)
+                            Text(credit_card.holder_name)
                         }
                         Spacer()
                         Button(action: {
-                            if ((holdername) != ""){
-                                board.string = (holdername)
+                                if ((credit_card.holder_name) != ""){
+                                    board.string = (credit_card.holder_name)
                             }}) {
                             Text("Copy")
                         }
@@ -145,12 +137,12 @@ struct CCView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Valid Thru").foregroundColor(.gray).font(.headline)
-                            Text(valid)
+                            Text(credit_card.valid_thru)
                         }
                         Spacer()
                         Button(action: {
-                            if ((valid) != ""){
-                                board.string = (valid)
+                                if (credit_card.valid_thru != ""){
+                                    board.string = (credit_card.valid_thru)
                             }}) {
                             Text("Copy")
                         }
@@ -162,7 +154,7 @@ struct CCView: View {
                             if seecode == false {
                                 Text("***")
                             } else {
-                                Text(code)
+                                Text(credit_card.security_code)
                             }
                         }
                         Spacer()
@@ -175,37 +167,37 @@ struct CCView: View {
                             }
                         })
                         Button(action: {
-                            if ((code) != ""){
-                                board.string = (code)
+                                if ((credit_card.security_code) != ""){
+                                board.string = credit_card.security_code
                             }}) {
                             Text("Copy")
                         }
                     }
-                    if username != "" {
+                    if credit_card.username != "" {
                         Divider()
                         HStack{
                             VStack(alignment: .leading){
                                 Text("Login Username").foregroundColor(.gray).font(.headline)
-                                Text(username)
+                                Text(credit_card.username)
                             }
                             Spacer()
                             Button(action: {
-                                if ((username) != ""){
-                                    board.string = (username)
+                                    if ((credit_card.username) != ""){
+                                        board.string = (credit_card.username)
                                 }}) {
                                 Text("Copy")
                             }
                         }
                     }
-                    if password != "" {
+                    if credit_card.password != "" {
                         Divider()
                         HStack{
                             VStack(alignment: .leading){
                                 Text("Login Password").foregroundColor(.gray).font(.headline)
                                 if seepw == false {
-                                    Text(hide(hid: password))
+                                    Text(hide(hid: credit_card.password))
                                 } else {
-                                    Text(password)
+                                    Text(credit_card.password)
                                 }
                             }
                             Spacer()
@@ -218,8 +210,8 @@ struct CCView: View {
                                 }
                             })
                             Button(action: {
-                                if ((password) != ""){
-                                    board.string = (password)
+                                    if ((credit_card.password) != ""){
+                                        board.string = (credit_card.password)
                                 }}) {
                                 Text("Copy")
                             }
@@ -227,17 +219,17 @@ struct CCView: View {
                     }
                 }.padding(.leading, 20).padding(.trailing, 20)
                 VStack(alignment: .leading){
-                    if notes != "" {
+                    if credit_card.notes != "" {
                         Divider()
                         Text("Notes").foregroundColor(.gray).font(.headline)
-                        Text(notes)
+                        Text(credit_card.notes)
                     }
                 }.padding(.leading, 20).padding(.trailing, 20)
                 Divider()
             }
             
             Spacer()
-            NavigationLink(destination: CCViewEdit()){
+            NavigationLink(destination: CCViewEdit(credit_card: credit_card)){
             Text("Edit")
             }.frame(width: 100, height: 40, alignment: .center)
                 .background(Color.blue)
@@ -246,6 +238,12 @@ struct CCView: View {
             //Spacer()
             Divider()
         }.navigationBarTitle("Credit Card", displayMode: .inline)
+        .navigationBarItems(leading: Button(action: {
+            self.presentationMode.wrappedValue.dismiss()
+        }){
+            HStack{
+            }
+        })
         .toolbar{
             ToolbarItemGroup(placement: .navigationBarTrailing){
                 Button(action: { toggleFav()}, label: {
@@ -255,29 +253,6 @@ struct CCView: View {
                         Image(systemName: "star.fill")
                     }
                 }).padding(.trailing, 20)
-            }
-            ToolbarItemGroup(placement: .bottomBar){
-                Spacer()
-                NavigationLink(destination: ListView(), isActive: $viewvault){ EmptyView() }
-                Button(action: {viewvault = true}){
-                    Image(systemName: "key.fill").resizable().frame(width: 42, height: 50)
-                        .foregroundColor(.black)
-                }
-                Spacer()
-                NavigationLink(destination: GeneratePasswordView(), isActive: $viewgenpw){ EmptyView() }
-                Button(action: {viewgenpw = true}){
-                    Image(systemName: "lock.rotation")
-                        .foregroundColor(.gray)
-                }
-
-                Spacer()
-                
-                NavigationLink(destination: SettingsView(), isActive: $viewsettings){ EmptyView() }
-                Button(action: {viewsettings = true}){
-                    Image(systemName: "gearshape.fill").resizable().frame(width: 50, height: 50)
-                        .foregroundColor(.gray)
-                }
-                Spacer()
             }
         }
     }
@@ -292,7 +267,7 @@ struct CCView: View {
     
     func toggleCode(){
         if seecode == false {
-            print(code.count)
+            print(credit_card.security_code.count)
             seecode = true
         } else {
             seecode = false
@@ -316,8 +291,8 @@ struct CCView: View {
     }
 }
 
-struct CCView_Previews: PreviewProvider {
-    static var previews: some View {
-        CCView()
-    }
-}
+//struct CCView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CCView()
+//    }
+//}

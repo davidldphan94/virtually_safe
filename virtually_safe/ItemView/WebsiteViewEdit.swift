@@ -65,9 +65,10 @@ struct WebsiteViewEdit: View {
         }.navigationBarTitle("Password", displayMode: .inline)
         .toolbar{
             ToolbarItemGroup(placement: .navigationBarTrailing){
-                NavigationLink(destination: WebsiteList(), isActive: $success) { EmptyView() }
+//                NavigationLink(destination: WebsiteList(), isActive: $success) { EmptyView() }
                 Button(action: {
                     submitWebsite()
+                    self.presentationMode.wrappedValue.dismiss()
                 }, label: {
                     Text("Save")
                         .padding(.trailing, 20)
@@ -113,7 +114,7 @@ struct WebsiteViewEdit: View {
             password = ""
             notes = ""
             errTitle = "Success"
-            errmsg = "Review submitted"
+            errmsg = "Review submitted. Values will be updated upon revisit."
             success = true
         }
         showAlert = true

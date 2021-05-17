@@ -50,7 +50,7 @@ class CCViewModel: ObservableObject {
     func fetchData() {
         let user = Auth.auth().currentUser!
         db.collection("users").document(user.uid)
-            .collection("websites").addSnapshotListener { (querySnapshot, error) in
+            .collection("credit_cards").addSnapshotListener { (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else {
                 print("No documents")
                 return
