@@ -23,6 +23,8 @@ struct WebsiteViewEdit: View {
     @State var password = ""
     @State var notes = ""
     
+    private var crypto = Encryption()
+    
     let dbRef = Firestore.firestore()
     let key = "mZ4!IY$o8T"
     
@@ -100,11 +102,11 @@ struct WebsiteViewEdit: View {
             errTitle = "Submission failed"
             errmsg = "Not enough information provided"
         } else {
-            let w = Website(id: .init(), name: encrypt(plainTxt: name, encryptionKey: key),
-                            url: encrypt(plainTxt: url, encryptionKey: key),
-                            username: encrypt(plainTxt: username, encryptionKey: key),
-                            password: encrypt(plainTxt: password, encryptionKey: key),
-                            notes: encrypt(plainTxt: notes, encryptionKey: key))
+            let w = Website(id: .init(), name: self.crypto.encrypt(plainTxt: name, encryptionKey: key),
+                            url: self.crypto.encrypt(plainTxt: url, encryptionKey: key),
+                            username: self.crypto.encrypt(plainTxt: username, encryptionKey: key),
+                            password: self.crypto.encrypt(plainTxt: password, encryptionKey: key),
+                            notes: self.crypto.encrypt(plainTxt: notes, encryptionKey: key))
             let user = Auth.auth().currentUser!
             if (name != website?.name ?? name) {
                 dbRef.collection("users").document(user.uid).collection("websites").document(name).setData(w.dictionary, merge: true)

@@ -29,6 +29,8 @@ struct CCViewEdit: View {
     @State var errTitle = ""
     @State var errmsg = ""
     
+    private var crypto = Encryption()
+    
     var body: some View {
         VStack{
             
@@ -124,16 +126,16 @@ struct CCViewEdit: View {
             errTitle = "Submission failed"
             errmsg = "Not enough information provided"
         } else {
-            let new_card = CC(id: .init(), name: encrypt(plainTxt: name, encryptionKey: key),
-                              bank: encrypt(plainTxt: bank, encryptionKey: key),
-                              card_name: encrypt(plainTxt: cardname, encryptionKey: key),
-                              card_number: encrypt(plainTxt: ccnum, encryptionKey: key),
-                              holder_name: encrypt(plainTxt: holdername, encryptionKey: key),
-                              valid_thru: encrypt(plainTxt: valid, encryptionKey: key),
-                              security_code: encrypt(plainTxt: code, encryptionKey: key),
-                              username: encrypt(plainTxt: username, encryptionKey: key),
-                              password: encrypt(plainTxt: password, encryptionKey: key),
-                              notes: encrypt(plainTxt: notes, encryptionKey: key))
+            let new_card = CC(id: .init(), name: self.crypto.encrypt(plainTxt: name, encryptionKey: key),
+                              bank: self.crypto.encrypt(plainTxt: bank, encryptionKey: key),
+                              card_name: self.crypto.encrypt(plainTxt: cardname, encryptionKey: key),
+                              card_number: self.crypto.encrypt(plainTxt: ccnum, encryptionKey: key),
+                              holder_name: self.crypto.encrypt(plainTxt: holdername, encryptionKey: key),
+                              valid_thru: self.crypto.encrypt(plainTxt: valid, encryptionKey: key),
+                              security_code: self.crypto.encrypt(plainTxt: code, encryptionKey: key),
+                              username: self.crypto.encrypt(plainTxt: username, encryptionKey: key),
+                              password: self.crypto.encrypt(plainTxt: password, encryptionKey: key),
+                              notes: self.crypto.encrypt(plainTxt: notes, encryptionKey: key))
             let user = Auth.auth().currentUser!
             let dbRef = Firestore.firestore()
             if (name != credit_card?.name ?? name) {
@@ -158,11 +160,6 @@ struct CCViewEdit: View {
         }
     }
     
-    func encrypt(plainTxt: String, encryptionKey: String) -> String {
-            let messageData = plainTxt.data(using: .utf8)!
-            let cipherData = RNCryptor.encrypt(data: messageData, withPassword: encryptionKey)
-            return cipherData.base64EncodedString()
-        }
     
     var alert : Alert {
         Alert(title: Text(errTitle),
