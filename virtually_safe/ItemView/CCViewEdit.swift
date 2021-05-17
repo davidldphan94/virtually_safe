@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 import FirebaseFirestore
+import RNCryptor
 
 struct CCViewEdit: View {
     @Environment(\.presentationMode) var presentationMode
@@ -123,7 +124,16 @@ struct CCViewEdit: View {
             errTitle = "Submission failed"
             errmsg = "Not enough information provided"
         } else {
-            let new_card = CC(id: .init(), name: name, bank: bank, card_name: cardname, card_number: ccnum, holder_name: holdername, valid_thru: valid, security_code: code, username: username, password: password, notes: notes)
+            let new_card = CC(id: .init(), name: encrypt(plainTxt: name, encryptionKey: key),
+                              bank: encrypt(plainTxt: bank, encryptionKey: key),
+                              card_name: encrypt(plainTxt: cardname, encryptionKey: key),
+                              card_number: encrypt(plainTxt: ccnum, encryptionKey: key),
+                              holder_name: encrypt(plainTxt: holdername, encryptionKey: key),
+                              valid_thru: encrypt(plainTxt: valid, encryptionKey: key),
+                              security_code: encrypt(plainTxt: code, encryptionKey: key),
+                              username: encrypt(plainTxt: username, encryptionKey: key),
+                              password: encrypt(plainTxt: password, encryptionKey: key),
+                              notes: encrypt(plainTxt: notes, encryptionKey: key))
             let user = Auth.auth().currentUser!
             let dbRef = Firestore.firestore()
             if (name != credit_card?.name ?? name) {
@@ -147,6 +157,13 @@ struct CCViewEdit: View {
             showAlert = true
         }
     }
+    
+    func encrypt(plainTxt: String, encryptionKey: String) -> String {
+            let messageData = plainTxt.data(using: .utf8)!
+            let cipherData = RNCryptor.encrypt(data: messageData, withPassword: encryptionKey)
+            return cipherData.base64EncodedString()
+        }
+    
     var alert : Alert {
         Alert(title: Text(errTitle),
               message: Text(errmsg))

@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 import FirebaseFirestore
+import RNCryptor
 
 struct WebsiteViewEdit: View {
     @Environment(\.presentationMode) var presentationMode
@@ -23,6 +24,7 @@ struct WebsiteViewEdit: View {
     @State var notes = ""
     
     let dbRef = Firestore.firestore()
+    let key = "mZ4!IY$o8T"
     
     var body: some View {
         VStack{
@@ -98,7 +100,11 @@ struct WebsiteViewEdit: View {
             errTitle = "Submission failed"
             errmsg = "Not enough information provided"
         } else {
-            let w = Website(id: .init(), name: name, url: url, username: username, password: password, notes: notes)
+            let w = Website(id: .init(), name: encrypt(plainTxt: name, encryptionKey: key),
+                            url: encrypt(plainTxt: url, encryptionKey: key),
+                            username: encrypt(plainTxt: username, encryptionKey: key),
+                            password: encrypt(plainTxt: password, encryptionKey: key),
+                            notes: encrypt(plainTxt: notes, encryptionKey: key))
             let user = Auth.auth().currentUser!
             if (name != website?.name ?? name) {
                 dbRef.collection("users").document(user.uid).collection("websites").document(name).setData(w.dictionary, merge: true)
@@ -120,6 +126,13 @@ struct WebsiteViewEdit: View {
         Alert(title: Text(errTitle),
               message: Text(errmsg))
     }
+    
+    func encrypt(plainTxt: String, encryptionKey: String) -> String {
+            let messageData = plainTxt.data(using: .utf8)!
+            let cipherData = RNCryptor.encrypt(data: messageData, withPassword: encryptionKey)
+            return cipherData.base64EncodedString()
+        }
+    
 }
 
 struct WebsiteViewEdit_Previews: PreviewProvider {
