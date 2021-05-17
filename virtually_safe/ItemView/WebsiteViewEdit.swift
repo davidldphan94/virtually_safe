@@ -23,7 +23,7 @@ struct WebsiteViewEdit: View {
     @State var password = ""
     @State var notes = ""
     
-    private var crypto = Encryption()
+    let crypto = Encryption()
     
     let dbRef = Firestore.firestore()
     let key = "mZ4!IY$o8T"

@@ -199,7 +199,7 @@ struct DriverViewEdit: View {
                 dbRef.collection("users").document(user.uid).collection("licenses").document(name).setData(new_license.dictionary, merge: true)
                 dbRef.collection("users").document(user.uid).collection("licenses").document(license!.name).delete()
             } else {
-                dbRef.collection("users").document(user.uid).collection("licenses").document(new_license.name).setData(new_license.dictionary, merge: true)
+                dbRef.collection("users").document(user.uid).collection("licenses").document(name).setData(new_license.dictionary, merge: true)
             }
             name = ""
             licenseclass = ""

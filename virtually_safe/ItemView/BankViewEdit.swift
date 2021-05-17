@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 import FirebaseFirestore
+import RNCryptor
 
 struct BankViewEdit: View {
     @Environment(\.presentationMode) var presentationMode
@@ -23,6 +24,8 @@ struct BankViewEdit: View {
     @State var showAlert = false
     @State var errTitle = ""
     @State var errmsg = ""
+    
+    let crypto = Encryption()
     
     var body: some View {
         VStack{
@@ -101,7 +104,13 @@ struct BankViewEdit: View {
             errTitle = "Submission failed"
             errmsg = "Not enough information provided"
         } else {
-            let b = Bank(id: .init(), name: name, bank_name: bankname, type: acctype, routing_number: routing, account_number: accnum, pin: pin, notes: notes)
+            let b = Bank(id: .init(), name:  self.crypto.encrypt(plainTxt: name, encryptionKey: key),
+                         bank_name:  self.crypto.encrypt(plainTxt: bankname, encryptionKey: key),
+                         type:  self.crypto.encrypt(plainTxt: acctype, encryptionKey: key),
+                         routing_number:  self.crypto.encrypt(plainTxt: routing, encryptionKey: key),
+                         account_number:  self.crypto.encrypt(plainTxt: accnum, encryptionKey: key),
+                         pin:  self.crypto.encrypt(plainTxt: pin, encryptionKey: key),
+                         notes:  self.crypto.encrypt(plainTxt: notes, encryptionKey: key))
             let user = Auth.auth().currentUser!
             let dbRef = Firestore.firestore()
             if name != bank?.name ?? name {

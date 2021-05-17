@@ -29,7 +29,7 @@ struct CCViewEdit: View {
     @State var errTitle = ""
     @State var errmsg = ""
     
-    private var crypto = Encryption()
+    let crypto = Encryption()
     
     var body: some View {
         VStack{
