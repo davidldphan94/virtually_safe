@@ -16,6 +16,7 @@ struct Website: Identifiable, Codable, Hashable {
     var username : String
     var password : String
     var notes : String
+    var fav : Bool
     
     var dictionary: [String : Any] {
         let data = (try? JSONEncoder().encode(self)) ?? Data()
@@ -29,6 +30,7 @@ struct Website: Identifiable, Codable, Hashable {
         case username
         case password
         case notes
+        case fav
     }
 }
 
@@ -54,7 +56,8 @@ class WebsiteViewModel: ObservableObject {
                 let username = self.crypto.decrypt(encryptedMessage: data["username"] as? String ?? "", encryptionKey: key)
                 let password = self.crypto.decrypt(encryptedMessage: data["password"] as? String ?? "", encryptionKey: key)
                 let notes = self.crypto.decrypt(encryptedMessage: data["notes"] as? String ?? "", encryptionKey: key)
-                return Website(id: .init(), name: name, url: url, username: username, password: password, notes: notes)
+                let fav = data["fav"] as? Bool ?? false
+                return Website(id: .init(), name: name, url: url, username: username, password: password, notes: notes, fav: fav)
             }
         }
     }

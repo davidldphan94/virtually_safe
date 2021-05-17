@@ -18,6 +18,7 @@ struct Bank: Identifiable, Codable, Hashable {
     var account_number : String
     var pin : String
     var notes : String
+    var fav : Bool
     
     var dictionary: [String : Any] {
         let data = (try? JSONEncoder().encode(self)) ?? Data()
@@ -33,6 +34,7 @@ struct Bank: Identifiable, Codable, Hashable {
         case account_number
         case pin
         case notes
+        case fav
     }
 }
 
@@ -60,7 +62,8 @@ class BankViewModel: ObservableObject {
                 let account_number = self.crypto.decrypt(encryptedMessage:data["account_number"] as? String ?? "", encryptionKey: key)
                 let pin = self.crypto.decrypt(encryptedMessage:data["pin"] as? String ?? "", encryptionKey: key)
                 let notes = self.crypto.decrypt(encryptedMessage:data["notes"] as? String ?? "", encryptionKey: key)
-                return Bank(id: .init(), name: name, bank_name: bank, type: type, routing_number: routing_number, account_number: account_number, pin: pin, notes: notes)
+                let fav = data["fav"] as? Bool ?? false
+                return Bank(id: .init(), name: name, bank_name: bank, type: type, routing_number: routing_number, account_number: account_number, pin: pin, notes: notes, fav: fav)
             }
         }
     }

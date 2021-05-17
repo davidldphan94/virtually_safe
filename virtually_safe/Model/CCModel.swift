@@ -22,6 +22,7 @@ struct CC: Identifiable, Codable, Hashable {
     var username : String
     var password : String
     var notes : String
+    var fav : Bool
     
     var dictionary: [String : Any] {
         let data = (try? JSONEncoder().encode(self)) ?? Data()
@@ -40,6 +41,7 @@ struct CC: Identifiable, Codable, Hashable {
         case username
         case password
         case notes
+        case fav
     }
 }
 
@@ -70,7 +72,8 @@ class CCViewModel: ObservableObject {
                 let username = self.crypto.decrypt(encryptedMessage: data["username"] as? String ?? "", encryptionKey: key)
                 let password = self.crypto.decrypt(encryptedMessage: data["password"] as? String ?? "", encryptionKey: key)
                 let notes = self.crypto.decrypt(encryptedMessage: data["notes"] as? String ?? "", encryptionKey: key)
-                return CC(id: .init(), name: name, bank: bank, card_name: card_name, card_number: card_number, holder_name: holder_name, valid_thru: valid_thru, security_code: security_code, username: username, password: password, notes: notes)
+                let fav = data["fav"] as? Bool ?? false
+                return CC(id: .init(), name: name, bank: bank, card_name: card_name, card_number: card_number, holder_name: holder_name, valid_thru: valid_thru, security_code: security_code, username: username, password: password, notes: notes, fav: fav)
             }
         }
     }

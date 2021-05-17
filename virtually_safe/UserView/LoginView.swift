@@ -15,12 +15,10 @@ class userInfo: ObservableObject{
 
 struct LoginView: View {
     @ObservedObject var info = userInfo()
-    //@ObservedObject var email: userInfo
     @State var email = ""
     @State var password = ""
     @State var loginSucc = false
     @State private var loginAlert = false
-    //@ObservedObject var email = ""
     
     var alert: Alert {
         Alert(title: Text("Incorrect Credentials"),
@@ -31,6 +29,7 @@ struct LoginView: View {
         NavigationView{
             Group {
                 VStack {
+                    
                     Text("Virtually Safe")
                         .font(.title)
                         .bold()

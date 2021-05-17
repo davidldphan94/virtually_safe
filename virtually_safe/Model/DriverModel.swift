@@ -29,6 +29,7 @@ struct DriverLicense: Identifiable, Codable, Hashable {
     var issued : String
     var doc : String
     var notes : String
+    var fav : Bool
     
     var dictionary: [String : Any] {
         let data = (try? JSONEncoder().encode(self)) ?? Data()
@@ -55,6 +56,7 @@ struct DriverLicense: Identifiable, Codable, Hashable {
         case issued
         case doc
         case notes
+        case fav
     }
 }
 
@@ -93,7 +95,8 @@ class DriverViewModel: ObservableObject {
                 let issued = self.crypto.decrypt(encryptedMessage: data["issued"] as? String ?? "", encryptionKey: key)
                 let doc = self.crypto.decrypt(encryptedMessage: data["doc"] as? String ?? "", encryptionKey: key)
                 let notes = self.crypto.decrypt(encryptedMessage: data["notes"] as? String ?? "", encryptionKey: key)
-                return DriverLicense(id: .init(), name: name, licenseclass: licenseclass, num: num, driver_name: driver_name, addrSt: addrSt, addrSt2: addrSt2 , addrCity: addrCity, addrState: addrState, addrZip: addrZip, addrCountry : addrCountry, sex: sex, height: height, eyes: eyes, dob: dob, expire: expire, issued: issued, doc: doc, notes: notes)
+                let fav = data["fav"] as? Bool ?? false
+                return DriverLicense(id: .init(), name: name, licenseclass: licenseclass, num: num, driver_name: driver_name, addrSt: addrSt, addrSt2: addrSt2 , addrCity: addrCity, addrState: addrState, addrZip: addrZip, addrCountry : addrCountry, sex: sex, height: height, eyes: eyes, dob: dob, expire: expire, issued: issued, doc: doc, notes: notes, fav: fav)
             }
         }
     }
