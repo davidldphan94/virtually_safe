@@ -35,6 +35,7 @@ struct Website: Identifiable, Codable, Hashable {
 class WebsiteViewModel: ObservableObject {
     @Published var websites = [Website]()
     
+    private var crypto = Encryption()
     private var db = Firestore.firestore()
     
     func fetchData() {
@@ -45,14 +46,14 @@ class WebsiteViewModel: ObservableObject {
                 print("No documents")
                 return
             }
-
+                
             self.websites = documents.map { queryDocumentSnapshot -> Website in
                 let data = queryDocumentSnapshot.data()
-                let name = data["name"] as? String ?? ""
-                let url = data["url"] as? String ?? ""
-                let username = data["username"] as? String ?? ""
-                let password = data["password"] as? String ?? ""
-                let notes = data["notes"] as? String ?? ""
+                let name = self.crypto.decrypt(encryptedMessage: data["name"] as? String ?? "", encryptionKey: key)
+                let url = self.crypto.decrypt(encryptedMessage: data["url"] as? String ?? "", encryptionKey: key)
+                let username = self.crypto.decrypt(encryptedMessage: data["username"] as? String ?? "", encryptionKey: key)
+                let password = self.crypto.decrypt(encryptedMessage: data["password"] as? String ?? "", encryptionKey: key)
+                let notes = self.crypto.decrypt(encryptedMessage: data["notes"] as? String ?? "", encryptionKey: key)
                 return Website(id: .init(), name: name, url: url, username: username, password: password, notes: notes)
             }
         }

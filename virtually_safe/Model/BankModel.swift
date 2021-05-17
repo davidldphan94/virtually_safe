@@ -40,6 +40,7 @@ class BankViewModel: ObservableObject {
     @Published var bank_info = [Bank]()
     
     private var db = Firestore.firestore()
+    private var crypto = Encryption()
     
     func fetchData() {
         let user = Auth.auth().currentUser!
@@ -49,16 +50,16 @@ class BankViewModel: ObservableObject {
                 print("No documents")
                 return
             }
-
+                
             self.bank_info = documents.map { queryDocumentSnapshot -> Bank in
                 let data = queryDocumentSnapshot.data()
-                let name = data["name"] as? String ?? ""
-                let bank = data["bank_name"] as? String ?? ""
-                let type = data["type"] as? String ?? ""
-                let routing_number = data["routing_number"] as? String ?? ""
-                let account_number = data["account_number"] as? String ?? ""
-                let pin = data["pin"] as? String ?? ""
-                let notes = data["notes"] as? String ?? ""
+                let name = self.crypto.decrypt(encryptedMessage: data["name"] as? String ?? "", encryptionKey: key)
+                let bank = self.crypto.decrypt(encryptedMessage: data["bank_name"] as? String ?? "", encryptionKey: key)
+                let type = self.crypto.decrypt(encryptedMessage: data["type"] as? String ?? "", encryptionKey: key)
+                let routing_number = self.crypto.decrypt(encryptedMessage: data["routing_number"] as? String ?? "", encryptionKey: key)
+                let account_number = self.crypto.decrypt(encryptedMessage:data["account_number"] as? String ?? "", encryptionKey: key)
+                let pin = self.crypto.decrypt(encryptedMessage:data["pin"] as? String ?? "", encryptionKey: key)
+                let notes = self.crypto.decrypt(encryptedMessage:data["notes"] as? String ?? "", encryptionKey: key)
                 return Bank(id: .init(), name: name, bank_name: bank, type: type, routing_number: routing_number, account_number: account_number, pin: pin, notes: notes)
             }
         }
