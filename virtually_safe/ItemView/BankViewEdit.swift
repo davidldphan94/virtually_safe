@@ -11,6 +11,7 @@ import FirebaseFirestore
 
 struct BankViewEdit: View {
     @Environment(\.presentationMode) var presentationMode
+    @State var bank : Bank?
     @State var name = ""
     @State var bankname = ""
     @State var acctype = ""
@@ -30,31 +31,31 @@ struct BankViewEdit: View {
                 Divider().padding(.top, 50)
                 VStack(alignment: .leading){
                     Text("Name").foregroundColor(.gray).font(.headline)
-                    TextField("name", text: $name)
+                    TextField(bank?.name ?? "name", text: $name)
                     Divider()
                     Text("Bank Name").foregroundColor(.gray).font(.headline)
-                    TextField("bank name", text: $bankname)
+                    TextField(bank?.bank_name ?? "bank name", text: $bankname)
                     Divider()
                     Text("Account Type").foregroundColor(.gray).font(.headline)
                     //TextField("Checking/Savings", text: $acctype)
-                    TextField("Checking/Savings", text: $acctype)
+                    TextField(bank?.type ?? "Checking/Savings", text: $acctype)
                     Divider()
                 }.padding(.leading, 20).padding(.trailing, 20)
                 VStack(alignment: .leading){
                     
                     Text("Routing Number").foregroundColor(.gray).font(.headline)
-                    TextField("routing #", text: $routing)
+                    TextField(bank?.routing_number ?? "routing #", text: $routing)
                     Divider()
                     Text("Account Number").foregroundColor(.gray).font(.headline)
-                    TextField("account #", text: $accnum).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
+                    TextField(bank?.account_number ?? "account #", text: $accnum).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
                     Divider()
                     Text("PIN Number").foregroundColor(.gray).font(.headline)
-                    TextField("PIN #", text: $pin).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
+                    TextField(bank?.pin ?? "PIN #", text: $pin).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
                 }.padding(.leading, 20).padding(.trailing, 20)
                 VStack(alignment: .leading){
                     Divider()
                     Text("Notes").foregroundColor(.gray).font(.headline)
-                    TextField("notes", text: $notes).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
+                    TextField(bank?.notes ?? "notes", text: $notes).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
                 }.padding(.leading, 20).padding(.trailing, 20)
                 Divider()
             }
@@ -63,7 +64,10 @@ struct BankViewEdit: View {
         }.navigationBarTitle("Bank Account", displayMode: .inline)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing){
-                Button(action: {uploadBank()}, label: {
+                Button(action: {
+                    uploadBank()
+                    self.presentationMode.wrappedValue.dismiss()
+                }, label: {
                     Text("Save")
                         .padding(.trailing, 20)
                 }).padding(.trailing, 20)
@@ -81,6 +85,15 @@ struct BankViewEdit: View {
     }
     
     func uploadBank() {
+        if bank != nil {
+            name = name != "" ? name : bank!.name
+            bankname = bankname != "" ? bankname : bank!.bank_name
+            acctype = acctype != "" ? acctype : bank!.type
+            routing = routing != "" ? routing : bank!.routing_number
+            accnum = accnum != "" ? accnum : bank!.account_number
+            pin = pin != "" ? accnum : bank!.pin
+            notes = notes != "" ? notes : bank!.notes
+        }
         if name == "" || bankname == "" ||
             acctype == "" || accnum == "" ||
             routing == "" || pin == ""  {
@@ -88,10 +101,17 @@ struct BankViewEdit: View {
             errTitle = "Submission failed"
             errmsg = "Not enough information provided"
         } else {
-            let bank = Bank(id: .init(), name: name, bank_name: bankname, type: acctype, routing_number: routing, account_number: accnum, pin: pin, notes: notes)
+            let b = Bank(id: .init(), name: name, bank_name: bankname, type: acctype, routing_number: routing, account_number: accnum, pin: pin, notes: notes)
             let user = Auth.auth().currentUser!
             let dbRef = Firestore.firestore()
-            dbRef.collection("users").document(user.uid).collection("banks").document(name).setData(bank.dictionary, merge: true)
+            if name != bank?.name ?? name {
+                dbRef.collection("users").document(user.uid).collection("banks")
+                    .document(name).setData(b.dictionary, merge: true)
+                dbRef.collection("users").document(user.uid).collection("banks")
+                    .document(bank!.name).delete()
+            } else {
+                dbRef.collection("users").document(user.uid).collection("banks")  .document(name).setData(b.dictionary, merge: true)
+            }
             name = ""
             bankname = ""
             acctype = ""
@@ -100,7 +120,7 @@ struct BankViewEdit: View {
             pin = ""
             notes = ""
             errTitle = "Success"
-            errmsg = "Review submitted"
+            errmsg = "Review submitted. Values will be updates upon revisit."
             showAlert = true
         }
     }

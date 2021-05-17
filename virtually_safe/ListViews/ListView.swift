@@ -28,7 +28,7 @@ struct ListView: View {
                 .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
                 .padding()
                 
-                NavigationLink(destination: BankView()){
+                NavigationLink(destination: BankList()){
                 Text("Bank View")
                 }
                 .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)

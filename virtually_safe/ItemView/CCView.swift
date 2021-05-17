@@ -238,9 +238,7 @@ struct CCView: View {
             //Spacer()
             Divider()
         }.navigationBarTitle("Credit Card", displayMode: .inline)
-        .navigationBarItems(leading: Button(action: {
-            self.presentationMode.wrappedValue.dismiss()
-        }){
+        .navigationBarItems(leading: Button(action: {}){
             HStack{
             }
         })

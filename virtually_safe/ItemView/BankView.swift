@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct BankView: View {
+    @State var bank : Bank
     @State var favorite = false
     @State var seepin = false
     @State var viewvault = false
@@ -32,13 +33,13 @@ struct BankView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Name").foregroundColor(.gray).font(.headline)
-                            Text(name)
+                            Text(bank.name)
                         }
                         
                         Spacer()
                         Button(action: {
-                            if (name != ""){
-                                board.string = name
+                            if (bank.name != ""){
+                                board.string = bank.name
                             }}) {
                             Text("Copy")
                         }
@@ -47,12 +48,12 @@ struct BankView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Bank Name").foregroundColor(.gray).font(.headline)
-                            Text(bankname)
+                            Text(bank.bank_name)
                         }
                         Spacer()
                         Button(action: {
-                            if (bankname != ""){
-                                board.string = bankname
+                            if (bank.bank_name != ""){
+                                board.string = bank.bank_name
                             }}) {
                             Text("Copy")
                         }
@@ -61,12 +62,12 @@ struct BankView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Account Type").foregroundColor(.gray).font(.headline)
-                            Text(acctype)
+                            Text(bank.type)
                         }
                         Spacer()
                         Button(action: {
-                            if (acctype != ""){
-                                board.string = acctype
+                            if (bank.type != ""){
+                                board.string = bank.type
                             }}) {
                             Text("Copy")
                         }
@@ -75,13 +76,13 @@ struct BankView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Routing Number").foregroundColor(.gray).font(.headline)
-                            Text(routing)
+                            Text(bank.routing_number)
                         }
                         
                         Spacer()
                         Button(action: {
-                            if (routing != ""){
-                                board.string = routing
+                            if (bank.routing_number != ""){
+                                board.string = bank.routing_number
                             }}) {
                             Text("Copy")
                         }
@@ -90,13 +91,13 @@ struct BankView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Account Number").foregroundColor(.gray).font(.headline)
-                            Text(accnum)
+                            Text(bank.account_number)
                         }
                         
                         Spacer()
                         Button(action: {
-                            if (accnum != ""){
-                                board.string = accnum
+                            if (bank.account_number != ""){
+                                board.string = bank.account_number
                             }}) {
                             Text("Copy")
                         }
@@ -110,9 +111,9 @@ struct BankView: View {
                         VStack(alignment: .leading){
                             Text("PIN Number").foregroundColor(.gray).font(.headline)
                             if seepin == false {
-                                Text(hide(hid: pin))
+                                Text(hide(hid: bank.pin))
                             } else {
-                                Text(pin)
+                                Text(bank.pin)
                             }
                         }
                         Spacer()
@@ -125,22 +126,22 @@ struct BankView: View {
                             }
                         })
                         Button(action: {
-                            if (pin != ""){
-                                board.string = pin
+                            if (bank.pin != ""){
+                                board.string = bank.pin
                             }}) {
                             Text("Copy")
                         }
                     }
-                    if notes != "" {
+                    if bank.notes != "" {
                         Divider()
                         Text("Notes").foregroundColor(.gray).font(.headline)
-                        Text(notes)
+                        Text(bank.notes)
                     }
                 }.padding(.leading, 20).padding(.trailing, 20)
                 Divider()
             }
             Spacer()
-            NavigationLink(destination: BankViewEdit()){
+            NavigationLink(destination: BankViewEdit(bank: bank)){
             Text("Edit")
             }.frame(width: 100, height: 40, alignment: .center)
                 .background(Color.blue)
@@ -148,8 +149,16 @@ struct BankView: View {
                 .padding(.bottom, 50)
             
         }.navigationBarTitle("Bank Account", displayMode: .inline)
-        //.navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: Button(action: {}){
+            HStack{
+            }
+        })
         .toolbar{
+            ToolbarItem {
+                HStack {
+                    
+                }
+            }
             ToolbarItemGroup(placement: .navigationBarTrailing){
                 Button(action: { toggleFav()}, label: {
                     if favorite == false {
@@ -208,8 +217,8 @@ struct BankView: View {
     }
 }
 
-struct BankView_Previews: PreviewProvider {
-    static var previews: some View {
-        BankView()
-    }
-}
+//struct BankView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        BankView()
+//    }
+//}

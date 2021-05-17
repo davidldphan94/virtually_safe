@@ -1,5 +1,5 @@
 //
-//  WebsiteList.swift
+//  DriverList.swift
 //  virtually_safe
 //
 //  Created by David Phan on 5/16/21.
@@ -7,25 +7,28 @@
 
 import SwiftUI
 import Firebase
-import FirebaseFirestore
+import FirebaseStorage
 
-struct WebsiteList: View {
+
+struct DriverList: View {
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var model = WebsiteViewModel()
+    @ObservedObject var model = BankViewModel()
     @State var addWebsite = true
     @State var viewvault = false
     @State var viewgenpw = false
     @State var viewsettings = false
     
     var body: some View {
+        Text("something")
+        /*
             List {
-                ForEach(model.websites, id: \.self) {
-                    website in NavigationLink (destination: WebsiteView(website: website)) {
-                    Text(website.name)
+                ForEach(model.bank_info, id: \.self) {
+                    bank in NavigationLink (destination: BankView(bank: bank)) {
+                    Text(credit_card.name)
                 }
                 }.onDelete(perform: deleteRow)
             }.onAppear { model.fetchData()}
-        .navigationTitle("Websites")
+        .navigationTitle("Credit Cards")
         .toolbar{
             ToolbarItemGroup(placement: .bottomBar){
                 Spacer()
@@ -68,23 +71,23 @@ struct WebsiteList: View {
                 }
             })*/
         
-        
+        */
         
             
         
     }
-    func deleteRow(at offsets: IndexSet) {
-        let db = Firestore.firestore()
-        let user = Auth.auth().currentUser!
-        let website_name = model.websites[offsets.first!].name
-        db.collection("users").document(user.uid)
-            .collection("websites").document(website_name).delete()
-        model.websites.remove(atOffsets: offsets)
-    }
+//    func deleteRow(at offsets: IndexSet) {
+//        let db = Firestore.firestore()
+//        let user = Auth.auth().currentUser!
+//        let card_name = model.credit_cards[offsets.first!].name
+//        db.collection("users").document(user.uid)
+//            .collection("credit_cards").document(card_name).delete()
+//        model.credit_cards.remove(atOffsets: offsets)
+//    }
 }
 
-struct WebsiteList_Previews: PreviewProvider {
+struct DriverList_Previews: PreviewProvider {
     static var previews: some View {
-        WebsiteList()
+        DriverList()
     }
 }

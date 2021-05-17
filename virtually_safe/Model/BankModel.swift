@@ -55,8 +55,8 @@ class BankViewModel: ObservableObject {
                 let name = data["name"] as? String ?? ""
                 let bank = data["bank_name"] as? String ?? ""
                 let type = data["type"] as? String ?? ""
-                let routing_number = data["routing"] as? String ?? ""
-                let account_number = data["account"] as? String ?? ""
+                let routing_number = data["routing_number"] as? String ?? ""
+                let account_number = data["account_number"] as? String ?? ""
                 let pin = data["pin"] as? String ?? ""
                 let notes = data["notes"] as? String ?? ""
                 return Bank(id: .init(), name: name, bank_name: bank, type: type, routing_number: routing_number, account_number: account_number, pin: pin, notes: notes)
