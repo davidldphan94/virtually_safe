@@ -11,6 +11,7 @@ target 'virtually_safe' do
     pod 'Firebase/Storage'
     pod 'Firebase/Analytics'
     pod 'Firebase/Firestore'
+    pod 'RNCryptor', '~> 5.0'
 
   target 'virtually_safeTests' do
     inherit! :search_paths
