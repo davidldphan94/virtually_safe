@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseFirestore
 
 struct DriverViewEdit: View {
     @Environment(\.presentationMode) var presentationMode
+    @State var license : DriverLicense?
     
     @State var name = ""
     @State var licenseclass = ""
@@ -28,6 +31,11 @@ struct DriverViewEdit: View {
     @State var issued = ""
     @State var doc = ""
     @State var notes = ""
+    
+    @State var showAlert = false
+    @State var errTitle = ""
+    @State var errmsg = ""
+    
     
     var body: some View {
         VStack{
@@ -93,7 +101,7 @@ struct DriverViewEdit: View {
                     TextField("MM/DD/YYYY", text: $dob).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
                     Divider()
                     Text("Expiration Date").foregroundColor(.gray).font(.headline)
-                    TextField("MM/DD/YYYY", text: $dob).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
+                    TextField("MM/DD/YYYY", text: $expire).edgesIgnoringSafeArea(.all).fixedSize(horizontal: false, vertical: true)
                     Divider()
                 }.padding(.leading, 20).padding(.trailing, 20)
                 
@@ -114,12 +122,16 @@ struct DriverViewEdit: View {
         }.navigationBarTitle("Driver's License", displayMode: .inline)
         .toolbar{
             ToolbarItemGroup(placement: .navigationBarTrailing){
-                Button(action: { }, label: {
+                Button(action: {
+                    submitLicense()
+                    self.presentationMode.wrappedValue.dismiss()
+                }, label: {
                     Text("Save")
                         .padding(.trailing, 20)
                 }).padding(.trailing, 20)
             }
         }
+        .alert(isPresented: $showAlert) {self.alert}
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: Button(action: {
             self.presentationMode.wrappedValue.dismiss()
@@ -128,6 +140,74 @@ struct DriverViewEdit: View {
                 Text("Cancel")
             }
         })
+    }
+    
+    func submitLicense() {
+        if (license != nil) {
+            name = name != "" ? name : license?.name ?? ""
+            licenseclass = licenseclass != "" ? licenseclass : license?.licenseclass ?? ""
+            id = id != "" ? id : license?.num ?? ""
+            drivername = drivername != "" ? drivername : license?.driver_name ?? ""
+            addrSt = addrSt != "" ? addrSt : license?.addrSt ?? ""
+            addrSt2 = addrSt2 != "" ? addrSt2 : license?.addrSt2 ?? ""
+            addrCity = addrCity != "" ? addrCity : license?.addrCity ?? ""
+            addrState = addrState != "" ? addrState : license?.addrState ?? ""
+            addrZip = addrZip != "" ? addrZip : license?.addrZip ?? ""
+            addrCountry = addrCountry != "" ? addrCountry : license?.addrCountry ?? ""
+            sex = sex != "" ? sex : license?.sex ?? ""
+            height = height != "" ? height : license?.height ?? ""
+            eyes = eyes != "" ? eyes : license?.eyes ?? ""
+            dob = dob != "" ? dob : license?.dob ?? ""
+            expire = expire != "" ? expire : license?.expire ?? ""
+            issued = issued != "" ? issued : license?.issued ?? ""
+            doc = doc != "" ? doc : license?.doc ?? ""
+            notes = notes != "" ? notes : license?.notes ?? ""
+        }
+        if (name == "" || licenseclass == "" ||
+            id == "" || drivername == "" ||
+            addrSt == "" || addrCity == "" ||
+            addrState == "" || addrZip == "" ||
+            addrCountry == "" || sex == "" ||
+            height == "" || eyes == "" || dob == "" ||
+            expire == "" || issued == "" || doc == "") {
+            errTitle = "Submission failed"
+            errmsg = "Not enough information provided"
+        } else {
+            let new_license = DriverLicense(id: .init(), name: name, licenseclass: licenseclass, num: id, driver_name: drivername, addrSt: addrSt, addrSt2: addrSt2 , addrCity: addrCity, addrState: addrState, addrZip: addrZip, addrCountry : addrCountry, sex: sex, height: height, eyes: eyes, dob: dob, expire: expire, issued: issued, doc: doc, notes: notes)
+            let user = Auth.auth().currentUser!
+            let dbRef = Firestore.firestore()
+            if (name != license?.name ?? name) {
+                dbRef.collection("users").document(user.uid).collection("licenses").document(name).setData(new_license.dictionary, merge: true)
+                dbRef.collection("users").document(user.uid).collection("licenses").document(license!.name).delete()
+            } else {
+                dbRef.collection("users").document(user.uid).collection("licenses").document(new_license.name).setData(new_license.dictionary, merge: true)
+            }
+            name = ""
+            licenseclass = ""
+            id = ""
+            drivername = ""
+            addrSt = ""
+            addrSt2 = ""
+            addrCity = ""
+            addrState = ""
+            addrZip = ""
+            addrCountry = ""
+            sex = ""
+            height = ""
+            eyes = ""
+            dob = ""
+            expire = ""
+            issued = ""
+            doc = ""
+            notes = ""
+            errTitle = "Success"
+            errmsg = "Review submitted. Values will be updated upon revisit."
+        }
+        showAlert = true
+    }
+    var alert : Alert {
+        Alert(title: Text(errTitle),
+              message: Text(errmsg))
     }
 }
 

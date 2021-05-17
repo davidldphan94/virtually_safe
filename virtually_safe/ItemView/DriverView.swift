@@ -8,28 +8,11 @@
 import SwiftUI
 
 struct DriverView: View {
+    @State var license: DriverLicense
     @State var favorite = false
     @State var viewvault = false
     @State var viewgenpw = false
     @State var viewsettings = false
-    @State var name = "Driver's License"
-    @State var licenseclass = "D"
-    @State var id = "123456789"
-    @State var drivername = "Kevin Kha"
-    @State var addrSt = "1st St"
-    @State var addrSt2 = "Apt 1"
-    @State var addrCity = "Syracuse"
-    @State var addrState = "NY"
-    @State var addrZip = "13244"
-    @State var addrCountry = "US"
-    @State var sex = "M"
-    @State var height = "heh"
-    @State var eyes = "Br"
-    @State var dob = "MM/DD/YYYY"
-    @State var expire = "MM/DD/YYYY"
-    @State var issued = "MM/DD/YYYY"
-    @State var doc = "ABC1234567"
-    @State var notes = ""
     
     let board = UIPasteboard.general
     
@@ -42,13 +25,13 @@ struct DriverView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Name").foregroundColor(.gray).font(.headline)
-                            Text(name)
+                            Text(license.name)
                         }
                         
                         Spacer()
                         Button(action: {
-                            if (name != ""){
-                                board.string = name
+                            if (license.name != ""){
+                                board.string = license.name
                             }}) {
                             Text("Copy")
                         }
@@ -57,12 +40,12 @@ struct DriverView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("License Class").foregroundColor(.gray).font(.headline)
-                            Text(licenseclass)
+                            Text(license.licenseclass)
                         }
                         Spacer()
                         Button(action: {
-                            if (licenseclass != ""){
-                                board.string = licenseclass
+                            if (license.licenseclass != ""){
+                                board.string = license.licenseclass
                             }}) {
                             Text("Copy")
                         }
@@ -71,12 +54,12 @@ struct DriverView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Driver's ID").foregroundColor(.gray).font(.headline)
-                            Text(id)
+                            Text(license.num)
                         }
                         Spacer()
                         Button(action: {
-                            if (id != ""){
-                                board.string = id
+                            if (license.num != ""){
+                                board.string = license.num
                             }}) {
                             Text("Copy")
                         }
@@ -85,13 +68,13 @@ struct DriverView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Driver's Name").foregroundColor(.gray).font(.headline)
-                            Text(drivername)
+                            Text(license.driver_name)
                         }
                         
                         Spacer()
                         Button(action: {
-                            if (drivername != ""){
-                                board.string = drivername
+                            if (license.driver_name != ""){
+                                board.string = license.driver_name
                             }}) {
                             Text("Copy")
                         }
@@ -100,13 +83,13 @@ struct DriverView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Address Street").foregroundColor(.gray).font(.headline)
-                            Text(addrSt)
+                            Text(license.addrSt)
                         }
                         
                         Spacer()
                         Button(action: {
-                            if (addrSt != ""){
-                                board.string = addrSt
+                            if (license.addrSt != ""){
+                                board.string = license.addrSt
                             }}) {
                             Text("Copy")
                         }
@@ -116,17 +99,17 @@ struct DriverView: View {
                 }.padding(.leading, 20).padding(.trailing, 20)
                 
                 VStack(alignment: .leading){
-                    if addrSt2 != "" {
+                    if license.addrSt2 != "" {
                         HStack{
                             VStack(alignment: .leading){
                                 Text("Address Street 2 (Optional)").foregroundColor(.gray).font(.headline)
-                                Text(addrSt2)
+                                Text(license.addrSt2)
                             }
                             
                             Spacer()
                             Button(action: {
-                                if (addrSt2 != ""){
-                                    board.string = addrSt2
+                                if (license.addrSt2 != ""){
+                                    board.string = license.addrSt2
                                 }}) {
                                 Text("Copy")
                             }
@@ -136,13 +119,13 @@ struct DriverView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("City").foregroundColor(.gray).font(.headline)
-                            Text(addrCity)
+                            Text(license.addrCity)
                         }
                         
                         Spacer()
                         Button(action: {
-                            if (addrCity != ""){
-                                board.string = addrCity
+                            if (license.addrCity != ""){
+                                board.string = license.addrCity
                             }}) {
                             Text("Copy")
                         }
@@ -151,13 +134,13 @@ struct DriverView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text(" State").foregroundColor(.gray).font(.headline)
-                            Text(addrState)
+                            Text(license.addrState)
                         }
                         
                         Spacer()
                         Button(action: {
-                            if (addrState != ""){
-                                board.string = addrState
+                            if (license.addrState != ""){
+                                board.string = license.addrState
                             }}) {
                             Text("Copy")
                         }
@@ -166,13 +149,13 @@ struct DriverView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Zip Code").foregroundColor(.gray).font(.headline)
-                            Text(addrZip)
+                            Text(license.addrZip)
                         }
                         
                         Spacer()
                         Button(action: {
-                            if (addrZip != ""){
-                                board.string = addrZip
+                            if (license.addrZip != ""){
+                                board.string = license.addrZip
                             }}) {
                             Text("Copy")
                         }
@@ -181,13 +164,13 @@ struct DriverView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Country").foregroundColor(.gray).font(.headline)
-                            Text(addrCountry)
+                            Text(license.addrCountry)
                         }
                         
                         Spacer()
                         Button(action: {
-                            if (addrCountry != ""){
-                                board.string = addrCountry
+                            if (license.addrCountry != ""){
+                                board.string = license.addrCountry
                             }}) {
                             Text("Copy")
                         }
@@ -199,13 +182,13 @@ struct DriverView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Sex").foregroundColor(.gray).font(.headline)
-                            Text(sex)
+                            Text(license.sex)
                         }
                         
                         Spacer()
                         Button(action: {
-                            if (sex != ""){
-                                board.string = sex
+                            if (license.sex != ""){
+                                board.string = license.sex
                             }}) {
                             Text("Copy")
                         }
@@ -214,13 +197,13 @@ struct DriverView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Height").foregroundColor(.gray).font(.headline)
-                            Text(height)
+                            Text(license.height)
                         }
                         
                         Spacer()
                         Button(action: {
-                            if (height != ""){
-                                board.string = height
+                            if (license.height != ""){
+                                board.string = license.height
                             }}) {
                             Text("Copy")
                         }
@@ -229,13 +212,13 @@ struct DriverView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Eye Color").foregroundColor(.gray).font(.headline)
-                            Text(eyes)
+                            Text(license.eyes)
                         }
                         
                         Spacer()
                         Button(action: {
-                            if (eyes != ""){
-                                board.string = eyes
+                            if (license.eyes != ""){
+                                board.string = license.eyes
                             }}) {
                             Text("Copy")
                         }
@@ -244,13 +227,13 @@ struct DriverView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Date of Birth").foregroundColor(.gray).font(.headline)
-                            Text(dob)
+                            Text(license.dob)
                         }
                         
                         Spacer()
                         Button(action: {
-                            if (dob != ""){
-                                board.string = dob
+                            if (license.dob != ""){
+                                board.string = license.dob
                             }}) {
                             Text("Copy")
                         }
@@ -259,13 +242,13 @@ struct DriverView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Expiration Date").foregroundColor(.gray).font(.headline)
-                            Text(expire)
+                            Text(license.expire)
                         }
                         
                         Spacer()
                         Button(action: {
-                            if (expire != ""){
-                                board.string = expire
+                            if (license.expire != ""){
+                                board.string = license.expire
                             }}) {
                             Text("Copy")
                         }
@@ -278,13 +261,13 @@ struct DriverView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Issued Date").foregroundColor(.gray).font(.headline)
-                            Text(issued)
+                            Text(license.issued)
                         }
                         
                         Spacer()
                         Button(action: {
-                            if (issued != ""){
-                                board.string = issued
+                            if (license.issued != ""){
+                                board.string = license.issued
                             }}) {
                             Text("Copy")
                         }
@@ -293,27 +276,27 @@ struct DriverView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Document #").foregroundColor(.gray).font(.headline)
-                            Text(doc)
+                            Text(license.doc)
                         }
                         
                         Spacer()
                         Button(action: {
-                            if (doc != ""){
-                                board.string = doc
+                            if (license.doc != ""){
+                                board.string = license.doc
                             }}) {
                             Text("Copy")
                         }
                     }
-                    if notes != "" {
+                    if license.notes != "" {
                         Divider()
                         Text("Notes").foregroundColor(.gray).font(.headline)
-                        Text(notes)
+                        Text(license.notes)
                     }
                 }.padding(.leading, 20).padding(.trailing, 20)
                 Divider()
             }
             Spacer()
-            NavigationLink(destination: DriverViewEdit()){
+            NavigationLink(destination: DriverViewEdit(license: license)){
             Text("Edit")
             }.frame(width: 100, height: 40, alignment: .center)
                 .background(Color.blue)
@@ -321,7 +304,10 @@ struct DriverView: View {
                 .padding(.bottom, 50)
             
         }.navigationBarTitle("Driver's License", displayMode: .inline)
-        //.navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: Button(action: {}){
+            HStack{
+            }
+        })
         .toolbar{
             ToolbarItemGroup(placement: .navigationBarTrailing){
                 Button(action: { toggleFav()}, label: {
@@ -331,27 +317,6 @@ struct DriverView: View {
                         Image(systemName: "star.fill")
                     }
                 }).padding(.trailing, 20)
-            }
-            ToolbarItemGroup(placement: .bottomBar){
-                Spacer()
-                NavigationLink(destination: ListView(), isActive: $viewvault){ EmptyView() }
-                Button(action: {viewvault = true}){
-                    Image(systemName: "key.fill").resizable().frame(width: 42, height: 50)
-                        .foregroundColor(.black)
-                }
-                Spacer()
-                NavigationLink(destination: GeneratePasswordView(), isActive: $viewgenpw){ EmptyView() }
-                Button(action: {viewgenpw = true}){
-                    Image(systemName: "lock.rotation")
-                        .foregroundColor(.gray)
-                }
-                Spacer()
-                NavigationLink(destination: SettingsView(), isActive: $viewsettings){ EmptyView() }
-                Button(action: {viewsettings = true}){
-                    Image(systemName: "gearshape.fill").resizable().frame(width: 50, height: 50)
-                        .foregroundColor(.gray)
-                }
-                Spacer()
             }
         }
     }
@@ -365,8 +330,8 @@ struct DriverView: View {
     }
 }
 
-struct DriverView_Previews: PreviewProvider {
-    static var previews: some View {
-        DriverView()
-    }
-}
+//struct DriverView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DriverView()
+//    }
+//}

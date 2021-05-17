@@ -21,7 +21,6 @@ struct WebsiteViewEdit: View {
     @State var username = ""
     @State var password = ""
     @State var notes = ""
-    @State var success = false
     
     let dbRef = Firestore.firestore()
     
@@ -65,7 +64,6 @@ struct WebsiteViewEdit: View {
         }.navigationBarTitle("Password", displayMode: .inline)
         .toolbar{
             ToolbarItemGroup(placement: .navigationBarTrailing){
-//                NavigationLink(destination: WebsiteList(), isActive: $success) { EmptyView() }
                 Button(action: {
                     submitWebsite()
                     self.presentationMode.wrappedValue.dismiss()
@@ -115,7 +113,6 @@ struct WebsiteViewEdit: View {
             notes = ""
             errTitle = "Success"
             errmsg = "Review submitted. Values will be updated upon revisit."
-            success = true
         }
         showAlert = true
     }

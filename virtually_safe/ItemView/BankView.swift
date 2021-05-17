@@ -154,11 +154,6 @@ struct BankView: View {
             }
         })
         .toolbar{
-            ToolbarItem {
-                HStack {
-                    
-                }
-            }
             ToolbarItemGroup(placement: .navigationBarTrailing){
                 Button(action: { toggleFav()}, label: {
                     if favorite == false {

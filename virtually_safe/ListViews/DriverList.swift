@@ -12,24 +12,27 @@ import FirebaseStorage
 
 struct DriverList: View {
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var model = BankViewModel()
+    @ObservedObject var model = DriverViewModel()
     @State var addWebsite = true
     @State var viewvault = false
     @State var viewgenpw = false
     @State var viewsettings = false
     
     var body: some View {
-        Text("something")
-        /*
-            List {
-                ForEach(model.bank_info, id: \.self) {
-                    bank in NavigationLink (destination: BankView(bank: bank)) {
-                    Text(credit_card.name)
+        List {
+            ForEach(model.licenses, id: \.self) {
+                license in
+                NavigationLink (destination: DriverView(license: license)) {
+                    Text(license.name)
                 }
-                }.onDelete(perform: deleteRow)
-            }.onAppear { model.fetchData()}
-        .navigationTitle("Credit Cards")
+            }.onDelete(perform: deleteRow)
+        }.onAppear { model.fetchData()}
+        .navigationTitle("Licenses")
         .toolbar{
+            ToolbarItem {
+                HStack {
+                }
+            }
             ToolbarItemGroup(placement: .bottomBar){
                 Spacer()
                 HStack{
@@ -59,31 +62,16 @@ struct DriverList: View {
                 Spacer()
             }
         }
-        //.navigationBarBackButtonHidden(true)
-        //.navigationBarHidden(true)
-            /*
-            .navigationBarItems(leading: Button(action: {
-                self.presentationMode.wrappedValue.dismiss()
-            }){
-                HStack{
-                    Image(systemName: "chevron.backward").font(.system(size: 25))
-                    Text("Back")
-                }
-            })*/
-        
-        */
-        
-            
         
     }
-//    func deleteRow(at offsets: IndexSet) {
-//        let db = Firestore.firestore()
-//        let user = Auth.auth().currentUser!
-//        let card_name = model.credit_cards[offsets.first!].name
-//        db.collection("users").document(user.uid)
-//            .collection("credit_cards").document(card_name).delete()
-//        model.credit_cards.remove(atOffsets: offsets)
-//    }
+    func deleteRow(at offsets: IndexSet) {
+        let db = Firestore.firestore()
+        let user = Auth.auth().currentUser!
+        let delete_license = model.licenses[offsets.first!].name
+        db.collection("users").document(user.uid)
+            .collection("licenses").document(delete_license).delete()
+        model.licenses.remove(atOffsets: offsets)
+    }
 }
 
 struct DriverList_Previews: PreviewProvider {

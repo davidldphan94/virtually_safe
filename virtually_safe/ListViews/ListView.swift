@@ -34,7 +34,7 @@ struct ListView: View {
                 .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
                 .padding()
                 
-                NavigationLink(destination: DriverView()){
+                NavigationLink(destination: DriverList()){
                 Text("Driver's License View")
                 }
                 .foregroundColor(.red)
