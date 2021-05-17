@@ -84,15 +84,15 @@ struct ProfileView: View {
                 }.padding(.leading, 20).padding(.trailing, 20)
                 Divider()
                 HStack {
-                    Text("State")
-                    Spacer()
-                    Text(userModel.profile["location"] ?? "location")
-                }.padding(.leading, 20).padding(.trailing, 20)
-                Divider()
-                HStack {
                     Text("Date of Birth")
                     Spacer()
                     Text(userModel.profile["birthday"] ?? "bday")
+                }.padding(.leading, 20).padding(.trailing, 20)
+                Divider()
+                HStack {
+                    Text("State")
+                    Spacer()
+                    Text(userModel.profile["location"] ?? "location")
                 }.padding(.leading, 20).padding(.trailing, 20)
                 Divider()
             }
@@ -101,6 +101,11 @@ struct ProfileView: View {
         }.onAppear {
             self.userModel.fetchData(userID: Auth.auth().currentUser!.uid)
         }
+        .navigationBarItems(leading: Button(action: {
+        }){
+            HStack{
+            }
+        })
         .toolbar{
             ToolbarItemGroup(placement: .navigationBarTrailing){
                 NavigationLink(destination: CreateProfileView(editProf: editProf), isActive: $viewedit){ EmptyView() }
