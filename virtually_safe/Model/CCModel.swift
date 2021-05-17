@@ -8,6 +8,7 @@
 import Foundation
 import Firebase
 import FirebaseFirestore
+import RNCryptor
 
 struct CC: Identifiable, Codable, Hashable {
     var id: String = UUID().uuidString
@@ -45,6 +46,7 @@ struct CC: Identifiable, Codable, Hashable {
 class CCViewModel: ObservableObject {
     @Published var credit_cards = [CC]()
     
+    private var crypto = Encryption()
     private var db = Firestore.firestore()
     
     func fetchData() {
@@ -58,18 +60,29 @@ class CCViewModel: ObservableObject {
 
             self.credit_cards = documents.map { queryDocumentSnapshot -> CC in
                 let data = queryDocumentSnapshot.data()
-                let name = data["name"] as? String ?? ""
-                let bank = data["bank"] as? String ?? ""
-                let card_name = data["card_name"] as? String ?? ""
-                let card_number = data["card_number"] as? String ?? ""
-                let holder_name = data["holder_name"] as? String ?? ""
-                let valid_thru = data["valid_thru"] as? String ?? ""
-                let security_code = data["security_code"] as? String ?? ""
-                let username = data["username"] as? String ?? ""
-                let password = data["password"] as? String ?? ""
-                let notes = data["notes"] as? String ?? ""
+                let name = self.crypto.decrypt(encryptedMessage: data["name"] as? String ?? "", encryptionKey: key)
+                    //data["name"] as? String ?? ""
+                let bank = self.crypto.decrypt(encryptedMessage: data["bank"] as? String ?? "", encryptionKey: key)
+                    //data["bank"] as? String ?? ""
+                let card_name = self.crypto.decrypt(encryptedMessage: data["card_name"] as? String ?? "", encryptionKey: key)
+                    //data["card_name"] as? String ?? ""
+                let card_number = self.crypto.decrypt(encryptedMessage: data["card_number"] as? String ?? "", encryptionKey: key)
+                    //data["card_number"] as? String ?? ""
+                let holder_name = self.crypto.decrypt(encryptedMessage: data["holder_name"] as? String ?? "", encryptionKey: key)
+                    //data["holder_name"] as? String ?? ""
+                let valid_thru = self.crypto.decrypt(encryptedMessage: data["valid_thru"] as? String ?? "", encryptionKey: key)
+                    //data["valid_thru"] as? String ?? ""
+                let security_code = self.crypto.decrypt(encryptedMessage: data["security_code"] as? String ?? "", encryptionKey: key)
+                    //data["security_code"] as? String ?? ""
+                let username = self.crypto.decrypt(encryptedMessage: data["username"] as? String ?? "", encryptionKey: key)
+                    //data["username"] as? String ?? ""
+                let password = self.crypto.decrypt(encryptedMessage: data["password"] as? String ?? "", encryptionKey: key)
+                    //data["password"] as? String ?? ""
+                let notes = self.crypto.decrypt(encryptedMessage: data["notes"] as? String ?? "", encryptionKey: key)
+                    //data["notes"] as? String ?? ""
                 return CC(id: .init(), name: name, bank: bank, card_name: card_name, card_number: card_number, holder_name: holder_name, valid_thru: valid_thru, security_code: security_code, username: username, password: password, notes: notes)
             }
         }
     }
 }
+
