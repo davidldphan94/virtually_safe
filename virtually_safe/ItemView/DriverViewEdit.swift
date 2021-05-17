@@ -37,7 +37,7 @@ struct DriverViewEdit: View {
     @State var errTitle = ""
     @State var errmsg = ""
     
-    var crypto = Encryption()
+    let crypto = Encryption()
     
     var body: some View {
         VStack{
@@ -176,23 +176,23 @@ struct DriverViewEdit: View {
             errmsg = "Not enough information provided"
         } else {
             let new_license = DriverLicense(id: .init(), name:  self.crypto.encrypt(plainTxt: name, encryptionKey: key),
-                                            licenseclass:  self.crypto.encrypt(plainTxt: licenseclass, encryptionKey: key),
-                                            num:  self.crypto.encrypt(plainTxt: id, encryptionKey: key),
-                                            driver_name:  self.crypto.encrypt(plainTxt: drivername, encryptionKey: key),
-                                            addrSt:  self.crypto.encrypt(plainTxt: addrSt, encryptionKey: key),
-                                            addrSt2:  self.crypto.encrypt(plainTxt: addrSt2, encryptionKey: key),
-                                            addrCity:  self.crypto.encrypt(plainTxt: addrCity, encryptionKey: key),
-                                            addrState:  self.crypto.encrypt(plainTxt: addrState, encryptionKey: key),
-                                            addrZip:  self.crypto.encrypt(plainTxt: addrZip, encryptionKey: key),
-                                            addrCountry:  self.crypto.encrypt(plainTxt: addrCountry, encryptionKey: key),
-                                            sex:  self.crypto.encrypt(plainTxt: sex, encryptionKey: key),
-                                            height:  self.crypto.encrypt(plainTxt: height, encryptionKey: key),
-                                            eyes:  self.crypto.encrypt(plainTxt: eyes, encryptionKey: key),
-                                            dob:  self.crypto.encrypt(plainTxt: dob, encryptionKey: key),
-                                            expire:  self.crypto.encrypt(plainTxt: expire, encryptionKey: key),
-                                            issued:  self.crypto.encrypt(plainTxt: issued, encryptionKey: key),
-                                            doc:  self.crypto.encrypt(plainTxt: doc, encryptionKey: key),
-                                            notes:  self.crypto.encrypt(plainTxt: notes, encryptionKey: key))
+                licenseclass:  self.crypto.encrypt(plainTxt: licenseclass, encryptionKey: key),
+                num:  self.crypto.encrypt(plainTxt: id, encryptionKey: key),
+                driver_name:  self.crypto.encrypt(plainTxt: drivername, encryptionKey: key),
+                addrSt:  self.crypto.encrypt(plainTxt: addrSt, encryptionKey: key),
+                addrSt2:  self.crypto.encrypt(plainTxt: addrSt2, encryptionKey: key),
+                addrCity:  self.crypto.encrypt(plainTxt: addrCity, encryptionKey: key),
+                addrState:  self.crypto.encrypt(plainTxt: addrState, encryptionKey: key),
+                addrZip:  self.crypto.encrypt(plainTxt: addrZip, encryptionKey: key),
+                addrCountry:  self.crypto.encrypt(plainTxt: addrCountry, encryptionKey: key),
+                sex:  self.crypto.encrypt(plainTxt: sex, encryptionKey: key),
+                height:  self.crypto.encrypt(plainTxt: height, encryptionKey: key),
+                eyes:  self.crypto.encrypt(plainTxt: eyes, encryptionKey: key),
+                dob:  self.crypto.encrypt(plainTxt: dob, encryptionKey: key),
+                expire:  self.crypto.encrypt(plainTxt: expire, encryptionKey: key),
+                issued:  self.crypto.encrypt(plainTxt: issued, encryptionKey: key),
+                doc:  self.crypto.encrypt(plainTxt: doc, encryptionKey: key),
+                notes:  self.crypto.encrypt(plainTxt: notes, encryptionKey: key))
             let user = Auth.auth().currentUser!
             let dbRef = Firestore.firestore()
             if (name != license?.name ?? name) {
