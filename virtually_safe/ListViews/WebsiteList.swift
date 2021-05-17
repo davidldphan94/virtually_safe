@@ -16,10 +16,14 @@ struct WebsiteList: View {
     @State var viewvault = false
     @State var viewgenpw = false
     @State var viewsettings = false
+    @State var searching = false
+    @State var searchText = ""
     
     var body: some View {
+        SearchBar(searchText: $searchText, searching: $searching)
+        
             List {
-                ForEach(model.websites, id: \.self) {
+                ForEach((model.websites).filter({ "\($0)".contains(searchText) || searchText.isEmpty}), id: \.self) {
                     website in NavigationLink (destination: WebsiteView(website: website)) {
                     Text(website.name)
                 }

@@ -15,10 +15,13 @@ struct BankList: View {
     @State var viewvault = false
     @State var viewgenpw = false
     @State var viewsettings = false
+    @State var searching = false
+    @State var searchText = ""
     
     var body: some View {
+        SearchBar(searchText: $searchText, searching: $searching)
         List {
-            ForEach(model.bank_info, id: \.self) {
+            ForEach((model.bank_info).filter({ "\($0)".contains(searchText) || searchText.isEmpty}), id: \.self) {
                 bank in NavigationLink (destination: BankView(bank: bank)) {
                     Text(bank.name)
         }

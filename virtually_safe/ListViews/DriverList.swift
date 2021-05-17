@@ -17,10 +17,13 @@ struct DriverList: View {
     @State var viewvault = false
     @State var viewgenpw = false
     @State var viewsettings = false
+    @State var searching = false
+    @State var searchText = ""
     
     var body: some View {
+        SearchBar(searchText: $searchText, searching: $searching)
         List {
-            ForEach(model.licenses, id: \.self) {
+            ForEach((model.licenses).filter({ "\($0)".contains(searchText) || searchText.isEmpty}), id: \.self) {
                 license in
                 NavigationLink (destination: DriverView(license: license)) {
                     Text(license.name)

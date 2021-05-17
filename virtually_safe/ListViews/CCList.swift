@@ -16,10 +16,14 @@ struct CCList: View {
     @State var viewvault = false
     @State var viewgenpw = false
     @State var viewsettings = false
+    @State var searching = false
+    @State var searchText = ""
     
     var body: some View {
+        SearchBar(searchText: $searchText, searching: $searching)
+        
             List {
-                ForEach(model.credit_cards, id: \.self) {
+                ForEach((model.credit_cards).filter({ "\($0)".contains(searchText) || searchText.isEmpty}), id: \.self) {
                     credit_card in NavigationLink (destination: CCView(credit_card: credit_card)) {
                     Text(credit_card.name)
                 }
