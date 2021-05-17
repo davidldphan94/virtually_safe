@@ -34,13 +34,18 @@ struct SettingsView: View {
             }
             Divider().padding(.top, 50)
             VStack(alignment: .leading){
-                Button(action: {}) {
-                    Text("About Virtually Safe")
-                }
+                NavigationLink(
+                    destination: AboutView(),
+                    label: {
+                        Text("About Virtually Safe")
+                    })
                 Divider()
-                Button(action: {}) {
-                    Text("Account Settings")
-                }
+                NavigationLink(
+                    destination: ProfileView(),
+                    label: {
+                        Text("Account Settings")
+                    })
+                
                 Divider()
                 Button(action: {}) {
                     Text("Security")
