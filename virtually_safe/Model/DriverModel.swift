@@ -61,6 +61,7 @@ struct DriverLicense: Identifiable, Codable, Hashable {
 class DriverViewModel: ObservableObject {
     @Published var licenses = [DriverLicense]()
     
+    private var crypto = Encryption()
     private var db = Firestore.firestore()
     
     func fetchData() {
@@ -74,24 +75,24 @@ class DriverViewModel: ObservableObject {
 
             self.licenses = documents.map { queryDocumentSnapshot -> DriverLicense in
                 let data = queryDocumentSnapshot.data()
-                let name = data["name"] as? String ?? ""
-                let licenseclass = data["licenseclass"] as? String ?? ""
-                let num = data["num"] as? String ?? ""
-                let driver_name = data["driver_name"] as? String ?? ""
-                let addrSt = data["addrSt"] as? String ?? ""
-                let addrSt2 = data["addrSt2"] as? String ?? ""
-                let addrCity = data["addrCity"] as? String ?? ""
-                let addrState = data["addrState"] as? String ?? ""
-                let addrZip = data["addrZip"] as? String ?? ""
-                let addrCountry = data["addrCountry"] as? String ?? ""
-                let sex = data["sex"] as? String ?? ""
-                let height = data["height"] as? String ?? ""
-                let eyes = data["eyes"] as? String ?? ""
-                let dob = data["dob"] as? String ?? ""
-                let expire = data["expire"] as? String ?? ""
-                let issued = data["issued"] as? String ?? ""
-                let doc = data["doc"] as? String ?? ""
-                let notes = data["notes"] as? String ?? ""
+                let name = self.crypto.decrypt(encryptedMessage: data["name"] as? String ?? "", encryptionKey: key)
+                let licenseclass = self.crypto.decrypt(encryptedMessage: data["licenseclass"] as? String ?? "", encryptionKey: key)
+                let num = self.crypto.decrypt(encryptedMessage: data["num"] as? String ?? "", encryptionKey: key)
+                let driver_name = self.crypto.decrypt(encryptedMessage: data["driver_name"] as? String ?? "", encryptionKey: key)
+                let addrSt = self.crypto.decrypt(encryptedMessage: data["addrSt"] as? String ?? "", encryptionKey: key)
+                let addrSt2 = self.crypto.decrypt(encryptedMessage: data["addrSt2"] as? String ?? "", encryptionKey: key)
+                let addrCity = self.crypto.decrypt(encryptedMessage: data["addrCity"] as? String ?? "", encryptionKey: key)
+                let addrState = self.crypto.decrypt(encryptedMessage: data["addrState"] as? String ?? "", encryptionKey: key)
+                let addrZip = self.crypto.decrypt(encryptedMessage: data["addrZip"] as? String ?? "", encryptionKey: key)
+                let addrCountry = self.crypto.decrypt(encryptedMessage: data["addrCountry"] as? String ?? "", encryptionKey: key)
+                let sex = self.crypto.decrypt(encryptedMessage: data["sex"] as? String ?? "", encryptionKey: key)
+                let height = self.crypto.decrypt(encryptedMessage: data["height"] as? String ?? "", encryptionKey: key)
+                let eyes = self.crypto.decrypt(encryptedMessage: data["eyes"] as? String ?? "", encryptionKey: key)
+                let dob = self.crypto.decrypt(encryptedMessage: data["dob"] as? String ?? "", encryptionKey: key)
+                let expire = self.crypto.decrypt(encryptedMessage: data["expire"] as? String ?? "", encryptionKey: key)
+                let issued = self.crypto.decrypt(encryptedMessage: data["issued"] as? String ?? "", encryptionKey: key)
+                let doc = self.crypto.decrypt(encryptedMessage: data["doc"] as? String ?? "", encryptionKey: key)
+                let notes = self.crypto.decrypt(encryptedMessage: data["notes"] as? String ?? "", encryptionKey: key)
                 return DriverLicense(id: .init(), name: name, licenseclass: licenseclass, num: num, driver_name: driver_name, addrSt: addrSt, addrSt2: addrSt2 , addrCity: addrCity, addrState: addrState, addrZip: addrZip, addrCountry : addrCountry, sex: sex, height: height, eyes: eyes, dob: dob, expire: expire, issued: issued, doc: doc, notes: notes)
             }
         }
