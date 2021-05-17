@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import SwiftUI
 import Combine
+import Firebase
 import FirebaseFirestore
 
 struct UserProfile: Encodable, Identifiable {
@@ -39,35 +41,25 @@ struct UserProfile: Encodable, Identifiable {
 
 class UserProfileViewModel :ObservableObject {
     var didChange = PassthroughSubject<UserProfileViewModel, Never>()
-    @Published var profile: UserProfile? {
-        didSet {
-            self.didChange.send(self)
-        }
-    }
+    @Published var profile = [String: String]()
     
     private var db = Firestore.firestore()
     
     func fetchData(userID: String) {
-        db.collection("users").getDocuments {(snap, error) in
+        let user = Auth.auth().currentUser!
+        db.collection("users").document(user.uid).collection("settings")
+            .document("user_info").getDocument {(document, error) in
             if error != nil {
                 print("No documents")
                 return
             }
-            for i in snap!.documents {
-                if i.documentID == userID {
-                    let data = i.data()
-                    let birthday = data["birthday"] as? String ?? "N/A"
-                    let email = data["email"] as? String ?? "N/A"
-                    let first_name = data["first_name"] as? String ?? "N/A"
-                    let last_name = data["last_name"] as? String ?? "N/A"
-                    let location = data["location"] as? String ?? "N/A"
-                    let profile_pic_url = data["profile_pic_url"] as? String ?? ""
-                    let username = data["username"] as? String ?? ""
-                    self.profile = UserProfile(id: .init(), birthday: birthday, email: email, first_name: first_name, last_name: last_name, location: location, profile_pic_url: profile_pic_url,
-                        username: username)
-                    return
+               
+                if let document = document, document.exists {
+                    let data = document.data()
+                    for (key, value) in data! {
+                        self.profile[key] = (value as AnyObject? as? String) ?? "N/A"
+                    }
                 }
-            }
         }
     }
 }
