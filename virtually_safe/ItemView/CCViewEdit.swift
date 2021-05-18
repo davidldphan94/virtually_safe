@@ -24,6 +24,7 @@ struct CCViewEdit: View {
     @State var username = ""
     @State var password = ""
     @State var notes = ""
+    @State var fav = false
     
     @State var showAlert = false
     @State var errTitle = ""
@@ -135,7 +136,8 @@ struct CCViewEdit: View {
                               security_code: self.crypto.encrypt(plainTxt: code, encryptionKey: key),
                               username: self.crypto.encrypt(plainTxt: username, encryptionKey: key),
                               password: self.crypto.encrypt(plainTxt: password, encryptionKey: key),
-                              notes: self.crypto.encrypt(plainTxt: notes, encryptionKey: key))
+                              notes: self.crypto.encrypt(plainTxt: notes, encryptionKey: key),
+                              fav: fav)
             let user = Auth.auth().currentUser!
             let dbRef = Firestore.firestore()
             if (name != credit_card?.name ?? name) {
@@ -154,6 +156,7 @@ struct CCViewEdit: View {
             username = ""
             password = ""
             notes = ""
+            fav = false
             errTitle = "Success"
             errmsg = "Review submitted. The fields will update upon revisit."
             showAlert = true

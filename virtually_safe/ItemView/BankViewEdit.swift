@@ -20,6 +20,7 @@ struct BankViewEdit: View {
     @State var accnum = ""
     @State var pin = ""
     @State var notes = ""
+    @State var fav = false
     
     @State var showAlert = false
     @State var errTitle = ""
@@ -110,7 +111,8 @@ struct BankViewEdit: View {
                          routing_number:  self.crypto.encrypt(plainTxt: routing, encryptionKey: key),
                          account_number:  self.crypto.encrypt(plainTxt: accnum, encryptionKey: key),
                          pin:  self.crypto.encrypt(plainTxt: pin, encryptionKey: key),
-                         notes:  self.crypto.encrypt(plainTxt: notes, encryptionKey: key))
+                         notes:  self.crypto.encrypt(plainTxt: notes, encryptionKey: key),
+                         fav: fav)
             let user = Auth.auth().currentUser!
             let dbRef = Firestore.firestore()
             if name != bank?.name ?? name {
@@ -128,6 +130,7 @@ struct BankViewEdit: View {
             routing = ""
             pin = ""
             notes = ""
+            fav = false
             errTitle = "Success"
             errmsg = "Review submitted. Values will be updates upon revisit."
             showAlert = true

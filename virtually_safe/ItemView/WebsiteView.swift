@@ -6,15 +6,17 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseFirestore
 
 struct WebsiteView: View {
     @Environment(\.presentationMode) var presentationMode
     @State var website : Website
     @State var favorite = false
     @State var seepw = false
-    @State var viewvault = false
-    @State var viewgenpw = false
-    @State var viewsettings = false
+    
+    let user = Auth.auth().currentUser!
+    let db = Firestore.firestore()
     
     let board = UIPasteboard.general
     
@@ -100,6 +102,11 @@ struct WebsiteView: View {
                     
                     
                 }.padding(.leading, 20).padding(.trailing, 20)
+                .onAppear{
+                    if website.fav == true {
+                        favorite = true
+                    }
+                }
                 Divider()
             }
             Spacer()
@@ -127,6 +134,13 @@ struct WebsiteView: View {
                         Image(systemName: "star.fill")
                     }
                 }).padding(.trailing, 20)
+                .onAppear{
+                    if favorite == false {
+                        db.collection("users").document(user.uid).collection("websites").document(website.name).updateData(["fav": false])
+                    } else {
+                        db.collection("users").document(user.uid).collection("websites").document(website.name).updateData(["fav": true])
+                    }
+                }
             }
             
         }

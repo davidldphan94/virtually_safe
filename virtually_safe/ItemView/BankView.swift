@@ -6,21 +6,16 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseFirestore
 
 struct BankView: View {
     @State var bank : Bank
     @State var favorite = false
     @State var seepin = false
-    @State var viewvault = false
-    @State var viewgenpw = false
-    @State var viewsettings = false
-    @State var name = "My Chase Bank"
-    @State var bankname = "Chase"
-    @State var acctype = "Checking"
-    @State var routing = "0101010101"
-    @State var accnum = "1010101010"
-    @State var pin = "1234"
-    @State var notes = "haha"
+    
+    let user = Auth.auth().currentUser!
+    let db = Firestore.firestore()
     
     let board = UIPasteboard.general
     
@@ -105,6 +100,11 @@ struct BankView: View {
                     Divider()
                     
                 }.padding(.leading, 20).padding(.trailing, 20)
+                .onAppear{
+                    if bank.fav == true {
+                        favorite = true
+                    }
+                }
                 
                 VStack(alignment: .leading){
                     HStack{
@@ -162,27 +162,13 @@ struct BankView: View {
                         Image(systemName: "star.fill")
                     }
                 }).padding(.trailing, 20)
-            }
-            ToolbarItemGroup(placement: .bottomBar){
-                Spacer()
-                NavigationLink(destination: ListView(), isActive: $viewvault){ EmptyView() }
-                Button(action: {viewvault = true}){
-                    Image(systemName: "key.fill").resizable().frame(width: 42, height: 50)
-                        .foregroundColor(.black)
+                .onAppear{
+                    if favorite == false {
+                        db.collection("users").document(user.uid).collection("banks").document(bank.name).updateData(["fav": false])
+                    } else {
+                        db.collection("users").document(user.uid).collection("banks").document(bank.name).updateData(["fav": true])
+                    }
                 }
-                Spacer()
-                NavigationLink(destination: GeneratePasswordView(), isActive: $viewgenpw){ EmptyView() }
-                Button(action: {viewgenpw = true}){
-                    Image(systemName: "lock.rotation")
-                        .foregroundColor(.gray)
-                }
-                Spacer()
-                NavigationLink(destination: SettingsView(), isActive: $viewsettings){ EmptyView() }
-                Button(action: {viewsettings = true}){
-                    Image(systemName: "gearshape.fill").resizable().frame(width: 50, height: 50)
-                        .foregroundColor(.gray)
-                }
-                Spacer()
             }
         }
     }

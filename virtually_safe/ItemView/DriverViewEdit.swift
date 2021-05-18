@@ -32,6 +32,7 @@ struct DriverViewEdit: View {
     @State var issued = ""
     @State var doc = ""
     @State var notes = ""
+    @State var fav = false
     
     @State var showAlert = false
     @State var errTitle = ""
@@ -192,7 +193,8 @@ struct DriverViewEdit: View {
                 expire:  self.crypto.encrypt(plainTxt: expire, encryptionKey: key),
                 issued:  self.crypto.encrypt(plainTxt: issued, encryptionKey: key),
                 doc:  self.crypto.encrypt(plainTxt: doc, encryptionKey: key),
-                notes:  self.crypto.encrypt(plainTxt: notes, encryptionKey: key))
+                notes:  self.crypto.encrypt(plainTxt: notes, encryptionKey: key),
+                fav: fav)
             let user = Auth.auth().currentUser!
             let dbRef = Firestore.firestore()
             if (name != license?.name ?? name) {
@@ -219,6 +221,7 @@ struct DriverViewEdit: View {
             issued = ""
             doc = ""
             notes = ""
+            fav = false
             errTitle = "Success"
             errmsg = "Review submitted. Values will be updated upon revisit."
         }

@@ -6,13 +6,15 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseFirestore
 
 struct DriverView: View {
     @State var license: DriverLicense
     @State var favorite = false
-    @State var viewvault = false
-    @State var viewgenpw = false
-    @State var viewsettings = false
+    
+    let user = Auth.auth().currentUser!
+    let db = Firestore.firestore()
     
     let board = UIPasteboard.general
     
@@ -97,6 +99,11 @@ struct DriverView: View {
                     Divider()
                     
                 }.padding(.leading, 20).padding(.trailing, 20)
+                .onAppear{
+                    if license.fav == true {
+                        favorite = true
+                    }
+                }
                 
                 VStack(alignment: .leading){
                     if license.addrSt2 != "" {
@@ -317,6 +324,13 @@ struct DriverView: View {
                         Image(systemName: "star.fill")
                     }
                 }).padding(.trailing, 20)
+                .onAppear{
+                    if favorite == false {
+                        db.collection("users").document(user.uid).collection("licenses").document(license.name).updateData(["fav": false])
+                    } else {
+                        db.collection("users").document(user.uid).collection("licenses").document(license.name).updateData(["fav": true])
+                    }
+                }
             }
         }
     }

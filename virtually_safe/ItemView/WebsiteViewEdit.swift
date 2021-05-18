@@ -22,6 +22,7 @@ struct WebsiteViewEdit: View {
     @State var username = ""
     @State var password = ""
     @State var notes = ""
+    @State var fav = false
     
     let crypto = Encryption()
     
@@ -102,11 +103,13 @@ struct WebsiteViewEdit: View {
             errTitle = "Submission failed"
             errmsg = "Not enough information provided"
         } else {
-            let w = Website(id: .init(), name: self.crypto.encrypt(plainTxt: name, encryptionKey: key),
-                            url: self.crypto.encrypt(plainTxt: url, encryptionKey: key),
-                            username: self.crypto.encrypt(plainTxt: username, encryptionKey: key),
-                            password: self.crypto.encrypt(plainTxt: password, encryptionKey: key),
-                            notes: self.crypto.encrypt(plainTxt: notes, encryptionKey: key))
+            let w = Website(id: .init(),
+            name: self.crypto.encrypt(plainTxt: name, encryptionKey: key),
+            url: self.crypto.encrypt(plainTxt: url, encryptionKey: key),
+            username: self.crypto.encrypt(plainTxt: username, encryptionKey: key),
+            password: self.crypto.encrypt(plainTxt: password, encryptionKey: key),
+            notes: self.crypto.encrypt(plainTxt: notes, encryptionKey: key),
+            fav: fav)
             let user = Auth.auth().currentUser!
             if (name != website?.name ?? name) {
                 dbRef.collection("users").document(user.uid).collection("websites").document(name).setData(w.dictionary, merge: true)
@@ -119,6 +122,7 @@ struct WebsiteViewEdit: View {
             username = ""
             password = ""
             notes = ""
+            fav = false
             errTitle = "Success"
             errmsg = "Review submitted. Values will be updated upon revisit."
         }

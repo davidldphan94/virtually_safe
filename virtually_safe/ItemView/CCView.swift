@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct CCView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -13,9 +14,9 @@ struct CCView: View {
     @State var favorite = false
     @State var seecode = false
     @State var seepw = false
-    @State var viewvault = false
-    @State var viewgenpw = false
-    @State var viewsettings = false
+    
+    let user = Auth.auth().currentUser!
+    let db = Firestore.firestore()
     
     let board = UIPasteboard.general
     
@@ -56,6 +57,11 @@ struct CCView: View {
                 .background(Color.blue)
                 .cornerRadius(15)
             .padding(.top, 20)
+            .onAppear{
+                if credit_card.fav == true {
+                    favorite = true
+                }
+            }
                 
             ScrollView{
                 Divider().padding(.top, 50)
@@ -251,6 +257,13 @@ struct CCView: View {
                         Image(systemName: "star.fill")
                     }
                 }).padding(.trailing, 20)
+                .onAppear{
+                    if favorite == false {
+                        db.collection("users").document(user.uid).collection("credit_cards").document(credit_card.name).updateData(["fav": false])
+                    } else {
+                        db.collection("users").document(user.uid).collection("credit_cards").document(credit_card.name).updateData(["fav": true])
+                    }
+                }
             }
         }
     }
@@ -265,7 +278,6 @@ struct CCView: View {
     
     func toggleCode(){
         if seecode == false {
-            print(credit_card.security_code.count)
             seecode = true
         } else {
             seecode = false
