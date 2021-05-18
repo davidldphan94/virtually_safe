@@ -18,15 +18,49 @@ struct CCList: View {
     @State var viewsettings = false
     @State var searching = false
     @State var searchText = ""
+    @State var favorite = false
+    
+    let user = Auth.auth().currentUser!
+    let db = Firestore.firestore()
     
     var body: some View {
         SearchBar(searchText: $searchText, searching: $searching).padding()
         
             List {
                 ForEach((model.credit_cards).filter({ "\($0)".contains(searchText) || searchText.isEmpty}), id: \.self) {
-                    credit_card in NavigationLink (destination: CCView(credit_card: credit_card)) {
-                    Text(credit_card.name)
-                }
+                    credit_card in
+                    /*
+                    HStack{
+                        HStack{
+                            HStack{}
+                            Button(action: { toggleFav()}, label: {
+                                if favorite == false {
+                                    Image(systemName: "star")
+                                } else {
+                                    Image(systemName: "star.fill")
+                                }
+                            }).padding(.trailing, 20)
+                            
+                        }*/
+                        HStack{
+                            NavigationLink (destination: CCView(credit_card: credit_card)) {
+                            
+                                HStack{
+                                    Text(credit_card.name)
+                                }
+                                .onAppear{
+                                    if favorite == false {
+                                        db.collection("users").document(user.uid).collection("credit_card").document(credit_card.name).updateData(["fav": false])
+                                    } else {
+                                        db.collection("users").document(user.uid).collection("credit_card").document(credit_card.name).updateData(["fav": true])
+                                    }
+                                }
+                            }
+                            
+                        }
+                    //}
+                   
+                    
                 }.onDelete(perform: deleteRow)
             }.onAppear { model.fetchData()}
         .navigationTitle("Credit Cards")
@@ -60,23 +94,19 @@ struct CCList: View {
                 Spacer()
             }
         }
-        //.navigationBarBackButtonHidden(true)
-        //.navigationBarHidden(true)
-            /*
-            .navigationBarItems(leading: Button(action: {
-                self.presentationMode.wrappedValue.dismiss()
-            }){
-                HStack{
-                    Image(systemName: "chevron.backward").font(.system(size: 25))
-                    Text("Back")
-                }
-            })*/
-        
-        
-        
-            
+    
+    
         
     }
+    
+    func toggleFav(){
+        if favorite == false {
+            favorite = true
+        } else {
+            favorite = false
+        }
+    }
+    
     func deleteRow(at offsets: IndexSet) {
         let db = Firestore.firestore()
         let user = Auth.auth().currentUser!

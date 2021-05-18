@@ -18,6 +18,10 @@ struct WebsiteList: View {
     @State var viewsettings = false
     @State var searching = false
     @State var searchText = ""
+    @State var favorite = false
+    
+    let user = Auth.auth().currentUser!
+    let db = Firestore.firestore()
     
     var body: some View {
         SearchBar(searchText: $searchText, searching: $searching).padding()
@@ -25,9 +29,33 @@ struct WebsiteList: View {
             List {
                 ForEach((model.websites).filter({ "\($0)".contains(searchText) || searchText.isEmpty}), id: \.self) {
                     website in NavigationLink (destination: WebsiteView(website: website)) {
-                    Text(website.name)
+                        HStack{
+                            Text(website.name)
+                            /*
+                            Spacer()
+                            HStack{
+                                Spacer()
+                                Button(action: { toggleFav()}, label: {
+                                    if favorite == false {
+                                        Image(systemName: "star")
+                                    } else {
+                                        Image(systemName: "star.fill")
+                                    }
+                                }).padding(.trailing, 20)
+                            }*/
+                        }
+                        /*
+                        .onAppear{
+                            if favorite == false {
+                                db.collection("users").document(user.uid).collection("website").document(website.name).updateData(["fav": false])
+                            } else {
+                                db.collection("users").document(user.uid).collection("website").document(website.name).updateData(["fav": true])
+                            }
+                        }*/
                 }
+                
                 }.onDelete(perform: deleteRow)
+                
             }.onAppear { model.fetchData()}
         .navigationTitle("Websites")
         .toolbar{
@@ -60,23 +88,16 @@ struct WebsiteList: View {
                 Spacer()
             }
         }
-        //.navigationBarBackButtonHidden(true)
-        //.navigationBarHidden(true)
-            /*
-            .navigationBarItems(leading: Button(action: {
-                self.presentationMode.wrappedValue.dismiss()
-            }){
-                HStack{
-                    Image(systemName: "chevron.backward").font(.system(size: 25))
-                    Text("Back")
-                }
-            })*/
-        
-        
-        
-            
-        
     }
+    
+    func toggleFav(){
+        if favorite == false {
+            favorite = true
+        } else {
+            favorite = false
+        }
+    }
+    
     func deleteRow(at offsets: IndexSet) {
         let db = Firestore.firestore()
         let user = Auth.auth().currentUser!

@@ -60,6 +60,8 @@ struct CCView: View {
             .onAppear{
                 if credit_card.fav == true {
                     favorite = true
+                } else {
+                    favorite = false
                 }
             }
                 
